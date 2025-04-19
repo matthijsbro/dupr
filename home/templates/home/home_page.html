@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="position-relative mb-5">
+    {% if page.hero_image %}
+      {% image page.hero_image fill-1200x400 as hero_img %}
+      <img
+        src="{{ hero_img.url }}"
+        class="img-fluid w-100"
+        alt="{{ hero_img.alt }}"
+        style="object-fit: cover; max-height: 400px;"
+      />
+    {% endif %}
+    {% if page.hero_quote %}
+      <div
+        class="position-absolute top-50 start-50 translate-middle p-3 text-white bg-dark bg-opacity-50"
+        style="max-width: 400px;"
+      >
+        <blockquote class="blockquote">
+          {{ page.hero_quote }}
+        </blockquote>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Intro Body -->
+  <div class="mb-5">
+    {% for block in page.intro_body %}
+    <div class="mb-3">
+      {{ block.value }}
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Featured Activities -->
+  <div class="row">
+    {% for activity_ref in page.get_featured_activities %}
+      {% if activity_ref %}
+        <div class="col-md-4 mb-4">
+          <div class="card" style="background-color: #f7f7f3;">
+            {% if activity_ref.main_image %}
+              {% image activity_ref.main_image fill-300x200 as activity_img %}
+              <img
+                src="{{ activity_img.url }}"
+                class="card-img-top"
+                alt="{{ activity_img.alt }}"
+              />
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ activity_ref.title }}</h5>
+              <p class="card-text">
+                {{ activity_ref.body|truncatewords:20 }}
+              </p>
+              <a href="{{ activity_ref.url }}" class="btn btn-primary">Read More</a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endblock content %}
