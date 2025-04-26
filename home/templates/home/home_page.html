@@ -41,7 +41,7 @@
     {% for activity_ref in page.get_featured_activities %}
       {% if activity_ref %}
         <div class="col-md-4 mb-4">
-          <div class="card" style="background-color: #f7f7f3;">
+          <div class="card h-100" style="background-color: #f7f7f3;">
             {% if activity_ref.main_image %}
               {% image activity_ref.main_image fill-300x200 as activity_img %}
               <img
@@ -50,12 +50,12 @@
                 alt="{{ activity_img.alt }}"
               />
             {% endif %}
-            <div class="card-body">
+            <div class="card-body h-100 d-flex flex-column">
               <h5 class="card-title">{{ activity_ref.title }}</h5>
-              <div class="card-text">
+              <div class="card-text mb-3">
                 {{ activity_ref.intro }}
               </div>
-              <a href="{{ activity_ref.url }}" class="btn btn-primary">Read More</a>
+              <a href="{{ activity_ref.url }}" class="btn btn-primary mt-auto">Read More</a>
             </div>
           </div>
         </div>
