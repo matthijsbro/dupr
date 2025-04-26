@@ -18,6 +18,12 @@ class ActivityPage(Page):
         related_name='+'
     )
 
+    intro = models.CharField(
+        max_length=300,
+        blank=True,
+        help_text="Short introduction text to display on cards and previews."
+    )
+
     body = StreamField(
         [
             ('heading', blocks.CharBlock(classname='full title')),
@@ -33,6 +39,7 @@ class ActivityPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel('main_image'),
+        FieldPanel('intro'),
         FieldPanel('body'),
     ]
 
