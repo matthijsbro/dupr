@@ -1,0 +1,2974 @@
+[
+{
+  "model": "wagtailcore.locale",
+  "pk": 1,
+  "fields": {
+    "language_code": "en"
+  }
+},
+{
+  "model": "wagtailcore.site",
+  "pk": 2,
+  "fields": {
+    "hostname": "localhost",
+    "port": 8000,
+    "site_name": "Dupseng Rinpoche",
+    "root_page": 3,
+    "is_default_site": true
+  }
+},
+{
+  "model": "wagtailcore.collection",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 0,
+    "name": "Root"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 1,
+  "fields": {
+    "content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "base_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "object_id": "1",
+    "to_content_type": [
+      "wagtailcore",
+      "collection"
+    ],
+    "to_object_id": "1",
+    "model_path": "collection",
+    "content_path": "collection",
+    "content_path_hash": "b40b1263-e929-57f2-a7f8-9dbce56b887b"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 2,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "to_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "to_object_id": "1",
+    "model_path": "hero_image",
+    "content_path": "hero_image",
+    "content_path_hash": "2960929c-7feb-5d2b-8541-ed36105c53fd"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 3,
+  "fields": {
+    "content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "base_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "object_id": "2",
+    "to_content_type": [
+      "wagtailcore",
+      "collection"
+    ],
+    "to_object_id": "1",
+    "model_path": "collection",
+    "content_path": "collection",
+    "content_path_hash": "b40b1263-e929-57f2-a7f8-9dbce56b887b"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 4,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "5",
+    "to_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "to_object_id": "2",
+    "model_path": "main_image",
+    "content_path": "main_image",
+    "content_path_hash": "26acd04b-40fa-579f-9bd6-d981790f6ce9"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 5,
+  "fields": {
+    "content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "base_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "object_id": "3",
+    "to_content_type": [
+      "wagtailcore",
+      "collection"
+    ],
+    "to_object_id": "1",
+    "model_path": "collection",
+    "content_path": "collection",
+    "content_path_hash": "b40b1263-e929-57f2-a7f8-9dbce56b887b"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 6,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "6",
+    "to_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "to_object_id": "3",
+    "model_path": "main_image",
+    "content_path": "main_image",
+    "content_path_hash": "26acd04b-40fa-579f-9bd6-d981790f6ce9"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 7,
+  "fields": {
+    "content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "base_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "object_id": "4",
+    "to_content_type": [
+      "wagtailcore",
+      "collection"
+    ],
+    "to_object_id": "1",
+    "model_path": "collection",
+    "content_path": "collection",
+    "content_path_hash": "b40b1263-e929-57f2-a7f8-9dbce56b887b"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 8,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "7",
+    "to_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "to_object_id": "4",
+    "model_path": "main_image",
+    "content_path": "main_image",
+    "content_path_hash": "26acd04b-40fa-579f-9bd6-d981790f6ce9"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 9,
+  "fields": {
+    "content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "base_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "object_id": "5",
+    "to_content_type": [
+      "wagtailcore",
+      "collection"
+    ],
+    "to_object_id": "1",
+    "model_path": "collection",
+    "content_path": "collection",
+    "content_path_hash": "b40b1263-e929-57f2-a7f8-9dbce56b887b"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 10,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "8",
+    "to_content_type": [
+      "wagtailimages",
+      "image"
+    ],
+    "to_object_id": "5",
+    "model_path": "main_image",
+    "content_path": "main_image",
+    "content_path_hash": "26acd04b-40fa-579f-9bd6-d981790f6ce9"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 11,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "to_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "to_object_id": "7",
+    "model_path": "featured_activity_2",
+    "content_path": "featured_activity_2",
+    "content_path_hash": "c9236b73-92a0-55a8-a9e0-7d047a2561c5"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 12,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "to_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "to_object_id": "5",
+    "model_path": "featured_activity_1",
+    "content_path": "featured_activity_1",
+    "content_path_hash": "2bb20247-47a0-5fd0-a5a2-5eaec59b3d4d"
+  }
+},
+{
+  "model": "wagtailcore.referenceindex",
+  "pk": 13,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "to_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "to_object_id": "6",
+    "model_path": "featured_activity_3",
+    "content_path": "featured_activity_3",
+    "content_path_hash": "2b8c0eca-900e-53cc-81f7-274b7c261bb3"
+  }
+},
+{
+  "model": "wagtailcore.workflowpage",
+  "pk": 1,
+  "fields": {
+    "workflow": 1
+  }
+},
+{
+  "model": "wagtailcore.workflowtask",
+  "pk": 1,
+  "fields": {
+    "sort_order": 0,
+    "workflow": 1,
+    "task": 1
+  }
+},
+{
+  "model": "wagtailcore.task",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators approval",
+    "content_type": [
+      "wagtailcore",
+      "groupapprovaltask"
+    ],
+    "active": true
+  }
+},
+{
+  "model": "wagtailcore.workflow",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators approval",
+    "active": true
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Moderators",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "choose_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "choose_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Editors",
+    "permissions": [
+      [
+        "access_admin",
+        "wagtailadmin",
+        "admin"
+      ],
+      [
+        "add_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "change_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "choose_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "delete_document",
+        "wagtaildocs",
+        "document"
+      ],
+      [
+        "add_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "change_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "choose_image",
+        "wagtailimages",
+        "image"
+      ],
+      [
+        "delete_image",
+        "wagtailimages",
+        "image"
+      ]
+    ]
+  }
+},
+{
+  "model": "wagtailcore.groupapprovaltask",
+  "pk": 1,
+  "fields": {
+    "groups": [
+      [
+        "Moderators"
+      ]
+    ]
+  }
+},
+{
+  "model": "accounts.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$mLhN0dWtwsIwaoqf1siB8E$B2BZ7cvGn3exBAGGBq+qfS8phjIrxdixAm2XfAOVero=",
+    "last_login": "2025-04-26T20:37:02.168Z",
+    "is_superuser": true,
+    "username": "matthijs",
+    "first_name": "",
+    "last_name": "",
+    "email": "matthijs@databrouwer.nl",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-26T20:36:24.181Z",
+    "groups": [],
+    "user_permissions": [],
+    "categories": []
+  }
+},
+{
+  "model": "teachings.teachingsindexpage",
+  "pk": 9,
+  "fields": {}
+},
+{
+  "model": "activities.activitypage",
+  "pk": 5,
+  "fields": {
+    "main_image": 2,
+    "intro": "In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.",
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j1ycx\\\">In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.</p><p data-block-key=\\\"gsq1\\\">At first, a small monastery was established for performing Buddhist services and ceremonies. Over time, as the number of devotees grew, parents began to ask Dupseng Rinpoche to ordain their sons as monks. Before long, there were 35 monks at the monastery including a young tulku, the present Shangpa Rinpoche.</p><p data-block-key=\\\"fmsn9\\\">In 1967, His Holiness the 14th Dalai Lama named the monastery \\u201cJangchub Choeling Monastery\\u201d and officially recognised the monastic community under the guidance of Dupseng Rinpoche. Three years later Dupseng Rinpoche, aware of the need for expansion, moved the monastery to its present location. He planned to erect a larger building and improve the facilities. Sadly, Dupseng Rinpoche passed away in 1979.</p><p data-block-key=\\\"edvnu\\\">Over the past 20 years, Shangpa Rinpoche has continually expanded and improved the facilities at the monastery. In 1991 the present shrine hall was built and His Holiness Shamar Rinpoche inaugurated the monastery.</p>\", \"id\": \"e82d85c1-701b-4a05-bab1-ff2d41236f74\"}]"
+  }
+},
+{
+  "model": "activities.activitypage",
+  "pk": 6,
+  "fields": {
+    "main_image": 3,
+    "intro": "Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.",
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"1lbj2\\\">Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.</p><p data-block-key=\\\"c4nh9\\\">New and larger dormitory rooms for the increasing number of monks where completed in January 1998. At present there is around 130 monks living and studying at the Monastery and Institute.</p>\", \"id\": \"37e3955b-7582-41bb-adaa-ba7214cd94d8\"}]"
+  }
+},
+{
+  "model": "activities.activitypage",
+  "pk": 7,
+  "fields": {
+    "main_image": 4,
+    "intro": "Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center.",
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"5gtwf\\\">Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center.</p><p data-block-key=\\\"ec38p\\\">Each retreat lasts a minimum of 3 years and 3 months in seclusion. The retreat covers the entire cycle of teachings, from the preliminary practices (Ngongdro), through several Creation and Completion meditations (Kyerim and Dzogrim), the six yogas of Naropa and culuminating in Mahamudra practices. As you know buddha doctrine falls in two categories i.e. Theory and Practice. Such a retreat center provides all empowerments, oral transmission and teachings. Upon completion the practice of 3 years and 3 months retreat, they become qualified master and be able to help ad benefits other beings in many ways.</p>\", \"id\": \"cc020724-d5d4-4c1e-aad0-8a8f11a8a508\"}]"
+  }
+},
+{
+  "model": "activities.activitypage",
+  "pk": 8,
+  "fields": {
+    "main_image": 5,
+    "intro": "In the 1960’s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.",
+    "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"0uwcp\\\">In the 1960\\u2019s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.</p><p data-block-key=\\\"9vn2p\\\">The development of the temple was however impeded due to the lack of financial support.\\u00a0</p><p data-block-key=\\\"ct9ps\\\">Before passing away, Kunkhyab Rinpoche and the local devotees of Kirtipur requested Venerable Shangpa Rinpoche to undertake the development of the place.</p><p data-block-key=\\\"a1qhn\\\">Shangpa Rinpoche agreed and have since put all effort for making the place what it is today.</p><p data-block-key=\\\"q1dg\\\">A nunnery where many nuns live and study the Buddha Dharma.A retreat place, where both lay and ordained people can receive guidance in the practise of meditation.</p><p data-block-key=\\\"nenb\\\">A Buddhist Institute, where lay and ordained people can deepen their knowledge of the Buddha Dharma under highly qualified teachers.</p><p data-block-key=\\\"4p8e6\\\">It was officially inaugurated on the 5th December 2004 by His Holiness Shamar Rinpoche and H.E. Trulshik Rinpoche.</p>\", \"id\": \"8d219913-0117-43d5-bd50-bb56644a5960\"}]"
+  }
+},
+{
+  "model": "activities.activitiesindexpage",
+  "pk": 4,
+  "fields": {
+    "intro_text": "Rinpoche oversees several monastaries and Buddhist centers."
+  }
+},
+{
+  "model": "home.homepage",
+  "pk": 3,
+  "fields": {
+    "hero_image": 1,
+    "hero_quote": "Something inspirational here",
+    "intro_body": "[{\"type\": \"heading\", \"value\": \"Header on Rinpoche's front page\", \"id\": \"9c73830f-e6ef-4869-ba81-c3d06d27459a\"}, {\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j0yhx\\\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\\"</p><p data-block-key=\\\"2eo3k\\\"><b>Section 1.10.32 of \\\"de Finibus Bonorum et Malorum\\\", written by Cicero in 45 BC</b></p><p data-block-key=\\\"35c5d\\\">\\\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\\\"</p><p data-block-key=\\\"ba081\\\"><b>1914 translation by H. Rackham</b></p><p data-block-key=\\\"3c34v\\\">\\\"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?\\\"</p>\", \"id\": \"0f41047d-fabe-45a1-a781-322b8a5ab679\"}]",
+    "featured_activity_1": 5,
+    "featured_activity_2": 7,
+    "featured_activity_3": 6
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 1,
+  "fields": {
+    "collection": 1,
+    "title": "jangchub-monastery-wide-L",
+    "file": "original_images/jangchub-monastery-wide-L.jpeg",
+    "description": "",
+    "width": 1280,
+    "height": 720,
+    "created_at": "2025-04-26T20:41:52.410Z",
+    "uploaded_by_user": [
+      "matthijs"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 247599,
+    "file_hash": "04b7b393026a778dd5d8d984cda2915af91cd047"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 2,
+  "fields": {
+    "collection": 1,
+    "title": "jangchub-choeling",
+    "file": "original_images/jangchub-choeling.jpg",
+    "description": "",
+    "width": 800,
+    "height": 534,
+    "created_at": "2025-04-26T20:48:06.790Z",
+    "uploaded_by_user": [
+      "matthijs"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 65397,
+    "file_hash": "6726d0a50c13062f97097a960575a791639b2d96"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 3,
+  "fields": {
+    "collection": 1,
+    "title": "vikramila",
+    "file": "original_images/vikramila.jpg",
+    "description": "",
+    "width": 367,
+    "height": 279,
+    "created_at": "2025-04-26T20:49:44.805Z",
+    "uploaded_by_user": [
+      "matthijs"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 29699,
+    "file_hash": "4ce5157b735e84cb822fbcc33b2ae4b9a94bbeaf"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 4,
+  "fields": {
+    "collection": 1,
+    "title": "sarangkot-m",
+    "file": "original_images/sarangkot-m.jpeg",
+    "description": "",
+    "width": 640,
+    "height": 360,
+    "created_at": "2025-04-26T20:51:11.376Z",
+    "uploaded_by_user": [
+      "matthijs"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 97727,
+    "file_hash": "1a0b51f35cabc171bf73cb7656a1a17b23fba937"
+  }
+},
+{
+  "model": "wagtailimages.image",
+  "pk": 5,
+  "fields": {
+    "collection": 1,
+    "title": "Kirtipur",
+    "file": "original_images/Kirtipur.jpg",
+    "description": "",
+    "width": 1024,
+    "height": 683,
+    "created_at": "2025-04-26T20:51:57.522Z",
+    "uploaded_by_user": [
+      "matthijs"
+    ],
+    "focal_point_x": null,
+    "focal_point_y": null,
+    "focal_point_width": null,
+    "focal_point_height": null,
+    "file_size": 252501,
+    "file_hash": "266046b66671bff2b61bc9f5587c0522e27fa8bf"
+  }
+},
+{
+  "model": "wagtailcore.modellogentry",
+  "pk": 1,
+  "fields": {
+    "content_type": [
+      "wagtailcore",
+      "site"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:45:22.452Z",
+    "uuid": "9c7758f0-0dc3-4410-aaca-2452f1e6e025",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "object_id": "2"
+  }
+},
+{
+  "model": "wagtailcore.modellogentry",
+  "pk": 2,
+  "fields": {
+    "content_type": [
+      "wagtailcore",
+      "site"
+    ],
+    "label": "Dupseng Rinpoche [default]",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:45:36.371Z",
+    "uuid": "92628e7b-431e-4d7b-94c4-fc24db9d2e41",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "object_id": "2"
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 1,
+  "fields": {
+    "path": "0001",
+    "depth": 1,
+    "numchild": 1,
+    "translation_key": "d6c86e2f-05c8-40cc-949d-ccd7ab2a73c2",
+    "locale": 1,
+    "latest_revision": null,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": null,
+    "last_published_at": null,
+    "live_revision": null,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Root",
+    "draft_title": "Root",
+    "slug": "root",
+    "content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "url_path": "/",
+    "owner": null,
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": null,
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 3,
+  "fields": {
+    "path": "00010002",
+    "depth": 2,
+    "numchild": 2,
+    "translation_key": "ca15e8b5-fffa-4877-a9fd-48234af16fcf",
+    "locale": 1,
+    "latest_revision": 7,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:43:09.325Z",
+    "last_published_at": "2025-04-26T20:52:56.074Z",
+    "live_revision": 7,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Dupseng Rinpoche",
+    "draft_title": "Dupseng Rinpoche",
+    "slug": "dupseng-rinpoche",
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "url_path": "/dupseng-rinpoche/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T20:52:56.060Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 4,
+  "fields": {
+    "path": "000100020001",
+    "depth": 3,
+    "numchild": 4,
+    "translation_key": "fd3cb120-178f-483e-ab86-387327e6f3e9",
+    "locale": 1,
+    "latest_revision": 2,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:47:37.749Z",
+    "last_published_at": "2025-04-26T20:47:37.749Z",
+    "live_revision": 2,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Activities",
+    "draft_title": "Activities",
+    "slug": "activities",
+    "content_type": [
+      "activities",
+      "activitiesindexpage"
+    ],
+    "url_path": "/dupseng-rinpoche/activities/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T20:47:37.737Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 5,
+  "fields": {
+    "path": "0001000200010001",
+    "depth": 4,
+    "numchild": 0,
+    "translation_key": "a6e14623-99f6-4f14-abf1-65c6ae9cf6d9",
+    "locale": 1,
+    "latest_revision": 13,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:48:30.255Z",
+    "last_published_at": "2025-04-26T21:11:01.553Z",
+    "live_revision": 13,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "draft_title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "slug": "jangchub-choeling-monastery-pokhara-nepal",
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "url_path": "/dupseng-rinpoche/activities/jangchub-choeling-monastery-pokhara-nepal/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T21:11:01.539Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 6,
+  "fields": {
+    "path": "0001000200010002",
+    "depth": 4,
+    "numchild": 0,
+    "translation_key": "17216807-f597-4278-9d83-4b4c09003111",
+    "locale": 1,
+    "latest_revision": 14,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:49:51.017Z",
+    "last_published_at": "2025-04-26T21:11:22.797Z",
+    "live_revision": 14,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "draft_title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "slug": "vikrama-shila-buddhist-institute-pokhara-nepal",
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "url_path": "/dupseng-rinpoche/activities/vikrama-shila-buddhist-institute-pokhara-nepal/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T21:11:22.786Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 7,
+  "fields": {
+    "path": "0001000200010003",
+    "depth": 4,
+    "numchild": 0,
+    "translation_key": "7b1a3969-53bd-4763-97ec-df96374d8672",
+    "locale": 1,
+    "latest_revision": 12,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:51:29.900Z",
+    "last_published_at": "2025-04-26T21:10:55.861Z",
+    "live_revision": 12,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "draft_title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "slug": "karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal",
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "url_path": "/dupseng-rinpoche/activities/karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T21:10:55.849Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 8,
+  "fields": {
+    "path": "0001000200010004",
+    "depth": 4,
+    "numchild": 0,
+    "translation_key": "dde65aae-15bc-450e-bed8-5603485feefe",
+    "locale": 1,
+    "latest_revision": 15,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T20:52:17.630Z",
+    "last_published_at": "2025-04-26T21:11:35.581Z",
+    "live_revision": 15,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "draft_title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "slug": "kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal",
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "url_path": "/dupseng-rinpoche/activities/kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": false,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T21:11:35.563Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.page",
+  "pk": 9,
+  "fields": {
+    "path": "000100020002",
+    "depth": 3,
+    "numchild": 0,
+    "translation_key": "37b0e088-3ab3-40ab-85c4-7c23af964880",
+    "locale": 1,
+    "latest_revision": 17,
+    "live": true,
+    "has_unpublished_changes": false,
+    "first_published_at": "2025-04-26T21:13:39.824Z",
+    "last_published_at": "2025-04-26T21:14:02.081Z",
+    "live_revision": 17,
+    "go_live_at": null,
+    "expire_at": null,
+    "expired": false,
+    "locked": false,
+    "locked_at": null,
+    "locked_by": null,
+    "title": "Online teachings",
+    "draft_title": "Online teachings",
+    "slug": "online-teachings",
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "url_path": "/dupseng-rinpoche/online-teachings/",
+    "owner": [
+      "matthijs"
+    ],
+    "seo_title": "",
+    "show_in_menus": true,
+    "search_description": "",
+    "latest_revision_created_at": "2025-04-26T21:14:02.066Z",
+    "alias_of": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 1,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "created_at": "2025-04-26T20:43:09.314Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Dupseng Rinpoche",
+    "content": {
+      "pk": 3,
+      "path": "00010002",
+      "depth": 2,
+      "numchild": 0,
+      "translation_key": "ca15e8b5-fffa-4877-a9fd-48234af16fcf",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Dupseng Rinpoche",
+      "draft_title": "Dupseng Rinpoche",
+      "slug": "dupseng-rinpoche",
+      "content_type": 49,
+      "url_path": "/dupseng-rinpoche/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "hero_image": 1,
+      "hero_quote": "Something inspirational here",
+      "intro_body": "[{\"type\": \"heading\", \"value\": \"Header on Rinpoche's front page\", \"id\": \"9c73830f-e6ef-4869-ba81-c3d06d27459a\"}, {\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j0yhx\\\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\\"</p><p data-block-key=\\\"2eo3k\\\"><b>Section 1.10.32 of \\\"de Finibus Bonorum et Malorum\\\", written by Cicero in 45 BC</b></p><p data-block-key=\\\"35c5d\\\">\\\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\\\"</p><p data-block-key=\\\"ba081\\\"><b>1914 translation by H. Rackham</b></p><p data-block-key=\\\"3c34v\\\">\\\"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?\\\"</p>\", \"id\": \"0f41047d-fabe-45a1-a781-322b8a5ab679\"}]",
+      "featured_activity_1": null,
+      "featured_activity_2": null,
+      "featured_activity_3": null,
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 2,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitiesindexpage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "4",
+    "created_at": "2025-04-26T20:47:37.737Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Activities",
+    "content": {
+      "pk": 4,
+      "path": "000100020001",
+      "depth": 3,
+      "numchild": 0,
+      "translation_key": "fd3cb120-178f-483e-ab86-387327e6f3e9",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Activities",
+      "draft_title": "Activities",
+      "slug": "activities",
+      "content_type": 48,
+      "url_path": "/dupseng-rinpoche/activities/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "intro_text": "Rinpoche oversees several monastaries and Buddhist centers.",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 3,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "5",
+    "created_at": "2025-04-26T20:48:30.243Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "content": {
+      "pk": 5,
+      "path": "0001000200010001",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "a6e14623-99f6-4f14-abf1-65c6ae9cf6d9",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "draft_title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "slug": "jangchub-choeling-monastery-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/jangchub-choeling-monastery-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "main_image": 2,
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j1ycx\\\">In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.</p><p data-block-key=\\\"gsq1\\\">At first, a small monastery was established for performing Buddhist services and ceremonies. Over time, as the number of devotees grew, parents began to ask Dupseng Rinpoche to ordain their sons as monks. Before long, there were 35 monks at the monastery including a young tulku, the present Shangpa Rinpoche.</p><p data-block-key=\\\"fmsn9\\\">In 1967, His Holiness the 14th Dalai Lama named the monastery \\u201cJangchub Choeling Monastery\\u201d and officially recognised the monastic community under the guidance of Dupseng Rinpoche. Three years later Dupseng Rinpoche, aware of the need for expansion, moved the monastery to its present location. He planned to erect a larger building and improve the facilities. Sadly, Dupseng Rinpoche passed away in 1979.</p><p data-block-key=\\\"edvnu\\\">Over the past 20 years, Shangpa Rinpoche has continually expanded and improved the facilities at the monastery. In 1991 the present shrine hall was built and His Holiness Shamar Rinpoche inaugurated the monastery.</p>\", \"id\": \"e82d85c1-701b-4a05-bab1-ff2d41236f74\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 4,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "6",
+    "created_at": "2025-04-26T20:49:51.007Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "content": {
+      "pk": 6,
+      "path": "0001000200010002",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "17216807-f597-4278-9d83-4b4c09003111",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "draft_title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "slug": "vikrama-shila-buddhist-institute-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/vikrama-shila-buddhist-institute-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "main_image": 3,
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"1lbj2\\\">Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.</p><p data-block-key=\\\"c4nh9\\\">New and larger dormitory rooms for the increasing number of monks where completed in January 1998. At present there is around 130 monks living and studying at the Monastery and Institute.</p>\", \"id\": \"37e3955b-7582-41bb-adaa-ba7214cd94d8\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 5,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "7",
+    "created_at": "2025-04-26T20:51:29.886Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "content": {
+      "pk": 7,
+      "path": "0001000200010003",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "7b1a3969-53bd-4763-97ec-df96374d8672",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "draft_title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "slug": "karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "main_image": 4,
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"5gtwf\\\">Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center. Each retreat lasts a minimum of 3 years and 3 months in seclusion. The retreat covers the entire cycle of teachings, from the preliminary practices (Ngongdro), through several Creation and Completion meditations (Kyerim and Dzogrim), the six yogas of Naropa and culuminating in Mahamudra practices. As you know buddha doctrine falls in two categories i.e. Theory and Practice. Such a retreat center provides all empowerments, oral transmission and teachings. Upon completion the practice of 3 years and 3 months retreat, they become qualified master and be able to help ad benefits other beings in many ways.</p>\", \"id\": \"cc020724-d5d4-4c1e-aad0-8a8f11a8a508\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 6,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "8",
+    "created_at": "2025-04-26T20:52:17.613Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "content": {
+      "pk": 8,
+      "path": "0001000200010004",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "dde65aae-15bc-450e-bed8-5603485feefe",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "draft_title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "slug": "kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "main_image": 5,
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"0uwcp\\\">In the 1960\\u2019s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.</p><p data-block-key=\\\"eig4n\\\">The development of the temple was however impeded due to the lack of financial support.\\u00a0</p><p data-block-key=\\\"ct9ps\\\">Before passing away, Kunkhyab Rinpoche and the local devotees of Kirtipur requested Venerable Shangpa Rinpoche to undertake the development of the place.</p><p data-block-key=\\\"a1qhn\\\">Shangpa Rinpoche agreed and have since put all effort for making the place what it is today. </p><p data-block-key=\\\"q1dg\\\">A nunnery where many nuns live and study the Buddha Dharma.A retreat place, where both lay and ordained people can receive guidance in the practise of meditation.</p><p data-block-key=\\\"nenb\\\">A Buddhist Institute, where lay and ordained people can deepen their knowledge of the Buddha Dharma under highly qualified teachers.</p><p data-block-key=\\\"4p8e6\\\">It was officially inaugurated on the 5th December 2004 by His Holiness Shamar Rinpoche and H.E. Trulshik Rinpoche.</p>\", \"id\": \"8d219913-0117-43d5-bd50-bb56644a5960\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 7,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "3",
+    "created_at": "2025-04-26T20:52:56.060Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Dupseng Rinpoche",
+    "content": {
+      "pk": 3,
+      "path": "00010002",
+      "depth": 2,
+      "numchild": 1,
+      "translation_key": "ca15e8b5-fffa-4877-a9fd-48234af16fcf",
+      "locale": 1,
+      "latest_revision": 1,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:43:09.325Z",
+      "last_published_at": "2025-04-26T20:43:09.325Z",
+      "live_revision": 1,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Dupseng Rinpoche",
+      "draft_title": "Dupseng Rinpoche",
+      "slug": "dupseng-rinpoche",
+      "content_type": 49,
+      "url_path": "/dupseng-rinpoche/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T20:43:09.314Z",
+      "alias_of": null,
+      "hero_image": 1,
+      "hero_quote": "Something inspirational here",
+      "intro_body": "[{\"type\": \"heading\", \"value\": \"Header on Rinpoche's front page\", \"id\": \"9c73830f-e6ef-4869-ba81-c3d06d27459a\"}, {\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j0yhx\\\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\\"</p><p data-block-key=\\\"2eo3k\\\"><b>Section 1.10.32 of \\\"de Finibus Bonorum et Malorum\\\", written by Cicero in 45 BC</b></p><p data-block-key=\\\"35c5d\\\">\\\"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?\\\"</p><p data-block-key=\\\"ba081\\\"><b>1914 translation by H. Rackham</b></p><p data-block-key=\\\"3c34v\\\">\\\"But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?\\\"</p>\", \"id\": \"0f41047d-fabe-45a1-a781-322b8a5ab679\"}]",
+      "featured_activity_1": 5,
+      "featured_activity_2": 7,
+      "featured_activity_3": 6,
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 8,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "8",
+    "created_at": "2025-04-26T21:09:38.286Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "content": {
+      "pk": 8,
+      "path": "0001000200010004",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "dde65aae-15bc-450e-bed8-5603485feefe",
+      "locale": 1,
+      "latest_revision": 6,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:52:17.630Z",
+      "last_published_at": "2025-04-26T20:52:17.630Z",
+      "live_revision": 6,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "draft_title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "slug": "kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T20:52:17.613Z",
+      "alias_of": null,
+      "main_image": 5,
+      "intro": "In the 1960’s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"0uwcp\\\">The development of the temple was however impeded due to the lack of financial support.\\u00a0</p><p data-block-key=\\\"ct9ps\\\">Before passing away, Kunkhyab Rinpoche and the local devotees of Kirtipur requested Venerable Shangpa Rinpoche to undertake the development of the place.</p><p data-block-key=\\\"a1qhn\\\">Shangpa Rinpoche agreed and have since put all effort for making the place what it is today.</p><p data-block-key=\\\"q1dg\\\">A nunnery where many nuns live and study the Buddha Dharma.A retreat place, where both lay and ordained people can receive guidance in the practise of meditation.</p><p data-block-key=\\\"nenb\\\">A Buddhist Institute, where lay and ordained people can deepen their knowledge of the Buddha Dharma under highly qualified teachers.</p><p data-block-key=\\\"4p8e6\\\">It was officially inaugurated on the 5th December 2004 by His Holiness Shamar Rinpoche and H.E. Trulshik Rinpoche.</p>\", \"id\": \"8d219913-0117-43d5-bd50-bb56644a5960\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 9,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "7",
+    "created_at": "2025-04-26T21:09:53.107Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "content": {
+      "pk": 7,
+      "path": "0001000200010003",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "7b1a3969-53bd-4763-97ec-df96374d8672",
+      "locale": 1,
+      "latest_revision": 5,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:51:29.900Z",
+      "last_published_at": "2025-04-26T20:51:29.900Z",
+      "live_revision": 5,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "draft_title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "slug": "karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T20:51:29.886Z",
+      "alias_of": null,
+      "main_image": 4,
+      "intro": "Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"5gtwf\\\">Each retreat lasts a minimum of 3 years and 3 months in seclusion. The retreat covers the entire cycle of teachings, from the preliminary practices (Ngongdro), through several Creation and Completion meditations (Kyerim and Dzogrim), the six yogas of Naropa and culuminating in Mahamudra practices. As you know buddha doctrine falls in two categories i.e. Theory and Practice. Such a retreat center provides all empowerments, oral transmission and teachings. Upon completion the practice of 3 years and 3 months retreat, they become qualified master and be able to help ad benefits other beings in many ways.</p>\", \"id\": \"cc020724-d5d4-4c1e-aad0-8a8f11a8a508\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 10,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "6",
+    "created_at": "2025-04-26T21:10:17.841Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "content": {
+      "pk": 6,
+      "path": "0001000200010002",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "17216807-f597-4278-9d83-4b4c09003111",
+      "locale": 1,
+      "latest_revision": 4,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:49:51.017Z",
+      "last_published_at": "2025-04-26T20:49:51.017Z",
+      "live_revision": 4,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "draft_title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "slug": "vikrama-shila-buddhist-institute-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/vikrama-shila-buddhist-institute-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T20:49:51.007Z",
+      "alias_of": null,
+      "main_image": 3,
+      "intro": "Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"1lbj2\\\"></p><p data-block-key=\\\"c4nh9\\\">New and larger dormitory rooms for the increasing number of monks where completed in January 1998. At present there is around 130 monks living and studying at the Monastery and Institute.</p>\", \"id\": \"37e3955b-7582-41bb-adaa-ba7214cd94d8\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 11,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "5",
+    "created_at": "2025-04-26T21:10:43.842Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "content": {
+      "pk": 5,
+      "path": "0001000200010001",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "a6e14623-99f6-4f14-abf1-65c6ae9cf6d9",
+      "locale": 1,
+      "latest_revision": 3,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:48:30.255Z",
+      "last_published_at": "2025-04-26T20:48:30.255Z",
+      "live_revision": 3,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "draft_title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "slug": "jangchub-choeling-monastery-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/jangchub-choeling-monastery-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T20:48:30.243Z",
+      "alias_of": null,
+      "main_image": 2,
+      "intro": "In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j1ycx\\\">In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.</p><p data-block-key=\\\"gsq1\\\">At first, a small monastery was established for performing Buddhist services and ceremonies. Over time, as the number of devotees grew, parents began to ask Dupseng Rinpoche to ordain their sons as monks. Before long, there were 35 monks at the monastery including a young tulku, the present Shangpa Rinpoche.</p><p data-block-key=\\\"fmsn9\\\">In 1967, His Holiness the 14th Dalai Lama named the monastery \\u201cJangchub Choeling Monastery\\u201d and officially recognised the monastic community under the guidance of Dupseng Rinpoche. Three years later Dupseng Rinpoche, aware of the need for expansion, moved the monastery to its present location. He planned to erect a larger building and improve the facilities. Sadly, Dupseng Rinpoche passed away in 1979.</p><p data-block-key=\\\"edvnu\\\">Over the past 20 years, Shangpa Rinpoche has continually expanded and improved the facilities at the monastery. In 1991 the present shrine hall was built and His Holiness Shamar Rinpoche inaugurated the monastery.</p>\", \"id\": \"e82d85c1-701b-4a05-bab1-ff2d41236f74\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 12,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "7",
+    "created_at": "2025-04-26T21:10:55.849Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "content": {
+      "pk": 7,
+      "path": "0001000200010003",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "7b1a3969-53bd-4763-97ec-df96374d8672",
+      "locale": 1,
+      "latest_revision": 9,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:51:29.900Z",
+      "last_published_at": "2025-04-26T21:09:53.120Z",
+      "live_revision": 9,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "draft_title": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+      "slug": "karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/karma-ngedon-palbar-ling-retreat-center-sarangkot-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T21:09:53.107Z",
+      "alias_of": null,
+      "main_image": 4,
+      "intro": "Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"5gtwf\\\">Karma Ngedon Palbar Ling Retreat Center is under the supervision of His Holiness Karmapa 17th Thaya Dorje and it is very important for all the buddhist practitioners. Dupseng Rinpoche holds the main responsibility as a retreat master for this retreat center.</p><p data-block-key=\\\"ec38p\\\">Each retreat lasts a minimum of 3 years and 3 months in seclusion. The retreat covers the entire cycle of teachings, from the preliminary practices (Ngongdro), through several Creation and Completion meditations (Kyerim and Dzogrim), the six yogas of Naropa and culuminating in Mahamudra practices. As you know buddha doctrine falls in two categories i.e. Theory and Practice. Such a retreat center provides all empowerments, oral transmission and teachings. Upon completion the practice of 3 years and 3 months retreat, they become qualified master and be able to help ad benefits other beings in many ways.</p>\", \"id\": \"cc020724-d5d4-4c1e-aad0-8a8f11a8a508\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 13,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "5",
+    "created_at": "2025-04-26T21:11:01.539Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "content": {
+      "pk": 5,
+      "path": "0001000200010001",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "a6e14623-99f6-4f14-abf1-65c6ae9cf6d9",
+      "locale": 1,
+      "latest_revision": 11,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:48:30.255Z",
+      "last_published_at": "2025-04-26T21:10:43.854Z",
+      "live_revision": 11,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "draft_title": "Jangchub Choeling Monastery, Pokhara, Nepal",
+      "slug": "jangchub-choeling-monastery-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/jangchub-choeling-monastery-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T21:10:43.842Z",
+      "alias_of": null,
+      "main_image": 2,
+      "intro": "In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"j1ycx\\\">In 1963, His Holiness the 16th Gyalwa Karmapa asked Dupseng Rinpoche to leave Kathmandu for Pokhara in order to meet the spiritual needs of the Tibetan and Nepalese population there.</p><p data-block-key=\\\"gsq1\\\">At first, a small monastery was established for performing Buddhist services and ceremonies. Over time, as the number of devotees grew, parents began to ask Dupseng Rinpoche to ordain their sons as monks. Before long, there were 35 monks at the monastery including a young tulku, the present Shangpa Rinpoche.</p><p data-block-key=\\\"fmsn9\\\">In 1967, His Holiness the 14th Dalai Lama named the monastery \\u201cJangchub Choeling Monastery\\u201d and officially recognised the monastic community under the guidance of Dupseng Rinpoche. Three years later Dupseng Rinpoche, aware of the need for expansion, moved the monastery to its present location. He planned to erect a larger building and improve the facilities. Sadly, Dupseng Rinpoche passed away in 1979.</p><p data-block-key=\\\"edvnu\\\">Over the past 20 years, Shangpa Rinpoche has continually expanded and improved the facilities at the monastery. In 1991 the present shrine hall was built and His Holiness Shamar Rinpoche inaugurated the monastery.</p>\", \"id\": \"e82d85c1-701b-4a05-bab1-ff2d41236f74\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 14,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "6",
+    "created_at": "2025-04-26T21:11:22.786Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "content": {
+      "pk": 6,
+      "path": "0001000200010002",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "17216807-f597-4278-9d83-4b4c09003111",
+      "locale": 1,
+      "latest_revision": 10,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:49:51.017Z",
+      "last_published_at": "2025-04-26T21:10:17.854Z",
+      "live_revision": 10,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "draft_title": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+      "slug": "vikrama-shila-buddhist-institute-pokhara-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/vikrama-shila-buddhist-institute-pokhara-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T21:10:17.841Z",
+      "alias_of": null,
+      "main_image": 3,
+      "intro": "Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"1lbj2\\\">Yet, a place for prayer is not enough for a monk to develop a complete understanding of the Buddha Dharma. Thus donations were sought to establish a Buddhist educational institute, and in December 1996, the Vikrama Shila Buddhist Institute was completed by Shangpa Rinpoche.</p><p data-block-key=\\\"c4nh9\\\">New and larger dormitory rooms for the increasing number of monks where completed in January 1998. At present there is around 130 monks living and studying at the Monastery and Institute.</p>\", \"id\": \"37e3955b-7582-41bb-adaa-ba7214cd94d8\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 15,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "8",
+    "created_at": "2025-04-26T21:11:35.563Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "content": {
+      "pk": 8,
+      "path": "0001000200010004",
+      "depth": 4,
+      "numchild": 0,
+      "translation_key": "dde65aae-15bc-450e-bed8-5603485feefe",
+      "locale": 1,
+      "latest_revision": 8,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T20:52:17.630Z",
+      "last_published_at": "2025-04-26T21:09:38.303Z",
+      "live_revision": 8,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "draft_title": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+      "slug": "kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal",
+      "content_type": 47,
+      "url_path": "/dupseng-rinpoche/activities/kagyu-institute-for-buddhist-studies-kibs-kirtipur-nepal/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T21:09:38.286Z",
+      "alias_of": null,
+      "main_image": 5,
+      "intro": "In the 1960’s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.",
+      "body": "[{\"type\": \"paragraph\", \"value\": \"<p data-block-key=\\\"0uwcp\\\">In the 1960\\u2019s, a small temple was built by local devotees of Kirtipur near Kathmandu in Nepal. The place was offered to His Holiness, the 16th Gyalwa Karmapa, who designated the previous Dupseng Rinpoche and late Kunkhyab Rinpoche to take charge of the temple and its development.</p><p data-block-key=\\\"9vn2p\\\">The development of the temple was however impeded due to the lack of financial support.\\u00a0</p><p data-block-key=\\\"ct9ps\\\">Before passing away, Kunkhyab Rinpoche and the local devotees of Kirtipur requested Venerable Shangpa Rinpoche to undertake the development of the place.</p><p data-block-key=\\\"a1qhn\\\">Shangpa Rinpoche agreed and have since put all effort for making the place what it is today.</p><p data-block-key=\\\"q1dg\\\">A nunnery where many nuns live and study the Buddha Dharma.A retreat place, where both lay and ordained people can receive guidance in the practise of meditation.</p><p data-block-key=\\\"nenb\\\">A Buddhist Institute, where lay and ordained people can deepen their knowledge of the Buddha Dharma under highly qualified teachers.</p><p data-block-key=\\\"4p8e6\\\">It was officially inaugurated on the 5th December 2004 by His Holiness Shamar Rinpoche and H.E. Trulshik Rinpoche.</p>\", \"id\": \"8d219913-0117-43d5-bd50-bb56644a5960\"}]",
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 16,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "9",
+    "created_at": "2025-04-26T21:13:39.814Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Online teachings",
+    "content": {
+      "pk": 9,
+      "path": "000100020002",
+      "depth": 3,
+      "numchild": 0,
+      "translation_key": "37b0e088-3ab3-40ab-85c4-7c23af964880",
+      "locale": 1,
+      "latest_revision": null,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": null,
+      "last_published_at": null,
+      "live_revision": null,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Online teachings",
+      "draft_title": "Online teachings",
+      "slug": "online-teachings",
+      "content_type": 30,
+      "url_path": "/dupseng-rinpoche/online-teachings/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": false,
+      "search_description": "",
+      "latest_revision_created_at": null,
+      "alias_of": null,
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.revision",
+  "pk": 17,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "base_content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "object_id": "9",
+    "created_at": "2025-04-26T21:14:02.066Z",
+    "user": [
+      "matthijs"
+    ],
+    "object_str": "Online teachings",
+    "content": {
+      "pk": 9,
+      "path": "000100020002",
+      "depth": 3,
+      "numchild": 0,
+      "translation_key": "37b0e088-3ab3-40ab-85c4-7c23af964880",
+      "locale": 1,
+      "latest_revision": 16,
+      "live": true,
+      "has_unpublished_changes": false,
+      "first_published_at": "2025-04-26T21:13:39.824Z",
+      "last_published_at": "2025-04-26T21:13:39.824Z",
+      "live_revision": 16,
+      "go_live_at": null,
+      "expire_at": null,
+      "expired": false,
+      "locked": false,
+      "locked_at": null,
+      "locked_by": null,
+      "title": "Online teachings",
+      "draft_title": "Online teachings",
+      "slug": "online-teachings",
+      "content_type": 30,
+      "url_path": "/dupseng-rinpoche/online-teachings/",
+      "owner": 1,
+      "seo_title": "",
+      "show_in_menus": true,
+      "search_description": "",
+      "latest_revision_created_at": "2025-04-26T21:13:39.814Z",
+      "alias_of": null,
+      "wagtail_admin_comments": []
+    },
+    "approved_go_live_at": null
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 1,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:43:09.305Z",
+    "uuid": "4d4f39a2-4c41-49a8-a437-1e295b9ff289",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 2,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:43:09.321Z",
+    "uuid": "4d4f39a2-4c41-49a8-a437-1e295b9ff289",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 1,
+    "content_changed": true,
+    "deleted": false,
+    "page": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 3,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:43:09.337Z",
+    "uuid": "4d4f39a2-4c41-49a8-a437-1e295b9ff289",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 1,
+    "content_changed": true,
+    "deleted": false,
+    "page": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 4,
+  "fields": {
+    "content_type": [
+      "wagtailcore",
+      "page"
+    ],
+    "label": "Welcome to your new Wagtail site!",
+    "action": "wagtail.delete",
+    "data": {},
+    "timestamp": "2025-04-26T20:43:42.980Z",
+    "uuid": "1a77029a-5f09-4522-9f06-75adef735dd9",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": false,
+    "deleted": true,
+    "page": 2
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 5,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitiesindexpage"
+    ],
+    "label": "Activities",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:47:37.725Z",
+    "uuid": "5c2b4490-cd89-4eb2-8874-c95443bfd109",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 4
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 6,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitiesindexpage"
+    ],
+    "label": "Activities",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:47:37.743Z",
+    "uuid": "5c2b4490-cd89-4eb2-8874-c95443bfd109",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 2,
+    "content_changed": true,
+    "deleted": false,
+    "page": 4
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 7,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitiesindexpage"
+    ],
+    "label": "Activities",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:47:37.758Z",
+    "uuid": "5c2b4490-cd89-4eb2-8874-c95443bfd109",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 2,
+    "content_changed": true,
+    "deleted": false,
+    "page": 4
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 8,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:48:30.230Z",
+    "uuid": "e763d3ef-f829-4961-9094-bb22a4d37ed4",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 9,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:48:30.249Z",
+    "uuid": "e763d3ef-f829-4961-9094-bb22a4d37ed4",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 3,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 10,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:48:30.268Z",
+    "uuid": "e763d3ef-f829-4961-9094-bb22a4d37ed4",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 3,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 11,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:49:50.997Z",
+    "uuid": "f1de1226-350d-4462-b1b6-ff9c5391fe9f",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 12,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:49:51.012Z",
+    "uuid": "f1de1226-350d-4462-b1b6-ff9c5391fe9f",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 4,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 13,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:49:51.026Z",
+    "uuid": "f1de1226-350d-4462-b1b6-ff9c5391fe9f",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 4,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 14,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:51:29.872Z",
+    "uuid": "ce3fa64c-251a-4b4d-9526-42fbad8a2a06",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 15,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:51:29.894Z",
+    "uuid": "ce3fa64c-251a-4b4d-9526-42fbad8a2a06",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 5,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 16,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:51:29.914Z",
+    "uuid": "ce3fa64c-251a-4b4d-9526-42fbad8a2a06",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 5,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 17,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T20:52:17.595Z",
+    "uuid": "ea5453fc-39b5-4809-b383-b622ef9b3947",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 18,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:52:17.625Z",
+    "uuid": "ea5453fc-39b5-4809-b383-b622ef9b3947",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 6,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 19,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:52:17.642Z",
+    "uuid": "ea5453fc-39b5-4809-b383-b622ef9b3947",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 6,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 20,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T20:52:56.067Z",
+    "uuid": "58114903-ffee-428b-a8f1-e3ddaed1a7b7",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 7,
+    "content_changed": true,
+    "deleted": false,
+    "page": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 21,
+  "fields": {
+    "content_type": [
+      "home",
+      "homepage"
+    ],
+    "label": "Dupseng Rinpoche",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T20:52:56.088Z",
+    "uuid": "58114903-ffee-428b-a8f1-e3ddaed1a7b7",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 7,
+    "content_changed": true,
+    "deleted": false,
+    "page": 3
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 22,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:09:38.298Z",
+    "uuid": "8e57cc0d-bfe4-4a69-b8a7-c7b61c6094c3",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 8,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 23,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:09:38.314Z",
+    "uuid": "8e57cc0d-bfe4-4a69-b8a7-c7b61c6094c3",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 8,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 24,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:09:53.115Z",
+    "uuid": "704001e3-b6e3-4dbb-9ed4-2ddefc3e1e21",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 9,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 25,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:09:53.131Z",
+    "uuid": "704001e3-b6e3-4dbb-9ed4-2ddefc3e1e21",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 9,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 26,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:17.849Z",
+    "uuid": "172f5b7e-79b1-4ef3-8835-576c899941b8",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 10,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 27,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:17.866Z",
+    "uuid": "172f5b7e-79b1-4ef3-8835-576c899941b8",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 10,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 28,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:43.850Z",
+    "uuid": "3d273400-9dc9-479b-8729-bfc0365015bf",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 11,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 29,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:43.865Z",
+    "uuid": "3d273400-9dc9-479b-8729-bfc0365015bf",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 11,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 30,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:55.857Z",
+    "uuid": "0ef5359c-2703-4026-b333-76ed77b91fc2",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 12,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 31,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Karma Ngedon Palbar Ling Retreat Center, Sarangkot, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:10:55.873Z",
+    "uuid": "0ef5359c-2703-4026-b333-76ed77b91fc2",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 12,
+    "content_changed": true,
+    "deleted": false,
+    "page": 7
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 32,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:01.548Z",
+    "uuid": "915cf54b-960e-4727-87e1-9d8e5a71ad41",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 13,
+    "content_changed": true,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 33,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Jangchub Choeling Monastery, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:01.564Z",
+    "uuid": "915cf54b-960e-4727-87e1-9d8e5a71ad41",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 13,
+    "content_changed": false,
+    "deleted": false,
+    "page": 5
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 34,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:22.792Z",
+    "uuid": "0abbde0f-7605-44de-9d9d-7dc4f298bd5f",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 14,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 35,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Vikrama Shila Buddhist Institute, Pokhara, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:22.808Z",
+    "uuid": "0abbde0f-7605-44de-9d9d-7dc4f298bd5f",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 14,
+    "content_changed": true,
+    "deleted": false,
+    "page": 6
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 36,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:35.574Z",
+    "uuid": "503226b3-c10d-4da6-90ce-fcf5be28df7b",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 15,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 37,
+  "fields": {
+    "content_type": [
+      "activities",
+      "activitypage"
+    ],
+    "label": "Kagyu Institute for Buddhist studies (KIBS), Kirtipur, Nepal",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:11:35.595Z",
+    "uuid": "503226b3-c10d-4da6-90ce-fcf5be28df7b",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 15,
+    "content_changed": true,
+    "deleted": false,
+    "page": 8
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 38,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "label": "Online teachings",
+    "action": "wagtail.create",
+    "data": {},
+    "timestamp": "2025-04-26T21:13:39.805Z",
+    "uuid": "aa02c018-16b4-47d3-8ced-69cf89650081",
+    "user": [
+      "matthijs"
+    ],
+    "revision": null,
+    "content_changed": true,
+    "deleted": false,
+    "page": 9
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 39,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "label": "Online teachings",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:13:39.819Z",
+    "uuid": "aa02c018-16b4-47d3-8ced-69cf89650081",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 16,
+    "content_changed": true,
+    "deleted": false,
+    "page": 9
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 40,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "label": "Online teachings",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:13:39.836Z",
+    "uuid": "aa02c018-16b4-47d3-8ced-69cf89650081",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 16,
+    "content_changed": true,
+    "deleted": false,
+    "page": 9
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 41,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "label": "Online teachings",
+    "action": "wagtail.edit",
+    "data": {},
+    "timestamp": "2025-04-26T21:14:02.075Z",
+    "uuid": "083c6530-d710-46e5-b7c7-24539959502d",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 17,
+    "content_changed": true,
+    "deleted": false,
+    "page": 9
+  }
+},
+{
+  "model": "wagtailcore.pagelogentry",
+  "pk": 42,
+  "fields": {
+    "content_type": [
+      "teachings",
+      "teachingsindexpage"
+    ],
+    "label": "Online teachings",
+    "action": "wagtail.publish",
+    "data": {},
+    "timestamp": "2025-04-26T21:14:02.093Z",
+    "uuid": "083c6530-d710-46e5-b7c7-24539959502d",
+    "user": [
+      "matthijs"
+    ],
+    "revision": 17,
+    "content_changed": true,
+    "deleted": false,
+    "page": 9
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 3,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 3,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 4,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 5,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 6,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 7,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 8,
+    "comment_notifications": true
+  }
+},
+{
+  "model": "wagtailcore.pagesubscription",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "matthijs"
+    ],
+    "page": 9,
+    "comment_notifications": true
+  }
+}
+]

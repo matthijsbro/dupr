@@ -1,0 +1,6 @@
+{% extends "wagtailusers/users/edit.html" %}
+<h1>this here is a test</h1>
+{% block extra_fields %}
+    {{ block.super }} {# Include any fields from the base template's extra_fields block #}
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.categories %}</li>
+{% endblock extra_fields %}

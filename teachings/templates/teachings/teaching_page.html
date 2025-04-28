@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
-{% block title %}Teachings{% endblock %}
-
 {% block content %}
-<section class="teachings-index">
-  <h1 class="mb-4">Teachings</h1>
-  <div class="row">
-    {% for tp in teachings_list %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100">
-          {% if tp.header_image %}
-            {% image tp.header_image fill-400x250 as img %}
-            <img src="{{ img.url }}" alt="{{ tp.title }}" class="card-img-top">
-          {% endif %}
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">{{ tp.title }}</h5>
-            <a href="{{ tp.url }}" class="btn btn-outline-primary mt-auto">
-              View
-            </a>
-          </div>
-        </div>
+<article class="teaching-page">
+  <header class="teaching-header">
+    <h1>{{ page.title }}</h1>
+    {% if page.header_image %}
+      {% image page.header_image fill-1200x400 as header_img %}
+      <img src="{{ header_img.url }}" alt="{{ page.title }}" class="img-fluid mb-4">
+    {% endif %}
+    {% if page.categories.all %}
+      <div class="categories mb-3">
+        <strong>Categories:</strong>
+        {% for category in page.categories.all %}
+          <span class="badge bg-secondary">{{ category.name }}</span>
+        {% endfor %}
       </div>
-    {% empty %}
-      <p>No teachings available at the moment.</p>
+    {% endif %}
+  </header>
+  <div class="teaching-body">
+    {% for block in page.body %}
+      {% include_block block %}
     {% endfor %}
   </div>
-</section>
+</article>
 {% endblock %}
+
+{% block title %}{{ page.title }}{% endblock %}

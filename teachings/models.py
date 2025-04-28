@@ -1,4 +1,6 @@
 from django.db import models
+from django.http import HttpResponseForbidden
+from django.shortcuts import render
 from modelcluster.fields import ParentalManyToManyField
 
 from wagtail.models import Page
@@ -8,6 +10,7 @@ from wagtail.fields import StreamField
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.documents.blocks import DocumentChooserBlock
+from wagtail.embeds.blocks import EmbedBlock
 
 
 @register_snippet
@@ -46,8 +49,7 @@ class TeachingPage(Page):
         ('heading', blocks.CharBlock(form_classname='full title')),
         ('paragraph', blocks.RichTextBlock()),
         ('image', ImageChooserBlock()),
-        ('video', blocks.URLBlock(help_text='Embed URL for video')),
-        ('audio', blocks.URLBlock(help_text='Embed URL for audio')),
+        ('embed', EmbedBlock(max_width=800, max_height=400)),
         ('document', DocumentChooserBlock()),
     ], use_json_field=True)
 
@@ -70,6 +72,39 @@ class TeachingPage(Page):
     class Meta:
         verbose_name = 'Teaching Page'
         verbose_name_plural = 'Teaching Pages'
+
+    def serve(self, request, *args, **kwargs):
+        """
+        Control access based on user categories.
+        """
+        page_categories = set(self.categories.all()) # Get categories for this page as a set
+
+        # If the page has no categories assigned, it's publically accessible
+        if not page_categories:
+            return super().serve(request, *args, **kwargs)
+
+        # If the page has categories, require authentication
+        if not request.user.is_authenticated:
+            # You might want to redirect to a login page instead
+            response = render(request, '403.html', {}, status=403)
+            return response
+            # return HttpResponseForbidden("You must be authorized in to view this teaching.")
+
+        # Superusers and staff have access to all pages
+        if request.user.is_superuser or request.user.is_staff:
+            return super().serve(request, *args, **kwargs)
+
+        # For authenticated non-staff users, check for intersecting categories
+        user_categories = set(request.user.categories.all()) # Get user's categories as a set
+
+        # Check if there is any overlap between user and page categories
+        if user_categories.intersection(page_categories):
+            return super().serve(request, *args, **kwargs)
+        else:
+            # No intersecting categories, deny access - Render the custom 403 template
+            response = render(request, '403.html', {}, status=403)
+            return response
+            # return HttpResponseForbidden("You do not have the required auhtorization to view this teaching, contact us if you think you should get access.")
 
 class TeachingsIndexPage(Page):
     """
