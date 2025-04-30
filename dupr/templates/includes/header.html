@@ -1,0 +1,34 @@
+    <!-- Example: Basic Bootstrap navbar -->
+    {% load wagtailcore_tags navigation_tags %}
+    {% get_site_root as site_root %}
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'wagtailadmin_home' %}">My Wagtail Site</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    {# Check if the current request path is the exact URL of the site root for active class #}
+                    <a class="nav-link{% if request.path == site_root.url %} active{% endif %}" href="{% pageurl site_root %}">Home</a>
+                </li>
+                {% for menuitem in site_root.get_children.live.in_menu %}
+                  <li class="nav-item">
+                    <a class="nav-link{% if request.path != '/' and menuitem.url != '/' and request.path|slice:menuitem.url|length >= menuitem.url|length and request.path|slice:menuitem.url == menuitem.url %} active{% elif request.path == '/' and menuitem.url == '/' %} active{% endif %}" href="{% pageurl menuitem %}">
+                        {{ menuitem.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </nav>

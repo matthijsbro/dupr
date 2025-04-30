@@ -1,0 +1,43 @@
+{# footer.html #}
+<div class="container">
+    <div class="row">
+        {# Column 1: Social Media Links #}
+        <div class="col-md-4">
+            <h5>Follow Rinpoche</h5>
+            {% with facebook_url=settings.base.NavigationSettings.facebook_url youtube_url=settings.base.NavigationSettings.youtube_url %}
+                {% if facebook_url or youtube_url %}
+                    <p>
+                        {% if facebook_url %}
+                            <a href="{{ facebook_url }}" class="me-2">Facebook</a>
+                        {% endif %}
+                        {% if youtube_url %}
+                            <a href="{{ youtube_url }}">YouTube</a>
+                        {% endif %}
+                    </p>
+                {% endif %}
+            {% endwith %}
+        </div>
+        {# Column 2: Menu Links (Placeholder) #}
+        <div class="col-md-4">
+            <h5>Quick Links</h5>
+            {% comment %} Menu links will go here later {% endcomment %}
+            <ul class="list-unstyled">
+                {# <li><a href="#">Link 1</a></li> #}
+                {# <li><a href="#">Link 2</a></li> #}
+                {# <li><a href="#">Link 3</a></li> #}
+            </ul>
+        </div>
+
+        {# Column 3: Login Fields (Placeholder) #}
+        <div class="col-md-4">
+            <h5>User Login</h5>
+            {% comment %} Login fields will go here later {% endcomment %}
+             <p>Login form placeholder.</p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col text-center">
+            <p>© 2025 All rights reserved.</p>
+        </div>
+    </div>
+</div>
