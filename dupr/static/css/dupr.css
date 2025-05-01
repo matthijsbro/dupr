@@ -1,0 +1,11 @@
+body {
+    background-color: #fff;
+    color: #333;
+  }
+  a, .navbar-brand, .nav-link {
+    color: #ab0032;
+  }
+  footer {
+    background-color: #f7f7f3;
+    padding: 1rem;
+  }
