@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Log In" %}{% endblock %}
+
+{% block content %}
+  <h2>{% translate "Log In" %}</h2>
+
+  {% if form.errors %}
+    <p class="text-danger">{% translate "Your username and password didn't match. Please try again." %}</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>{% blocktranslate %}Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.{% endblocktranslate %}</p>
+    {% else %}
+      <p>{% blocktranslate %}Please login to see this page.{% endblocktranslate %}</p>
+    {% endif %}
+  {% endif %}
+
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="{{ form.username.id_for_label }}" class="form-label">{{ form.username.label }}</label>
+      {{ form.username }}
+    </div>
+    <div class="mb-3">
+      <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }}</label>
+      {{ form.password }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{% translate 'Log In' %}</button>
+    <input type="hidden" name="next" value="{{ next }}">
+  </form>
+
+  {# Assumes you setup the password_reset view #}
+  {# <p><a href="{% url 'password_reset' %}">{% translate 'Lost password?' %}</a></p> #}
+{% endblock %}

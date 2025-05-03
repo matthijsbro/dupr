@@ -85,9 +85,11 @@ class TeachingPage(Page):
 
         # If the page has categories, require authentication
         if not request.user.is_authenticated:
-            # You might want to redirect to a login page instead
-            response = render(request, '403.html', {}, status=403)
-            return response
+             # Redirect to login page, passing the current page URL as 'next'
+            login_url = reverse('login') # Assumes your login URL is named 'login'
+            return redirect(f'{login_url}?next={request.path}')
+            # response = render(request, '403.html', {}, status=403)
+            # return response
             # return HttpResponseForbidden("You must be authorized in to view this teaching.")
 
         # Superusers and staff have access to all pages

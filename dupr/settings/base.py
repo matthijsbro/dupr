@@ -204,3 +204,8 @@ AUTH_USER_MODEL = 'accounts.User'
 
 # other settings: wouldn't pick this up from accounts/apps.py and gave warnings when runserver
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 
+LOGIN_REDIRECT_URL = '/' # Redirect to homepage after login
+LOGOUT_REDIRECT_URL = '/' # Redirect to homepage after logout
+LOGIN_URL = '/accounts/login/' # The URL for the login page itself
