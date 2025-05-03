@@ -149,6 +149,19 @@ svg:not(:root) {
     font-weight: 300;
 }
 
+.card .btn-primary {
+    background-color: #ea1b10; /* Set the background color to the red used in the navigation menu */
+    color: #fff; /* Ensure the text is white for contrast */
+    border: none; /* Remove any border */
+    padding: 10px 20px; /* Add padding for better appearance */
+    border-radius: 4px; /* Optional: Add rounded corners */
+    cursor: pointer; /* Change the cursor to a pointer on hover */
+}
+
+.card .btn-primary:hover {
+    background-color: #c4160d; /* Slightly darker red for hover effect */
+}
+
 @media (max-width: 996px) {
     body {
         max-width: 780px;

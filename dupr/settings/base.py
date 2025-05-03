@@ -207,5 +207,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 
 LOGIN_REDIRECT_URL = '/' # Redirect to homepage after login
-LOGOUT_REDIRECT_URL = '/' # Redirect to homepage after logout
+# LOGOUT_REDIRECT_URL = '/' # Redirect to homepage after logout
 LOGIN_URL = '/accounts/login/' # The URL for the login page itself
