@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "activities",
     "home",
     "base",
+    "tracker",
     "search",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",

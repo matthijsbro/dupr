@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ page_title|default:_("Confirm Delete") }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+             <div class="card shadow-sm border-danger">
+                <div class="card-header bg-danger text-white">
+                     <h3>{{ page_title|default:_("Confirm Delete") }}</h3>
+                 </div>
+                <div class="card-body">
+                    {# Display Django Messages #}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <p>{% blocktranslate with activity=object.user_activity.get_display_name quantity=object.quantity_submitted|floatformat:0 unit=object.user_activity.get_unit_name date=object.entry_date|date:"Y-m-d" %}
+                        Are you sure you want to delete the entry for <strong>{{ activity }}</strong>
+                        (quantity: {{ quantity }} {{ unit }}) logged on <strong>{{ date }}</strong>?
+                    {% endblocktranslate %}</p>
+
+                    {% if object.notes %}
+                        <p><strong>{% translate "Notes:" %}</strong> {{ object.notes|linebreaksbr }}</p>
+                    {% endif %}
+
+                    <p class="text-danger"><strong>{% translate "This action cannot be undone." %}</strong></p>
+
+                    <form method="post"> {# Action URL handled by view #}
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                             <a href="{% url 'tracker:logentry-history' %}" class="btn btn-outline-secondary">{% translate "Cancel" %}</a>
+                             <button type="submit" class="btn btn-danger">{% translate "Confirm Delete" %}</button>
+                         </div>
+                    </form>
+                 </div>
+             </div>
+         </div>
+     </div>
+</div>
+{% endblock content %}
