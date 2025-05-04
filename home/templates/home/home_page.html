@@ -4,62 +4,74 @@
 {% block title %}{{ page.title }}{% endblock title %}
 
 {% block content %}
-  <!-- Hero Section -->
-  <div class="position-relative mb-5">
+  {# Use Tailwind classes for relative positioning container #}
+  <div class="relative mb-10 md:mb-16"> {# Increased bottom margin with Tailwind scale #}
     {% if page.hero_image %}
       {% image page.hero_image fill-1200x400 as hero_img %}
+      {# Use Tailwind classes for image display #}
       <img
         src="{{ hero_img.url }}"
-        class="img-fluid w-100"
+        class="w-full h-auto max-h-[400px] object-cover block" {# Ensure image is block, cover area #}
         alt="{{ hero_img.alt }}"
-        style="object-fit: cover; max-height: 400px;"
       />
     {% endif %}
     {% if page.hero_quote %}
+      {# Positioning with Tailwind: absolute, top-1/2, left-1/2, translate-x/y #}
       <div
-        class="position-absolute top-50 start-50 translate-middle p-3 text-white bg-dark bg-opacity-50"
-        style="max-width: 400px;"
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 md:p-6 text-white bg-black bg-opacity-60 max-w-md rounded-lg shadow-lg" {# Adjusted padding, opacity, max-width, added rounded/shadow #}
       >
-        <blockquote class="blockquote">
+        {# Style blockquote with Tailwind #}
+        <blockquote class="text-lg md:text-xl italic">
           {{ page.hero_quote }}
         </blockquote>
       </div>
     {% endif %}
   </div>
 
-  <!-- Intro Body -->
-  <div class="mb-5">
+  {# Add prose class for nice typography defaults on StreamField content if desired #}
+  <div class="prose max-w-none mb-10 md:mb-16"> {# `prose` adds typography styles, `max-w-none` overrides its width limit if needed #}
+    {% comment %}
+       NOTE: The 'prose' class from @tailwindcss/typography (needs plugin install: npm install -D @tailwindcss/typography)
+       is great for styling HTML coming from RichTextBlocks.
+       If not using prose, style paragraphs/headings within the loop or via StreamField templates.
+    {% endcomment %}
     {% for block in page.intro_body %}
-    <div class="mb-3">
-      {{ block.value }}
-    </div>
+      <div class="mb-4"> {# Basic spacing between blocks #}
+        {% include_block block %} {# Assumes block templates will use Tailwind classes #}
+      </div>
     {% endfor %}
   </div>
 
-  <!-- Featured Activities -->
-  <div class="row">
+  {# Replace Bootstrap row/col with Tailwind Grid #}
+  <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">Featured Activities</h2> {# Added a heading #}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"> {# Responsive grid with gaps #}
     {% for activity_ref in page.get_featured_activities %}
       {% if activity_ref %}
-        <div class="col-md-4 mb-4">
-          <div class="card h-100" style="background-color: #f7f7f3;">
-            {% if activity_ref.main_image %}
-              {% image activity_ref.main_image fill-300x200 as activity_img %}
+        {# Use DaisyUI Card component #}
+        <div class="card bg-base-200 shadow-xl h-full"> {# Use DaisyUI card classes, adjusted background, added shadow, ensure full height #}
+          {% if activity_ref.main_image %}
+            <figure> {# DaisyUI card figure element #}
+              {% image activity_ref.main_image fill-600x400 as activity_img %} {# Increased size slightly #}
+              {# No extra classes usually needed on img within <figure> for DaisyUI cards #}
               <img
                 src="{{ activity_img.url }}"
-                class="card-img-top"
                 alt="{{ activity_img.alt }}"
               />
-            {% endif %}
-            <div class="card-body h-100 d-flex flex-column">
-              <h5 class="card-title">{{ activity_ref.title }}</h5>
-              <div class="card-text mb-3">
-                {{ activity_ref.intro }}
-              </div>
-              <a href="{{ activity_ref.url }}" class="btn btn-primary mt-auto">Read More</a>
+            </figure>
+          {% endif %}
+          {# Use flex-col to allow mt-auto on button parent #}
+          <div class="card-body flex flex-col">
+            <h2 class="card-title">{{ activity_ref.title }}</h2>
+            <p class="text-base-content text-opacity-80 mb-4">{{ activity_ref.intro }}</p> {# Use theme text color with opacity #}
+            {# card-actions pushes content (button) to the end #}
+            <div class="card-actions justify-end mt-auto"> {# mt-auto pushes button block down #}
+              <a href="{{ activity_ref.url }}" class="btn btn-primary mt-auto no-underline text-primary-content">Read More</a> {# DaisyUI button #}
             </div>
           </div>
         </div>
       {% endif %}
+    {% empty %} {# Added empty case #}
+       <p class="col-span-full text-center text-gray-500">No featured activities available.</p>
     {% endfor %}
   </div>
 {% endblock content %}

@@ -1,33 +1,44 @@
+{% comment %} dupr/dupr/templates/base.html {% endcomment %}
 {% load static %}
 {% load wagtailcore_tags %}
 {% load wagtailuserbar %}
 <!DOCTYPE html>
-<html lang="en">
+{# Add data-theme for DaisyUI - choose your default theme e.g., "light", "cupcake", etc. #}
+{# You can configure available themes in tailwind.config.js #}
+<html lang="en" data-theme="matthijs">
   <head>
     <meta charset="UTF-8" />
     <title>{% block title %}My Wagtail Site{% endblock %}</title>
-    <!-- Example: Bootstrap via CDN -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dupr.css' %}">
-    <style>
-      /* Example color usage based on your design (#ab0032, #f7f7f3, etc.) */
+    {# Viewport meta is essential for responsiveness #}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    </style>
+    {# Link the generated Tailwind/DaisyUI CSS #}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tailwind_output.css' %}">
+
+    {# Keep your custom CSS for overrides if needed, load AFTER Tailwind #}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dupr.css' %}">
+
+    {# Block for extra head elements (e.g., page-specific CSS/meta) #}
+    {% block extra_head %}{% endblock extra_head %}
+
   </head>
-  <body>
+  {# Apply base background/text colors if desired - these often come from DaisyUI themes #}
+  {# Or add classes like `bg-base-100 text-base-content` if using DaisyUI extensively #}
+  <body class="flex flex-col min-h-screen"> {# Use flex to push footer down #}
     {% wagtailuserbar %}
+
     {% include "includes/header.html" %}
 
-    <main class="container my-4">
+    {# Main content area - Use flex-grow to take available space #}
+    {# Add some padding, max-width and center it #}
+    <main class="flex-grow w-full max-w-screen-xl mx-auto p-4 md:p-6 lg:p-8">
       {% block content %}{% endblock content %}
     </main>
 
     {% include "includes/footer.html" %}
 
-    <!-- Bootstrap JS (for navbar toggler, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {# Block for extra JS (e.g., page-specific JS, Vue CDN if using) #}
+    {% block extra_js %}{% endblock extra_js %}
+
   </body>
 </html>

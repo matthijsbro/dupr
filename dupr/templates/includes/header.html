@@ -1,34 +1,60 @@
-    <!-- Example: Basic Bootstrap navbar -->
-    {% load wagtailcore_tags navigation_tags %}
-    {% get_site_root as site_root %}
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <div class="container">
-          <a class="navbar-brand" href="{% url 'wagtailadmin_home' %}">My Wagtail Site</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    {# Check if the current request path is the exact URL of the site root for active class #}
-                    <a class="nav-link{% if request.path == site_root.url %} active{% endif %}" href="{% pageurl site_root %}">Home</a>
+{% load wagtailcore_tags navigation_tags %}
+{% get_site_root as site_root %}
+
+{# DaisyUI Navbar component #}
+{# Use bg-base-100 for theme-aware background, add shadow, adjust padding #}
+<div class="navbar bg-base-100 shadow-md px-4 md:px-6 lg:px-8">
+    <div class="navbar-start">
+        {# Dropdown for mobile navigation #}
+        <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+                {# Hamburger icon SVG #}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+            {# Mobile Menu links - theme-aware background/text #}
+            <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                {# Home link for mobile #}
+                <li>
+                    <a href="{% pageurl site_root %}" class="text-primary {% if request.path == site_root.url %}active{% endif %}">Home</a>
                 </li>
+                {# Main menu items for mobile #}
                 {% for menuitem in site_root.get_children.live.in_menu %}
-                  <li class="nav-item">
-                    <a class="nav-link{% if request.path != '/' and menuitem.url != '/' and request.path|slice:menuitem.url|length >= menuitem.url|length and request.path|slice:menuitem.url == menuitem.url %} active{% elif request.path == '/' and menuitem.url == '/' %} active{% endif %}" href="{% pageurl menuitem %}">
+                    <li>
+                        {# Applying same active logic - can simplify if needed #}
+                        <a class="text-primary {% if request.path != '/' and menuitem.url != '/' and request.path|slice:menuitem.url|length >= menuitem.url|length and request.path|slice:menuitem.url == menuitem.url %}active{% elif request.path == '/' and menuitem.url == '/' %}active{% endif %}"
+                           href="{% pageurl menuitem %}">
+                            {{ menuitem.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+                {# Add other mobile links here if needed (e.g., Login/Logout from footer?) #}
+            </ul>
+        </div>
+        {# Site Brand/Title - linked to home #}
+        <a href="{% pageurl site_root %}" class="btn btn-ghost text-xl normal-case">My Wagtail Site</a> {# Use text-xl for size #}
+    </div>
+
+    {# Desktop Menu - Centered, hidden on small screens #}
+    <div class="navbar-center hidden lg:flex">
+        <ul class="menu menu-horizontal px-1">
+             {# Home link for desktop #}
+            <li>
+                 <a href="{% pageurl site_root %}" class="text-primary {% if request.path == site_root.url %}active{% endif %}">Home</a>
+            </li>
+             {# Main menu items for desktop #}
+            {% for menuitem in site_root.get_children.live.in_menu %}
+                <li>
+                    <a class="text-primary {%if request.path != '/' and menuitem.url != '/' and request.path|slice:menuitem.url|length >= menuitem.url|length and request.path|slice:menuitem.url == menuitem.url %}active{% elif request.path == '/' and menuitem.url == '/' %}active{% endif %}"
+                       href="{% pageurl menuitem %}">
                         {{ menuitem.title }}
                     </a>
-                  </li>
-                {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </nav>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {# Navbar End section - placeholder for future items like search or user profile dropdown #}
+    <div class="navbar-end">
+        {# Example: <button class="btn btn-ghost btn-circle"><svg>...</svg></button> #}
+    </div>
+</div>

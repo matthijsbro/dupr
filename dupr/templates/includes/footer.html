@@ -1,58 +1,57 @@
-{# footer.html #}
-<footer class="container">
-    <div class="row">
-        {# Column 1: Social Media Links #}
-        <div class="col-md-4">
-            <h5>Follow Rinpoche</h5>
-            {% with facebook_url=settings.base.NavigationSettings.facebook_url youtube_url=settings.base.NavigationSettings.youtube_url %}
-                {% if facebook_url or youtube_url %}
-                    <p>
-                        {% if facebook_url %}
-                            <a href="{{ facebook_url }}" class="me-2">Facebook</a>
-                        {% endif %}
-                        {% if youtube_url %}
-                            <a href="{{ youtube_url }}">YouTube</a>
-                        {% endif %}
-                    </p>
-                {% endif %}
-            {% endwith %}
-        </div>
-        {# Column 2: Menu Links (Placeholder) #}
-        <div class="col-md-4">
-            <h5>Quick Links</h5>
-            {% comment %} Menu links will go here later {% endcomment %}
-            <ul class="list-unstyled">
-                {# <li><a href="#">Link 1</a></li> #}
-                {# <li><a href="#">Link 2</a></li> #}
-                {# <li><a href="#">Link 3</a></li> #}
-            </ul>
-        </div>
+{% load i18n %}
 
-        {# Column 3: Login Fields #}
-        <div class="col-md-4">
-            <h5>User Login</h5>
-            {% load i18n %}
-            {% if user.is_authenticated %}
-                <div class="d-flex flex-column align-items-start">
-                    <form method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">
-                            {% translate "Log out" %}
-                        </button>
-                    </form>
+{# Use DaisyUI Footer component - adjust background/text colors as needed #}
+<footer class="footer p-10 bg-neutral text-base-content grid grid-cols-1 md:grid-cols-3 gap-8"> {# Example: Dark theme footer #}
+    {# Or use bg-base-200, bg-base-300 etc. for theme-based backgrounds #}
+    <nav> 
+        <h6 class="footer-title">Follow Rinpoche</h6> {# DaisyUI footer title class #}
+        {% with facebook_url=settings.base.NavigationSettings.facebook_url youtube_url=settings.base.NavigationSettings.youtube_url %}
+            {% if facebook_url or youtube_url %}
+                <div class="flex space-x-4"> {# Use flex and Tailwind spacing for links #}
+                    {% if facebook_url %}
+                        <a href="{{ facebook_url }}" class="link link-hover">Facebook</a> {# DaisyUI link class #}
+                    {% endif %}
+                    {% if youtube_url %}
+                        <a href="{{ youtube_url }}" class="link link-hover">YouTube</a> {# DaisyUI link class #}
+                    {% endif %}
                 </div>
             {% else %}
-                <div class="d-flex flex-column align-items-start">
-                    <a class="btn btn-primary" href="{% url 'login' %}?next={{ request.path }}">
-                        {% translate "Log In" %}
-                    </a>
-                </div>
+                 <p class="text-sm opacity-70">No social links set.</p>
             {% endif %}
-        </div>
-    </div>
-    <div class="row mt-3">
-        <div class="col text-center">
-            <p>© 2025 All rights reserved.</p>
-        </div>
-    </div>
+        {% endwith %}
+    </nav>
+    <nav>
+        <h6 class="footer-title">Quick Links</h6>
+        {# Add actual links here later using DaisyUI 'link link-hover' class #}
+        <a class="link link-hover">Link 1 (Placeholder)</a>
+        <a class="link link-hover">Link 2 (Placeholder)</a>
+        <a class="link link-hover">Link 3 (Placeholder)</a>
+    </nav>
+    <nav>
+        <h6 class="footer-title">User Account</h6>
+        {% if user.is_authenticated %}
+            {# Use flex-col and gap for layout if needed #}
+            <div class="flex flex-col items-start gap-2">
+                <span class="text-sm opacity-80">Welcome, {{ user.username }}!</span> {# Optional welcome message #}
+                <form method="post" action="{% url 'logout' %}" class="w-full">
+                    {% csrf_token %}
+                    {# DaisyUI button #}
+                    <button type="submit" class="btn btn-sm btn-primary w-full">
+                        {% translate "Log out" %}
+                    </button>
+                </form>
+            </div>
+        {% else %}
+             {# DaisyUI button #}
+            <a class="btn btn-primary" href="{% url 'login' %}?next={{ request.path }}">
+                {% translate "Log In" %}
+            </a>
+        {% endif %}
+    </nav>
+</footer>
+{# Optional: Add a separate bottom copyright bar if desired #}
+<footer class="footer footer-center p-4 bg-base-300 text-base-content">
+    <aside>
+        <p>© {% now "Y" %} All rights reserved.</p> {# Use Django's now tag for current year #}
+    </aside>
 </footer>
