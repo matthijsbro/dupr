@@ -21,3 +21,6 @@ venv
 /.vagrant/
 /Vagrantfile.local
 !.gitignore
+node_modules/*
+postgresdata/*
+data.json
