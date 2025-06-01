@@ -18,8 +18,8 @@
         }
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             line-height: 1.5;
-             padding-left: 0; /* Adjust as needed */
-             padding-right: 0; /* Adjust as needed */
+            padding-left: 0; /* Adjust as needed */
+            padding-right: 0; /* Adjust as needed */
         }
         .select2-container--default .select2-selection--single .select2-selection__arrow {
             height: calc(1.5em + .75rem);
@@ -66,8 +66,8 @@
                 </div>
             </div>
 
-             {# --- ADD THIS CARD --- #}
-             {# Add Predefined Activity Card #}
+            {# --- ADD THIS CARD --- #}
+            {# Add Predefined Activity Card #}
             <div class="card shadow-sm mb-4">
                 <div class="card-header"><h4>{% translate "Add Predefined Activity to Track" %}</h4></div>
                 <div class="card-body">
@@ -87,7 +87,7 @@
                                     </div>
                                 {% endif %}
                             </div>
-                             <button type="submit" class="btn btn-success">{% translate "Start Tracking Selected" %}</button>
+                            <button type="submit" class="btn btn-success">{% translate "Start Tracking Selected" %}</button>
                         </form>
                     {% else %}
                         <p class="text-muted">{% translate "All available predefined activities are already being tracked or none are defined." %}</p>
@@ -95,40 +95,19 @@
                 </div>
             </div>
             {# --- END ADD CARD --- #}
-
-
-            {# Add Custom Activity Card (Existing) #}
-            <div class="card shadow-sm">
-                <div class="card-header"><h4>{% translate "Add Custom Activity to Track" %}</h4></div>
-                <div class="card-body">
-                     <form method="post" action="{% url 'tracker:useractivity-add' %}">
-                         {% csrf_token %}
-                         {# Render user_activity_create_form fields (keep existing logic) #}
-                         {% for field in user_activity_create_form %}
-                             <div class="mb-3">
-                                 <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                 {{ field }}
-                                 {% if field.help_text %}<div class="form-text">{{ field.help_text|safe }}</div>{% endif %}
-                                 {% if field.errors %}<div class="invalid-feedback d-block">{% for error in field.errors %}{{ error }}{% endfor %}</div>{% endif %}
-                             </div>
-                         {% endfor %}
-                         <button type="submit" class="btn btn-secondary">{% translate "Add Custom Activity" %}</button>
-                     </form>
-                </div>
-            </div>
         </div>
 
 
         {# Section 2: Summaries & Recent Entries Column #}
         <div class="col-lg-6"> {# Adjust grid size as needed #}
-             {# Activity Summaries Card (Keep existing logic) #}
-             <div class="card shadow-sm mb-4">
-                 <div class="card-header"><h4>{% translate "Activity Summaries" %}</h4></div>
-                 <div class="card-body">
-                     {# ... existing summary loop ... #}
-                     {% if activity_totals %}
-                         <ul class="list-group list-group-flush">
-                             {% for activity in activity_totals %}
+            {# Activity Summaries Card (Keep existing logic) #}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header"><h4>{% translate "Activity Summaries" %}</h4></div>
+                <div class="card-body">
+                    {# ... existing summary loop ... #}
+                    {% if activity_totals %}
+                        <ul class="list-group list-group-flush">
+                            {% for activity in activity_totals %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <span>
                                         <strong>{{ activity.get_display_name }}</strong>
@@ -136,7 +115,7 @@
                                     </span>
                                     <span>
                                         {# ... rendering logic ... #}
-                                         {% if activity.total_calculated is not None %} {# Check for None #}
+                                        {% if activity.total_calculated is not None %} {# Check for None #}
                                             {{ activity.total_calculated|floatformat:"-2" }} {# Use -2 to avoid .00 #}
                                             {% if activity.get_unit_multiplier != 1 %}
                                                 <small>({{ activity.total_quantity|floatformat:"-2" }} {{ activity.get_unit_name }})</small>
@@ -151,12 +130,12 @@
                     {% else %}
                         <p>{% translate "You are not currently tracking any activities." %}</p>
                     {% endif %}
-                 </div>
-             </div>
+                </div>
+            </div>
 
             {# Recent Entries Card (Keep existing logic) #}
             <div class="card shadow-sm">
-                 <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>{% translate "Recent Entries" %}</h4>
                     <a href="{% url 'tracker:logentry-history' %}" class="btn btn-sm btn-outline-secondary">{% translate "View All History" %}</a>
                 </div>
@@ -165,13 +144,13 @@
                     {% if recent_entries %}
                     <div class="table-responsive">
                         <table class="table table-sm table-striped table-hover">
-                           <thead></thead>
-                           <tbody>
+                            <thead></thead>
+                            <tbody>
                             {% for entry in recent_entries %}
                                 <tr>
                                     <td>{{ entry.user_activity.get_display_name }}</td>
                                     <td>{{ entry.entry_date|date:"Y-m-d" }}</td>
-                                     {# Adjust formatting for decimal #}
+                                    {# Adjust formatting for decimal #}
                                     <td>{{ entry.quantity_submitted|floatformat:"-2" }} {{ entry.user_activity.get_unit_name }}</td>
                                     <td>{# Actions... #}</td>
                                 </tr>
@@ -180,7 +159,7 @@
                         </table>
                     </div>
                     {% else %}
-                         <p>{% translate "No log entries found." %}</p>
+                        <p>{% translate "No log entries found." %}</p>
                     {% endif %}
                 </div>
             </div>

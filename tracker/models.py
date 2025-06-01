@@ -20,17 +20,13 @@ class ActivityType(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True, help_text=_("A unique identifier used in URLs and code."))
     description = models.TextField(blank=True)
-    # Optional: Add a field to control if users can create custom activities under this type
-    allow_user_defined_activities = models.BooleanField(
-        default=True, # e.g., allow for 'Accumulations'
-        help_text=_("Can users add their own named activities within this type?")
-    )
+    # Removed: allow_user_defined_activities field
 
     panels = [
         FieldPanel('name'),
         FieldPanel('slug'),
         FieldPanel('description'),
-        FieldPanel('allow_user_defined_activities'),
+        # Removed: FieldPanel('allow_user_defined_activities'),
     ]
 
     def __str__(self):
@@ -106,12 +102,13 @@ class UserActivity(models.Model):
         related_name='user_trackers',
         verbose_name=_("Predefined Activity")
     )
-    # OR User provides a custom name if definition is null
-    custom_name = models.CharField(
-        max_length=255,
-        blank=True,
-        verbose_name=_("Custom Activity Name")
-    )
+    # Removed: custom_name field
+    # custom_name = models.CharField(
+    #     max_length=255,
+    #     blank=True,
+    #     verbose_name=_("Custom Activity Name")
+    # )
+    
     # Must know the type, especially if definition is null
     activity_type = models.ForeignKey(
         ActivityType,
@@ -124,36 +121,30 @@ class UserActivity(models.Model):
 
     # Ensure either definition is set OR (custom_name AND activity_type allows user defined)
     def clean(self):
-        if self.definition and self.custom_name:
-            raise ValidationError(_("Cannot have both a predefined activity and a custom name."))
-        if not self.definition and not self.custom_name:
-            raise ValidationError(_("Must either select a predefined activity or provide a custom name."))
-        if not self.definition and self.custom_name and not self.activity_type.allow_user_defined_activities:
-             raise ValidationError(_("This activity type does not allow custom user activities."))
+        if not self.definition:
+            # Now that custom_name is removed, a UserActivity MUST have a definition
+            raise ValidationError(_("A User Activity must be linked to a predefined activity."))
         # If definition is set, ensure activity_type matches definition's type
         if self.definition and self.definition.activity_type != self.activity_type:
             raise ValidationError(_("Activity type must match the predefined activity's type."))
 
     def get_display_name(self):
-        return self.definition.name if self.definition else self.custom_name
+        # Now relies solely on definition.name
+        if self.definition:
+            return self.definition.name
+        return _("N/A (Error: No definition)") # Should not happen if clean() works
 
     def get_unit_name(self):
-        # Default for accumulations is 'malas' if not predefined? Needs logic based on type.
-        # Start simple: Prefer definition, fallback maybe needed later.
+        # Now relies solely on definition.unit_name
         if self.definition:
             return self.definition.unit_name
-        # For 'accumulations' type, default custom to 'malas'
-        if self.activity_type.slug == 'accumulations':
-             return _("malas")
-        return _("quantity") # Generic fallback
+        return _("quantity") # Fallback, though should not be needed
 
     def get_unit_multiplier(self):
+        # Now relies solely on definition.unit_multiplier
         if self.definition:
             return self.definition.unit_multiplier
-        # For 'accumulations' type, default custom to 108
-        if self.activity_type.slug == 'accumulations':
-             return 108
-        return 1 # Default fallback
+        return 1 # Fallback, though should not be needed
 
     def __str__(self):
         return f"{self.user.username} - {self.get_display_name()}"
@@ -162,8 +153,8 @@ class UserActivity(models.Model):
         verbose_name = _("User Tracked Activity")
         verbose_name_plural = _("User Tracked Activities")
         # Prevent user from tracking the exact same predefined activity twice
-        unique_together = [['user', 'definition'], ['user', 'activity_type', 'custom_name']]
-        ordering = ['user', 'activity_type', 'definition__name', 'custom_name']
+        unique_together = [['user', 'definition']] # Removed custom_name from unique_together
+        ordering = ['user', 'activity_type', 'definition__name'] # Removed custom_name from ordering
 
 
 class LogEntry(models.Model):

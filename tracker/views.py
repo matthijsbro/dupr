@@ -13,7 +13,7 @@ from django.views import View # Import generic View
 from django.http import HttpResponseRedirect
 
 from .models import LogEntry, UserActivity, ActivityDefinition, ActivityType
-from .forms import LogEntryForm, UserActivityCreateForm, PredefinedActivitySelectForm
+from .forms import LogEntryForm, PredefinedActivitySelectForm # Removed UserActivityCreateForm
 
 # --- Mixin for Ownership Check ---
 
@@ -50,7 +50,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         activity_totals = user_activities.annotate(
             total_quantity=Sum('log_entries__quantity_submitted'),
             total_calculated=Sum('log_entries__calculated_total')
-        ).order_by('activity_type__name', 'definition__name', 'custom_name')
+        ).order_by('activity_type__name', 'definition__name') # Removed 'custom_name'
 
         # Get recent log entries
         recent_entries = LogEntry.objects.filter(
@@ -63,8 +63,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         # Prepare forms
         log_entry_form = LogEntryForm(user=user) # Pass user to filter activity choices
-        user_activity_create_form = UserActivityCreateForm()
- # Filter out definitions the user ALREADY tracks
+        # user_activity_create_form = UserActivityCreateForm() # Removed
+        # Filter out definitions the user ALREADY tracks
         tracked_definition_ids = user_activities.filter(definition__isnull=False).values_list('definition_id', flat=True)
         predefined_activity_select_form = PredefinedActivitySelectForm()
         predefined_activity_select_form.fields['definition'].queryset = ActivityDefinition.objects.filter(
@@ -76,7 +76,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['activity_totals'] = activity_totals
         context['recent_entries'] = recent_entries
         context['log_entry_form'] = log_entry_form
-        context['user_activity_create_form'] = user_activity_create_form
+        # context['user_activity_create_form'] = user_activity_create_form # Removed
         context['predefined_activity_select_form'] = predefined_activity_select_form
         context['tracked_activities'] = user_activities # List of activities user is tracking
 
@@ -197,54 +197,6 @@ class LogEntryHistoryView(LoginRequiredMixin, ListView):
         context['page_title'] = "Log Entry History"
         return context
 
-# --- Views for Managing User Activities ---
-
-class UserActivityCreateView(LoginRequiredMixin, FormView):
-    """
-    Allows users to add a new custom activity to their tracking list.
-    """
-    form_class = UserActivityCreateForm
-    template_name = 'tracker/useractivity_form.html' # Dedicated form template
-    success_url = reverse_lazy('tracker:dashboard')
-
-    def form_valid(self, form):
-        """Create the UserActivity instance."""
-        activity_type = form.cleaned_data['activity_type']
-        custom_name = form.cleaned_data['custom_name']
-        user = self.request.user
-
-        try:
-            # Create the UserActivity
-            UserActivity.objects.create(
-                user=user,
-                activity_type=activity_type,
-                custom_name=custom_name,
-                # definition will be None
-                is_active=True
-            )
-            messages.success(self.request, f"Activity '{custom_name}' added to your tracking list.")
-        except IntegrityError:
-            # This happens if unique_together constraint fails
-            messages.error(self.request, f"You are already tracking an activity named '{custom_name}' of type '{activity_type.name}'.")
-            # Return the form with the error instead of redirecting
-            return super().form_invalid(form)
-        except Exception as e:
-            # Catch other potential errors during creation
-            messages.error(self.request, f"An unexpected error occurred: {e}")
-            return super().form_invalid(form)
-
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Please correct the errors below.")
-        return super().form_invalid(form)
-
-    def get_context_data(self, **kwargs):
-        """Add extra context if needed, e.g., page title."""
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = "Add Custom Activity to Track"
-        return context
-
 # --- View for Adding Predefined Activities ---
 class UserActivityAddPredefinedView(LoginRequiredMixin, View):
     """Handles the POST request to add a predefined activity."""
@@ -271,7 +223,7 @@ class UserActivityAddPredefinedView(LoginRequiredMixin, View):
             except IntegrityError:
                 messages.warning(request, f"You are already tracking '{definition.name}'.")
             except Exception as e:
-                 messages.error(request, f"An unexpected error occurred: {e}")
+                messages.error(request, f"An unexpected error occurred: {e}")
 
         else:
             # If form is invalid (e.g., user manipulated POST data)

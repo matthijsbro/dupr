@@ -38,27 +38,6 @@ class LogEntryForm(forms.ModelForm):
         self.fields['quantity_submitted'].label = _("Quantity")
         self.fields['entry_date'].label = _("Date")
 
-
-class UserActivityCreateForm(forms.Form):
-    """Form for user to add a new activity to their tracking list."""
-    activity_type = forms.ModelChoiceField(
-        queryset=ActivityType.objects.filter(allow_user_defined_activities=True), # Only types allowing user activities
-        label=_("Activity Type"),
-        required=True
-        )
-    custom_name = forms.CharField(
-        max_length=255,
-        label=_("Name Your Activity"),
-        help_text=_("Provide a name for the activity you want to track.")
-        )
-
-    # Optional: Add field to select from predefined activities as well?
-    # definition = forms.ModelChoiceField(
-    #     queryset=ActivityDefinition.objects.filter(is_active=True),
-    #     required=False, label=_("Or choose predefined")
-    # )
-
-
 class PredefinedActivitySelectForm(forms.Form):
     """Form for selecting a predefined activity to start tracking."""
     definition = forms.ModelChoiceField(

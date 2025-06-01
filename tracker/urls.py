@@ -16,7 +16,6 @@ urlpatterns = [
     path('history/', views.LogEntryHistoryView.as_view(), name='logentry-history'),
 
     # User Activity Views (for users adding activities they track)
-    path('activities/add/', views.UserActivityCreateView.as_view(), name='useractivity-add'),
     path('activities/add_predefined/', views.UserActivityAddPredefinedView.as_view(), name='useractivity-add-predefined'),
 
     # Future paths for listing/managing UserActivity could go here, e.g.:
