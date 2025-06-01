@@ -12,57 +12,71 @@
                     <h3>{{ page_title|default:_("Log Entry") }}</h3>
                 </div>
                 <div class="card-body">
-                    {# Display Django Messages #}
                     {% if messages %}
                         {% for message in messages %}
                             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                                 {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> #}
                             </div>
                         {% endfor %}
                     {% endif %}
 
-                    <form method="post"> {# Action URL is handled by the view #}
+                    <form method="post">
                         {% csrf_token %}
 
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger">
-                                {% for error in form.non_field_errors %}
-                                    {{ error }}
-                                {% endfor %}
+                                {% for error in form.non_field_errors %}{{ error }}{% endfor %}
                             </div>
                         {% endif %}
 
-                        {% for field in form %}
-                            <div class="mb-3">
-                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                <input type="{{ field.field.widget.input_type }}"
-                                       name="{{ field.name }}"
-                                       id="{{ field.id_for_label }}"
-                                       value="{{ field.value|default_if_none:'' }}"
-                                       class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                       {% if field.field.required %}required{% endif %}
-                                       {% if field.field.widget.attrs.placeholder %}placeholder="{{ field.field.widget.attrs.placeholder }}"{% endif %}>
-                                {# Basic rendering, assumes standard input types. For select/textarea use {{ field }} #}
-                                {# A more robust solution might use django-widget-tweaks or django-crispy-forms #}
-                                {# Or render specific widgets differently: #}
-                                {# {% if field.widget_type == 'select' %} ... {% elif field.widget_type == 'textarea' %} ... {% endif %} #}
-                                {# Using {{ field }} for simplicity below where specific input type is less certain #}
-                                {# {{ field }} #}
-
-                                {% if field.help_text %}
-                                    <div class="form-text">{{ field.help_text|safe }}</div>
-                                {% endif %}
-                                {% if field.errors %}
-                                    <div class="invalid-feedback">
-                                        {% for error in field.errors %}{{ error }}{% endfor %}
-                                    </div>
-                                {% endif %}
+                        {# Specific rendering for user_activity to enable Select2 if needed on this page too #}
+                        <div class="mb-3">
+                            <label for="{{ form.user_activity.id_for_label }}" class="form-label">{{ form.user_activity.label }}</label>
+                            {{ form.user_activity }}
+                            {% if form.user_activity.help_text %}<div class="form-text text-muted small">{{ form.user_activity.help_text|safe }}</div>{% endif %}
+                            {% if form.user_activity.errors %}<div class="invalid-feedback d-block">{% for error in form.user_activity.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="{{ form.malas_submitted.id_for_label }}" class="form-label">{{ form.malas_submitted.label }}</label>
+                                {{ form.malas_submitted }}
+                                {% if form.malas_submitted.help_text %}<div class="form-text text-muted small">{{ form.malas_submitted.help_text|safe }}</div>{% endif %}
+                                {% if form.malas_submitted.errors %}<div class="invalid-feedback d-block">{% for error in form.malas_submitted.errors %}{{ error }}{% endfor %}</div>{% endif %}
                             </div>
-                        {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.time_submitted_hours.id_for_label }}" class="form-label">{{ form.time_submitted_hours.label }}</label>
+                                {{ form.time_submitted_hours }}
+                                {% if form.time_submitted_hours.help_text %}<div class="form-text text-muted small">{{ form.time_submitted_hours.help_text|safe }}</div>{% endif %}
+                                {% if form.time_submitted_hours.errors %}<div class="invalid-feedback d-block">{% for error in form.time_submitted_hours.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.time_submitted_minutes.id_for_label }}" class="form-label">{{ form.time_submitted_minutes.label }}</label>
+                                {{ form.time_submitted_minutes }}
+                                {% if form.time_submitted_minutes.help_text %}<div class="form-text text-muted small">{{ form.time_submitted_minutes.help_text|safe }}</div>{% endif %}
+                                {% if form.time_submitted_minutes.errors %}<div class="invalid-feedback d-block">{% for error in form.time_submitted_minutes.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.entry_date.id_for_label }}" class="form-label">{{ form.entry_date.label }}</label>
+                            {{ form.entry_date }}
+                            {% if form.entry_date.help_text %}<div class="form-text text-muted small">{{ form.entry_date.help_text|safe }}</div>{% endif %}
+                            {% if form.entry_date.errors %}<div class="invalid-feedback d-block">{% for error in form.entry_date.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.notes.id_for_label }}" class="form-label">{{ form.notes.label }}</label>
+                            {{ form.notes }}
+                            {% if form.notes.help_text %}<div class="form-text text-muted small">{{ form.notes.help_text|safe }}</div>{% endif %}
+                            {% if form.notes.errors %}<div class="invalid-feedback d-block">{% for error in form.notes.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                        </div>
 
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{% url 'tracker:dashboard' %}" class="btn btn-outline-secondary">{% translate "Cancel" %}</a>
+                            <a href="{% if object %}{% url 'tracker:logentry-history' %}{% else %}{% url 'tracker:dashboard' %}{% endif %}" class="btn btn-outline-secondary">{% translate "Cancel" %}</a>
                             <button type="submit" class="btn btn-primary">{% translate "Save Entry" %}</button>
                         </div>
                     </form>
@@ -72,3 +86,18 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+    {# Include jQuery and Select2 if this page is used for editing an existing entry #}
+    {# and you want the UserActivity field to be a Select2 dropdown. #}
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#{{ form.user_activity.id_for_label }}').select2({
+                placeholder: "{% translate 'Select practice...' %}",
+                allowClear: true
+            });
+        });
+    </script>
+{% endblock %}

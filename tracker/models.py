@@ -4,89 +4,58 @@ from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-from modelcluster.models import ClusterableModel # If using ParentalKey below, otherwise not needed now
 from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 
 # --- Admin Managed Definitions (Snippets) ---
 
 @register_snippet
-class ActivityType(models.Model):
+class PracticeDefinition(models.Model):
     """
-    Broad categories for activities (e.g., 'Accumulations', 'Daily Habits').
+    Specific practices predefined by Admins (e.g., 'Chenrezig Mantra').
     Managed by Admins via Snippets UI.
     """
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True, help_text=_("A unique identifier used in URLs and code."))
-    description = models.TextField(blank=True)
-    # Removed: allow_user_defined_activities field
-
-    panels = [
-        FieldPanel('name'),
-        FieldPanel('slug'),
-        FieldPanel('description'),
-        # Removed: FieldPanel('allow_user_defined_activities'),
+    PRACTICE_TYPE_CHOICES = [
+        ('collective_accumulation', _('Collective Accumulation')),
+        ('practice', _('Practice')),
     ]
 
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _("Activity Type")
-        verbose_name_plural = _("Activity Types")
-        ordering = ['name']
-
-@register_snippet
-class ActivityDefinition(models.Model):
-    """
-    Specific activities predefined by Admins (e.g., 'Chenrezig Mantra').
-    Managed by Admins via Snippets UI.
-    """
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True, help_text=_("A unique identifier used in URLs and code."))
-    activity_type = models.ForeignKey(
-        ActivityType,
-        on_delete=models.PROTECT, # Prevent deleting a type if activities use it
-        related_name='activity_definitions'
-    )
-    unit_name = models.CharField(
+    practice_type = models.CharField(
         max_length=50,
-        default="repetitions", # Flexible default
-        help_text=_("The name of the unit being counted (e.g., 'malas', 'mantras', 'minutes', 'sessions').")
+        choices=PRACTICE_TYPE_CHOICES,
+        default='practice',
+        help_text=_("The type of practice.")
     )
-    unit_multiplier = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=1.00,
-        help_text=_("Factor to convert submitted quantity to a base value (e.g., 108 for malas converting to mantras). Use 1 if no conversion needed.")
-    )
-    is_active = models.BooleanField(default=True, help_text=_("Uncheck to hide this from users selecting new activities."))
+    description = models.TextField(blank=True, help_text=_("Optional description of the practice."))
+    is_active = models.BooleanField(default=True, help_text=_("Uncheck to hide this from users selecting new practices."))
 
     panels = [
         FieldPanel('name'),
         FieldPanel('slug'),
-        FieldPanel('activity_type'),
-        FieldPanel('unit_name'),
-        FieldPanel('unit_multiplier'),
+        FieldPanel('practice_type'),
+        FieldPanel('description'),
         FieldPanel('is_active'),
     ]
 
     def __str__(self):
-        return f"{self.name} ({self.activity_type.name})"
+        return f"{self.name} ({self.get_practice_type_display()})"
 
     class Meta:
-        verbose_name = _("Predefined Activity")
-        verbose_name_plural = _("Predefined Activities")
-        ordering = ['activity_type', 'name']
+        verbose_name = _("Practice Definition")
+        verbose_name_plural = _("Practice Definitions")
+        ordering = ['practice_type', 'name']
 
 
 # --- User Specific Data (Standard Django Models) ---
 
 class UserActivity(models.Model):
     """
-    Represents an activity a specific user is tracking.
-    Can link to a Predefined Activity OR be a custom one defined by the user.
+    Represents a practice a specific user is tracking.
+    Links to a PracticeDefinition.
     """
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -94,118 +63,130 @@ class UserActivity(models.Model):
         related_name='tracked_activities',
         verbose_name=_("User")
     )
-    # Link to an admin-defined activity (optional)
     definition = models.ForeignKey(
-        ActivityDefinition,
-        on_delete=models.SET_NULL, # Keep tracking even if admin deletes definition? Or PROTECT? Discuss. SET_NULL allows history retention.
-        null=True, blank=True,
+        PracticeDefinition,
+        on_delete=models.CASCADE, # If admin deletes a practice, remove user's tracking of it.
+                                  # Consider PROTECT if you want to prevent deletion if users track it.
         related_name='user_trackers',
-        verbose_name=_("Predefined Activity")
-    )
-    # Removed: custom_name field
-    # custom_name = models.CharField(
-    #     max_length=255,
-    #     blank=True,
-    #     verbose_name=_("Custom Activity Name")
-    # )
-    
-    # Must know the type, especially if definition is null
-    activity_type = models.ForeignKey(
-        ActivityType,
-        on_delete=models.PROTECT, # Protect the type
-        related_name='user_activities',
-        verbose_name=_("Activity Type")
+        verbose_name=_("Practice Definition")
     )
     is_active = models.BooleanField(default=True, help_text=_("User can archive activities they no longer track."))
     created_at = models.DateTimeField(auto_now_add=True)
 
-    # Ensure either definition is set OR (custom_name AND activity_type allows user defined)
-    def clean(self):
-        if not self.definition:
-            # Now that custom_name is removed, a UserActivity MUST have a definition
-            raise ValidationError(_("A User Activity must be linked to a predefined activity."))
-        # If definition is set, ensure activity_type matches definition's type
-        if self.definition and self.definition.activity_type != self.activity_type:
-            raise ValidationError(_("Activity type must match the predefined activity's type."))
-
     def get_display_name(self):
-        # Now relies solely on definition.name
-        if self.definition:
-            return self.definition.name
-        return _("N/A (Error: No definition)") # Should not happen if clean() works
+        return self.definition.name
 
-    def get_unit_name(self):
-        # Now relies solely on definition.unit_name
-        if self.definition:
-            return self.definition.unit_name
-        return _("quantity") # Fallback, though should not be needed
-
-    def get_unit_multiplier(self):
-        # Now relies solely on definition.unit_multiplier
-        if self.definition:
-            return self.definition.unit_multiplier
-        return 1 # Fallback, though should not be needed
+    def get_practice_type_display(self):
+        return self.definition.get_practice_type_display()
 
     def __str__(self):
         return f"{self.user.username} - {self.get_display_name()}"
 
     class Meta:
-        verbose_name = _("User Tracked Activity")
-        verbose_name_plural = _("User Tracked Activities")
-        # Prevent user from tracking the exact same predefined activity twice
-        unique_together = [['user', 'definition']] # Removed custom_name from unique_together
-        ordering = ['user', 'activity_type', 'definition__name'] # Removed custom_name from ordering
+        verbose_name = _("User Tracked Practice")
+        verbose_name_plural = _("User Tracked Practices")
+        unique_together = [['user', 'definition']]
+        ordering = ['user', 'definition__practice_type', 'definition__name']
 
 
 class LogEntry(models.Model):
     """
-    A single submission/entry by a user for a tracked activity.
+    A single submission/entry by a user for a tracked practice.
+    Can include Malas, Time, or both.
     """
     user_activity = models.ForeignKey(
         UserActivity,
-        on_delete=models.CASCADE, # If the user stops tracking, entries are deleted. Or SET_NULL? Cascade seems logical.
+        on_delete=models.CASCADE,
         related_name='log_entries',
-        verbose_name=_("Tracked Activity")
+        verbose_name=_("Tracked Practice")
     )
-    # Denormalize user for easier filtering/permission checks
-    user = models.ForeignKey(
+    user = models.ForeignKey( # Denormalized for easier filtering
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='log_entries',
         verbose_name=_("User")
     )
-    # Quantity submitted in the activity's unit (e.g., 5 malas)
-    quantity_submitted = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0.00,
-        verbose_name=_("Quantity Submitted")
+    malas_submitted = models.IntegerField(
+        null=True, blank=True,
+        validators=[MinValueValidator(0)],
+        verbose_name=_("Malas Submitted"),
+        help_text=_("Number of malas completed (integer).")
     )
-    # Calculated total in base units (e.g., 5 * 108 = 540 mantras)
-    calculated_total = models.DecimalField(
-        max_digits=15,
-        decimal_places=2,
-        default=0.00,
-        editable=False, # Calculated automatically
-        verbose_name=_("Calculated Total")
+    # Storing time as hours and minutes for easier input
+    time_submitted_hours = models.IntegerField(
+        null=True, blank=True, default=0,
+        validators=[MinValueValidator(0)],
+        verbose_name=_("Time: Hours")
+    )
+    time_submitted_minutes = models.IntegerField(
+        null=True, blank=True, default=0,
+        validators=[MinValueValidator(0), MaxValueValidator(59)],
+        verbose_name=_("Time: Minutes")
     )
     entry_date = models.DateField(default=timezone.now, verbose_name=_("Date of Activity"))
     notes = models.TextField(blank=True, verbose_name=_("Notes"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Calculated properties (not stored in DB unless performance dictates otherwise)
+    @property
+    def calculated_mantras(self):
+        if self.malas_submitted is not None:
+            return self.malas_submitted * 108
+        return 0
+
+    @property
+    def total_practice_time_in_minutes(self):
+        hours = self.time_submitted_hours if self.time_submitted_hours is not None else 0
+        minutes = self.time_submitted_minutes if self.time_submitted_minutes is not None else 0
+        return (hours * 60) + minutes
+
+    def clean(self):
+        super().clean()
+        has_malas = self.malas_submitted is not None and self.malas_submitted > 0
+        has_time_hours = self.time_submitted_hours is not None and self.time_submitted_hours > 0
+        has_time_minutes = self.time_submitted_minutes is not None and self.time_submitted_minutes > 0
+        
+        if not (has_malas or has_time_hours or has_time_minutes):
+            raise ValidationError(_("Please enter a value for Malas, Time (Hours/Minutes), or both."))
+        
+        if self.time_submitted_hours is None:
+            self.time_submitted_hours = 0
+        if self.time_submitted_minutes is None:
+            self.time_submitted_minutes = 0
+
+
     def save(self, *args, **kwargs):
-        # Ensure user consistency
-        if self.user_activity:
+        if self.user_activity: # Ensure user is set from the linked UserActivity
             self.user = self.user_activity.user
-        # Calculate the total
-        self.calculated_total = self.quantity_submitted * self.user_activity.get_unit_multiplier()
+        # Ensure None for hours/minutes is treated as 0 if the other part of time is set
+        if (self.time_submitted_hours is not None or self.time_submitted_minutes is not None):
+            if self.time_submitted_hours is None:
+                self.time_submitted_hours = 0
+            if self.time_submitted_minutes is None:
+                self.time_submitted_minutes = 0
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username} - {self.user_activity.get_display_name()} - {self.quantity_submitted} {self.user_activity.get_unit_name()} on {self.entry_date}"
+        parts = []
+        if self.malas_submitted is not None:
+            parts.append(f"{self.malas_submitted} malas")
+        
+        total_time_min = self.total_practice_time_in_minutes
+        if total_time_min > 0:
+            h = total_time_min // 60
+            m = total_time_min % 60
+            time_str = ""
+            if h > 0:
+                time_str += f"{h}h"
+            if m > 0:
+                time_str += f" {m}m" if h > 0 else f"{m}m"
+            parts.append(time_str.strip())
+        
+        entry_details = " and ".join(parts) if parts else "No activity logged"
+        return f"{self.user.username} - {self.user_activity.get_display_name()} - {entry_details} on {self.entry_date}"
 
     class Meta:
         verbose_name = _("Log Entry")
         verbose_name_plural = _("Log Entries")
-        ordering = ['-entry_date', '-created_at'] # Show most recent first
+        ordering = ['-entry_date', '-created_at']

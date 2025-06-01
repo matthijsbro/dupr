@@ -12,30 +12,37 @@
                      <h3>{{ page_title|default:_("Confirm Delete") }}</h3>
                  </div>
                 <div class="card-body">
-                    {# Display Django Messages #}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                    {% if messages %}{% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> #}
+                        </div>
+                    {% endfor %}{% endif %}
 
-                    <p>{% blocktranslate with activity=object.user_activity.get_display_name quantity=object.quantity_submitted|floatformat:0 unit=object.user_activity.get_unit_name date=object.entry_date|date:"Y-m-d" %}
-                        Are you sure you want to delete the entry for <strong>{{ activity }}</strong>
-                        (quantity: {{ quantity }} {{ unit }}) logged on <strong>{{ date }}</strong>?
-                    {% endblocktranslate %}</p>
+                    <p>{% translate "Are you sure you want to delete the following log entry?" %}</p>
+                    <ul class="list-unstyled">
+                        <li><strong>{% translate "Practice:" %}</strong> {{ object.user_activity.get_display_name }}</li>
+                        <li><strong>{% translate "Date:" %}</strong> {{ object.entry_date|date:"Y-m-d" }}</li>
+                        {% if object.malas_submitted is not None %}
+                        <li><strong>{% translate "Malas:" %}</strong> {{ object.malas_submitted }}</li>
+                        {% endif %}
+                        {% if object.total_practice_time_in_minutes > 0 %}
+                        <li><strong>{% translate "Time:" %}</strong> 
+                            {% if object.time_submitted_hours > 0 %}{{ object.time_submitted_hours }}h {% endif %}
+                            {% if object.time_submitted_minutes > 0 %}{{ object.time_submitted_minutes }}m{% endif %}
+                        </li>
+                        {% endif %}
+                    </ul>
 
                     {% if object.notes %}
                         <p><strong>{% translate "Notes:" %}</strong> {{ object.notes|linebreaksbr }}</p>
                     {% endif %}
 
-                    <p class="text-danger"><strong>{% translate "This action cannot be undone." %}</strong></p>
+                    <p class="text-danger mt-3"><strong>{% translate "This action cannot be undone." %}</strong></p>
 
-                    <form method="post"> {# Action URL handled by view #}
+                    <form method="post">
                         {% csrf_token %}
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                              <a href="{% url 'tracker:logentry-history' %}" class="btn btn-outline-secondary">{% translate "Cancel" %}</a>
                              <button type="submit" class="btn btn-danger">{% translate "Confirm Delete" %}</button>
                          </div>

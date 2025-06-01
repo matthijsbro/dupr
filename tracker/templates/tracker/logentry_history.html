@@ -7,12 +7,11 @@
 <div class="container mt-4">
     <h1 class="mb-4">{{ page_title|default:_("Log Entry History") }}</h1>
 
-    {# Display Django Messages #}
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> #}
             </div>
         {% endfor %}
     {% endif %}
@@ -25,9 +24,10 @@
                     <thead>
                         <tr>
                             <th>{% translate "Date" %}</th>
-                            <th>{% translate "Activity" %}</th>
-                            <th>{% translate "Submitted" %}</th>
-                            <th>{% translate "Calculated Total" %}</th>
+                            <th>{% translate "Practice" %}</th>
+                            <th>{% translate "Malas" %}</th>
+                            <th>{% translate "Time" %}</th>
+                            <th>{% translate "Mantras (Calc.)" %}</th>
                             <th>{% translate "Notes" %}</th>
                             <th>{% translate "Actions" %}</th>
                         </tr>
@@ -37,21 +37,26 @@
                         <tr>
                             <td>{{ entry.entry_date|date:"Y-m-d" }}</td>
                             <td>{{ entry.user_activity.get_display_name }}</td>
-                            <td>{{ entry.quantity_submitted|floatformat:"-2" }} {{ entry.user_activity.get_unit_name }}</td>
+                            <td>{{ entry.malas_submitted|default:"-" }}</td>
                             <td>
-                                {% if entry.user_activity.get_unit_multiplier != 1 %}
-                                    {{ entry.calculated_total|floatformat:"-2" }}
+                                {% if entry.total_practice_time_in_minutes > 0 %}
+                                    {% if entry.time_submitted_hours > 0 %}{{ entry.time_submitted_hours }}h {% endif %}
+                                    {% if entry.time_submitted_minutes > 0 %}{{ entry.time_submitted_minutes }}m{% endif %}
                                 {% else %}
-                                    <span class="text-muted">-</span>
+                                -
                                 {% endif %}
                             </td>
-                             <td>{{ entry.notes|truncatewords:10|default:"-" }}</td>
                             <td>
-                                <a href="{% url 'tracker:logentry-edit' entry.pk %}" class="btn btn-sm btn-outline-primary" title="{% translate 'Edit' %}"><i class="fas fa-edit"></i></a> {# Requires FontAwesome #}
-                                <a href="{% url 'tracker:logentry-delete' entry.pk %}" class="btn btn-sm btn-outline-danger" title="{% translate 'Delete' %}"><i class="fas fa-trash-alt"></i></a> {# Requires FontAwesome #}
-                                {# Replace icons with text if not using FontAwesome #}
-                                {# <a href="{# url .. #}" class="btn btn-sm ..">Edit</a> #}
-                                {# <a href="{# url .. #}" class="btn btn-sm ..">Delete</a> #}
+                                {% if entry.malas_submitted is not None and entry.malas_submitted > 0 %}
+                                    {{ entry.calculated_mantras }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>{{ entry.notes|truncatewords:10|default:"-" }}</td>
+                            <td>
+                                <a href="{% url 'tracker:logentry-edit' entry.pk %}" class="btn btn-sm btn-outline-primary" title="{% translate 'Edit' %}">Edit</a>
+                                <a href="{% url 'tracker:logentry-delete' entry.pk %}" class="btn btn-sm btn-outline-danger" title="{% translate 'Delete' %}">Del</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -59,20 +64,14 @@
                 </table>
             </div>
 
-            {# Pagination #}
             {% if is_paginated %}
-                <nav aria-label="Log entry pagination">
+                <nav aria-label="Log entry pagination" class="mt-4">
                     <ul class="pagination justify-content-center">
                         {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
                         {% else %}
                             <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
                         {% endif %}
-
                         {% for i in paginator.page_range %}
                             {% if page_obj.number == i %}
                                 <li class="page-item active" aria-current="page"><span class="page-link">{{ i }}</span></li>
@@ -80,20 +79,14 @@
                                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
                             {% endif %}
                         {% endfor %}
-
                         {% if page_obj.has_next %}
-                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
                         {% else %}
-                             <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
                         {% endif %}
                     </ul>
                 </nav>
             {% endif %}
-
             {% else %}
                  <p>{% translate "No log entries found." %}</p>
             {% endif %}

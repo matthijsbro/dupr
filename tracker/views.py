@@ -1,29 +1,24 @@
 # tracker/views.py
-
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, render # Added render for form_invalid example
 from django.urls import reverse_lazy
 from django.views.generic import (
-    ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, FormView
+    ListView, CreateView, UpdateView, DeleteView, TemplateView, View
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Sum, F # F object allows referencing model fields in queries
-from django.contrib import messages # To provide feedback to the user
-from django.db import IntegrityError # To catch duplicate entries
-from django.views import View # Import generic View
+from django.db.models import Sum, F, Value, IntegerField, ExpressionWrapper, DurationField
+from django.db.models.functions import Coalesce
+from django.contrib import messages
+from django.db import IntegrityError
 from django.http import HttpResponseRedirect
+from django.utils.translation import gettext_lazy as _ # <--- IMPORT ADDED HERE
 
-from .models import LogEntry, UserActivity, ActivityDefinition, ActivityType
-from .forms import LogEntryForm, PredefinedActivitySelectForm # Removed UserActivityCreateForm
+from .models import LogEntry, UserActivity, PracticeDefinition
+from .forms import LogEntryForm, PracticeSelectForm
 
 # --- Mixin for Ownership Check ---
 
 class UserOwnsObjectMixin(UserPassesTestMixin):
-    """
-    Mixin to ensure the logged-in user owns the object being accessed.
-    Assumes the object has a 'user' ForeignKey field.
-    """
-    raise_exception = True # Raise Forbidden (403) if test fails
-
+    raise_exception = True
     def test_func(self):
         obj = self.get_object()
         return obj.user == self.request.user
@@ -31,207 +26,193 @@ class UserOwnsObjectMixin(UserPassesTestMixin):
 # --- Core Views ---
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    """
-    Displays the main tracker dashboard for the logged-in user.
-    Shows summaries, recent entries, and forms to add data.
-    """
     template_name = 'tracker/dashboard.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        # Get user's active tracked activities
         user_activities = UserActivity.objects.filter(
             user=user, is_active=True
-        ).select_related('definition', 'activity_type') # Optimize query
+        ).select_related('definition')
 
-        # Calculate totals per activity
-        activity_totals = user_activities.annotate(
-            total_quantity=Sum('log_entries__quantity_submitted'),
-            total_calculated=Sum('log_entries__calculated_total')
-        ).order_by('activity_type__name', 'definition__name') # Removed 'custom_name'
+        activity_summary_data = []
+        for ua in user_activities:
+            logs = LogEntry.objects.filter(user_activity=ua)
+            
+            total_malas_submitted = logs.aggregate(
+                total_malas=Coalesce(Sum('malas_submitted'), 0, output_field=IntegerField())
+            )['total_malas']
+            
+            total_mantras = total_malas_submitted * 108
 
-        # Get recent log entries
+            total_hours = logs.aggregate(
+                total_h=Coalesce(Sum('time_submitted_hours'), 0, output_field=IntegerField())
+            )['total_h']
+            total_minutes_from_min_field = logs.aggregate(
+                total_m=Coalesce(Sum('time_submitted_minutes'), 0, output_field=IntegerField())
+            )['total_m']
+            
+            grand_total_minutes = (total_hours * 60) + total_minutes_from_min_field
+            
+            display_total_hours = grand_total_minutes // 60
+            display_total_minutes = grand_total_minutes % 60
+
+            activity_summary_data.append({
+                'user_activity': ua,
+                'display_name': ua.get_display_name(),
+                'practice_type': ua.definition.get_practice_type_display(), # Corrected to access definition
+                'total_malas_submitted': total_malas_submitted,
+                'total_mantras': total_mantras,
+                'total_practice_hours': display_total_hours,
+                'total_practice_minutes': display_total_minutes,
+                'has_entries': logs.exists()
+            })
+            
         recent_entries = LogEntry.objects.filter(
             user=user
-        ).select_related( # Optimize query
+        ).select_related(
             'user_activity',
             'user_activity__definition',
-            'user_activity__activity_type'
-        ).order_by('-entry_date', '-created_at')[:10] # Show last 10
+        ).order_by('-entry_date', '-created_at')[:10]
 
-        # Prepare forms
-        log_entry_form = LogEntryForm(user=user) # Pass user to filter activity choices
-        # user_activity_create_form = UserActivityCreateForm() # Removed
-        # Filter out definitions the user ALREADY tracks
+        log_entry_form = LogEntryForm(user=user)
+        
         tracked_definition_ids = user_activities.filter(definition__isnull=False).values_list('definition_id', flat=True)
-        predefined_activity_select_form = PredefinedActivitySelectForm()
-        predefined_activity_select_form.fields['definition'].queryset = ActivityDefinition.objects.filter(
+        practice_select_form = PracticeSelectForm()
+        practice_select_form.fields['definition'].queryset = PracticeDefinition.objects.filter(
             is_active=True
-        ).exclude(
-            pk__in=tracked_definition_ids # Don't show activities already tracked
-        )
+        ).exclude(pk__in=tracked_definition_ids)
 
-        context['activity_totals'] = activity_totals
+        context['activity_summaries'] = activity_summary_data
         context['recent_entries'] = recent_entries
         context['log_entry_form'] = log_entry_form
-        # context['user_activity_create_form'] = user_activity_create_form # Removed
-        context['predefined_activity_select_form'] = predefined_activity_select_form
-        context['tracked_activities'] = user_activities # List of activities user is tracking
-
+        context['practice_select_form'] = practice_select_form
+        context['tracked_practices'] = user_activities
         return context
 
 class LogEntryCreateView(LoginRequiredMixin, CreateView):
-    """
-    View for creating a new log entry.
-    """
     model = LogEntry
     form_class = LogEntryForm
-    template_name = 'tracker/logentry_form.html' # Re-use form template
-    success_url = reverse_lazy('tracker:dashboard') # Redirect to dashboard after success
+    template_name = 'tracker/logentry_form.html'
+    success_url = reverse_lazy('tracker:dashboard')
 
     def get_form_kwargs(self):
-        """Pass the current user to the form."""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
-        """Set the user for the log entry before saving."""
-        # The user is already implicitly set via the UserActivity's user
-        # but we can double-check or explicitly set if needed based on model logic.
-        # The save method in the LogEntry model handles setting the user field.
-        messages.success(self.request, "Log entry added successfully!")
+        # form.instance.user = self.request.user # User is set in model's save method via user_activity
+        messages.success(self.request, _("Log entry added successfully!"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        messages.error(self.request, "Please correct the errors below.")
-        # Need to render the dashboard template again with the invalid form
-        # This is tricky with CreateView. Often better to handle form processing
-        # directly in the DashboardView for a smoother UX if form is on dashboard.
-        # Alternatively, redirect back to dashboard with error message,
-        # or use a dedicated page for adding entries.
-        # For now, let CreateView render its default error page (logentry_form.html)
-        return super().form_invalid(form)
+        messages.error(self.request, _("Please correct the errors below."))
+        # Option 1: Render the dedicated form page with errors (current behavior)
+        # return super().form_invalid(form)
+
+        # Option 2: Re-render the dashboard with the invalid form
+        # This provides a more integrated UX if the form is primarily on the dashboard.
+        dashboard_view = DashboardView()
+        dashboard_view.request = self.request # Set request for DashboardView's context
+        context = dashboard_view.get_context_data()
+        context['log_entry_form'] = form # Substitute the invalid form
+        return render(self.request, dashboard_view.template_name, context)
+
 
     def get_context_data(self, **kwargs):
-        """Add extra context if needed, e.g., page title."""
         context = super().get_context_data(**kwargs)
-        context['page_title'] = "Add Log Entry"
+        context['page_title'] = _("Add Log Entry")
         return context
-
 
 class LogEntryUpdateView(LoginRequiredMixin, UserOwnsObjectMixin, UpdateView):
-    """
-    View for editing an existing log entry. Ensures user owns the entry.
-    """
     model = LogEntry
     form_class = LogEntryForm
-    template_name = 'tracker/logentry_form.html' # Re-use form template
-    success_url = reverse_lazy('tracker:logentry-history') # Redirect to history after success
+    template_name = 'tracker/logentry_form.html'
+    success_url = reverse_lazy('tracker:logentry-history')
 
     def get_form_kwargs(self):
-        """Pass the current user to the form."""
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
-        messages.success(self.request, "Log entry updated successfully!")
+        messages.success(self.request, _("Log entry updated successfully!"))
         return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Please correct the errors below.")
-        return super().form_invalid(form)
-
+        
     def get_context_data(self, **kwargs):
-        """Add extra context if needed, e.g., page title."""
         context = super().get_context_data(**kwargs)
-        context['page_title'] = "Edit Log Entry"
+        context['page_title'] = _("Edit Log Entry")
         return context
-
 
 class LogEntryDeleteView(LoginRequiredMixin, UserOwnsObjectMixin, DeleteView):
-    """
-    View for deleting a log entry. Ensures user owns the entry.
-    Requires confirmation via POST request.
-    """
     model = LogEntry
-    template_name = 'tracker/logentry_confirm_delete.html' # Confirmation template
-    success_url = reverse_lazy('tracker:logentry-history') # Redirect to history
+    template_name = 'tracker/logentry_confirm_delete.html'
+    success_url = reverse_lazy('tracker:logentry-history')
 
     def form_valid(self, form):
-        messages.success(self.request, f"Log entry for '{self.object.user_activity.get_display_name()}' on {self.object.entry_date} deleted.")
-        return super().form_valid(form)
-
+        messages.success(self.request, _(f"Log entry for '{self.object.user_activity.get_display_name()}' on {self.object.entry_date} deleted."))
+        return super().form_valid(form) # Calls self.object.delete()
+        
     def get_context_data(self, **kwargs):
-        """Add extra context if needed, e.g., page title."""
         context = super().get_context_data(**kwargs)
-        context['page_title'] = "Confirm Delete Log Entry"
+        context['page_title'] = _("Confirm Delete Log Entry")
         return context
 
-
 class LogEntryHistoryView(LoginRequiredMixin, ListView):
-    """
-    Displays a paginated list of all log entries for the logged-in user.
-    """
     model = LogEntry
     template_name = 'tracker/logentry_history.html'
     context_object_name = 'log_entries'
-    paginate_by = 20 # Show 20 entries per page
+    paginate_by = 20
 
     def get_queryset(self):
-        """Filter entries to only show those belonging to the logged-in user."""
         return LogEntry.objects.filter(
             user=self.request.user
-        ).select_related( # Optimize query
+        ).select_related(
             'user_activity',
-            'user_activity__definition',
-            'user_activity__activity_type'
-        ).order_by('-entry_date', '-created_at') # Order by date
-
+            'user_activity__definition'
+        ).order_by('-entry_date', '-created_at')
+        
     def get_context_data(self, **kwargs):
-        """Add extra context if needed, e.g., page title."""
         context = super().get_context_data(**kwargs)
-        context['page_title'] = "Log Entry History"
+        context['page_title'] = _("Log Entry History")
         return context
 
-# --- View for Adding Predefined Activities ---
-class UserActivityAddPredefinedView(LoginRequiredMixin, View):
-    """Handles the POST request to add a predefined activity."""
-
+class UserActivityAddPracticeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        form = PredefinedActivitySelectForm(request.POST)
+        form = PracticeSelectForm(request.POST)
         user = request.user
 
-        # Re-query the allowed definitions for validation, excluding already tracked ones
         tracked_definition_ids = UserActivity.objects.filter(user=user, definition__isnull=False).values_list('definition_id', flat=True)
-        form.fields['definition'].queryset = ActivityDefinition.objects.filter(is_active=True).exclude(pk__in=tracked_definition_ids)
+        form.fields['definition'].queryset = PracticeDefinition.objects.filter(is_active=True).exclude(pk__in=tracked_definition_ids)
 
         if form.is_valid():
             definition = form.cleaned_data['definition']
             try:
-                # Create the UserActivity linking user and the chosen definition
                 UserActivity.objects.create(
                     user=user,
                     definition=definition,
-                    activity_type=definition.activity_type, # Get type from definition
                     is_active=True
                 )
-                messages.success(request, f"Started tracking '{definition.name}'. You can now add log entries for it.")
-            except IntegrityError:
-                messages.warning(request, f"You are already tracking '{definition.name}'.")
-            except Exception as e:
-                messages.error(request, f"An unexpected error occurred: {e}")
-
+                messages.success(request, _(f"Started tracking '{definition.name}'. You can now add log entries for it."))
+            except IntegrityError: # Handles the unique_together constraint
+                messages.warning(request, _(f"You are already tracking '{definition.name}'."))
+            except Exception as e: # Catch any other unexpected error
+                messages.error(request, _(f"An unexpected error occurred: {e}"))
         else:
-            # If form is invalid (e.g., user manipulated POST data)
-            messages.error(request, "Invalid selection. Please choose from the list.")
+            # Collect form errors to display them
+            error_message_list = []
+            for field, errors in form.errors.items():
+                for error in errors:
+                    error_message_list.append(f"{form.fields[field].label if field != '__all__' else ''}: {error}")
+            if not error_message_list and form.non_field_errors():
+                 for error in form.non_field_errors():
+                    error_message_list.append(str(error))
+            
+            if not error_message_list: # Fallback generic message
+                 error_message_list.append(_("Invalid selection. Please choose from the list."))
 
-        # Redirect back to the dashboard regardless of success/failure
+            messages.error(request, " ".join(error_message_list))
+        
         return HttpResponseRedirect(reverse_lazy('tracker:dashboard'))
-
-# --- Optional: Views for listing/archiving UserActivity ---
-# class UserActivityListView(LoginRequiredMixin, ListView): ...
-# class UserActivityUpdateView(LoginRequiredMixin, UserOwnsObjectMixin, UpdateView): ... # For archiving (setting is_active=False)
