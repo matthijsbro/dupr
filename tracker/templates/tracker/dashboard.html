@@ -1,172 +1,307 @@
-{# tracker/templates/tracker/dashboard.html #}
 {% extends "base.html" %}
 {% load i18n static %}
 
-{% block title %}{% translate "Practice Tracker Dashboard" %}{% endblock %}
+{% block title %}{% translate "Practice Tracker" %}{% endblock %}
 
 {% block extra_head %}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{ block.super }}
     <style>
-        .select2-container .select2-selection--single {
-            height: calc(1.5em + .75rem + 2px); /* Match Bootstrap form-control height */
-            padding: .375rem .75rem;
-            border: 1px solid #ced4da; /* Bootstrap border color */
-            border-radius: .25rem; /* Bootstrap border-radius */
+        .practice-scroller-container {
+            position: relative;
         }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 1.5;
-            padding-left: 0;
+        .practice-scroller {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+            padding-bottom: 5px; /* Make space for potential custom scrollbar if it's outside */
+            padding-left: 30px; 
+            padding-right: 30px;
+            justify-content: flex-start; 
         }
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: calc(1.5em + .75rem);
-            right: 0.5rem;
+        .practice-scroller.center-items {
+            justify-content: center;
         }
-         .select2-dropdown { /* Ensure dropdown appears above other elements if needed */
-            z-index: 1050; /* Higher than most Bootstrap components like navbars */
+        .practice-scroller::-webkit-scrollbar {
+            display: none; 
         }
+        .practice-scroller-item {
+            flex: 0 0 auto;
+            scroll-snap-align: center;
+            padding: 0.75rem 1.5rem;
+            margin: 0 0.25rem; 
+            border-radius: var(--rounded-btn, 0.5rem); 
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out, border-color 0.2s ease-in-out;
+            font-size: 1.25rem; 
+            min-width: 180px; 
+            text-align: center;
+            white-space: nowrap; 
+            border: 1px solid oklch(var(--b3)/.4); 
+        }
+        .practice-scroller-item.selected {
+            background-color:var(--color-primary) !important; 
+            color: var(--color-primary-content) !important; 
+            font-weight: 600;
+            transform: scale(1.05);
+            border-color: oklch(var(--p)/.8) !important;
+        }
+        .practice-scroller-item:not(.selected):hover {
+            background-color: oklch(var(--b3));
+            border-color: oklch(var(--b3));
+        }
+        .practice-scroller-item:not(.selected) {
+            background-color: oklch(var(--b2)); 
+            color: oklch(var(--bc));
+        }
+
+        .practice-scroller-container::before,
+        .practice-scroller-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 5px; /* Align with scroller padding-bottom */
+            width: 80px; 
+            pointer-events: none;
+            z-index: 2;
+        }
+        .practice-scroller-container::before {
+            left: 0;
+            background: linear-gradient(to right, oklch(var(--b1)) 20%, oklch(var(--b1)/0) 100%);
+        }
+        .practice-scroller-container::after {
+            right: 0;
+            background: linear-gradient(to left, oklch(var(--b1)) 20%, oklch(var(--b1)/0) 100%);
+        }
+
+        /* Custom Scrollbar Indicator */
+        .custom-scrollbar-track {
+            height: 4px;
+            background-color: oklch(var(--b3)/.5); /* Light track */
+            border-radius: 2px;
+            margin-top: 8px; /* Space below scroller */
+            width: 100%;
+            overflow: hidden; /* Hide thumb if it overflows due to JS calc */
+        }
+        .custom-scrollbar-thumb {
+            height: 100%;
+            background-color: oklch(var(--p)); /* Primary color for thumb */
+            border-radius: 2px;
+            transition: width 0.1s ease-out, transform 0.1s ease-out; /* Smooth transitions */
+        }
+
+
+        .tabs .tab.tab-active {
+            background-color: oklch(var(--p)) !important;
+            color: oklch(var(--pc)) !important;
+            border-color: oklch(var(--p)) !important; /* For bordered tabs */
+        }
+         /* For tabs-lifted, the active tab might need more specific styling if the above doesn't cover it */
+        .tabs-lifted > .tab.tab-active, .tabs-lifted > .tab-active:focus, .tabs-lifted > .tab-active:hover {
+            background-color: oklch(var(--p)) !important;
+            color: oklch(var(--pc)) !important;
+        }
+
+
+        #malasCountDisplay { font-size: 2rem; font-weight: bold; min-width: 70px; text-align: center; color: oklch(var(--bc)); padding: 0.5rem 0; }
+        #malasDecrementBtn, #malasIncrementBtn { font-size: 1.25rem; }
+        #timeDisplay { color: oklch(var(--bc)); }
+        .range-success { --range-shdw: oklch(var(--su)); }
+        
+        #formattedDateDisplay {
+            display: block; /* Make it block to appear above the input */
+            font-size: 1.1rem; /* text-base or text-lg */
+            text-align: center;
+            padding: 0.25rem;
+            margin-bottom: 0.25rem; /* Space before the actual input */
+            color: oklch(var(--bc));
+        }
+        #{{ log_entry_form.entry_date.id_for_label }} { /* The actual input type="date" */
+            cursor: pointer;
+            background-color: oklch(var(--b2)); /* base-200 like background */
+            border: 1px solid oklch(var(--b3)); 
+            color: oklch(var(--bc)); /* Ensure text color is visible */
+            padding: 0.5rem;
+            border-radius: var(--rounded-btn, 0.5rem);
+            text-align: center; /* Center the browser's date text */
+            width: auto; /* Allow it to size to its content or be controlled by parent */
+            min-width: 200px; /* Decent minimum width */
+            margin: 0 auto; /* Center the input itself if its parent is wider */
+        }
+        /* Style for the date input arrows/calendar icon (browser-dependent) */
+        #{{ log_entry_form.entry_date.id_for_label }}::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: invert(50%) sepia(50%) saturate(500%) hue-rotate(170deg); /* Example to make it more visible */
+        }
+
     </style>
 {% endblock %}
 
-
 {% block content %}
-<div class="container mt-4">
-    <h1 class="mb-4">{% translate "Practice Tracker Dashboard" %}</h1>
-
+<div class="container mx-auto p-4 md:p-6 lg:p-8 space-y-8">
+    
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                {# <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> #}
+            <div role="alert" class="alert alert-{{ message.tags|lower }} shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                    {% if message.tags == 'success' %}<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    {% elif message.tags == 'warning' %}<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    {% elif message.tags == 'error' %}<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    {% else %}<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    {% endif %}
+                </svg>
+                <span>{{ message }}</span>
             </div>
         {% endfor %}
     {% endif %}
 
-    <div class="row g-4">
-        <div class="col-lg-6">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header"><h4>{% translate "Add New Log Entry" %}</h4></div>
-                <div class="card-body">
-                    {% if tracked_practices.exists %}
-                        <form method="post" action="{% url 'tracker:logentry-add' %}">
-                            {% csrf_token %}
-                            {% for field in log_entry_form %}
-                                <div class="mb-3">
-                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                                    {{ field }}
-                                    {% if field.help_text %}<div class="form-text text-muted small">{{ field.help_text|safe }}</div>{% endif %}
-                                    {% if field.errors %}
-                                        <div class="invalid-feedback d-block">
-                                            {% for error in field.errors %}{{ error }}{% endfor %}
-                                        </div>
-                                    {% endif %}
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body p-6 md:p-8">
+            <h2 class="card-title text-3xl mb-6 text-center">{% translate "Log Your Practice" %}</h2>
+
+            {% if not tracked_practices.exists %}
+                <div class="alert alert-info justify-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{% translate "You are not tracking any practices yet. Add a practice below to start logging." %}</span>
+                </div>
+            {% else %}
+                <div class="mb-8">
+                    <div class="practice-scroller-container">
+                        <div class="practice-scroller" id="practiceScroller">
+                            {% for practice_ua in tracked_practices %}
+                                <div class="practice-scroller-item"
+                                     data-practice-id="{{ practice_ua.id }}"
+                                     data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
+                                     {{ practice_ua.get_display_name }}
                                 </div>
                             {% endfor %}
-                            <button type="submit" class="btn btn-primary">{% translate "Add Entry" %}</button>
-                        </form>
-                    {% else %}
-                         <p class="text-muted">{% translate "You are not tracking any practices yet. Add a practice below to start logging entries." %}</p>
-                    {% endif %}
+                        </div>
+                        <div class="custom-scrollbar-track mt-2 mx-auto max-w-xs">
+                            <div class="custom-scrollbar-thumb" id="customScrollThumb"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="card shadow-sm mb-4">
-                <div class="card-header"><h4>{% translate "Add Practice to Track" %}</h4></div>
-                <div class="card-body">
-                    {% if practice_select_form.fields.definition.queryset.exists %}
-                        <form method="post" action="{% url 'tracker:practice-add' %}">
-                            {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="{{ practice_select_form.definition.id_for_label }}" class="form-label">{{ practice_select_form.definition.label }}</label>
-                                {{ practice_select_form.definition }}
-                                {% if practice_select_form.definition.help_text %}
-                                    <div class="form-text text-muted small">{{ practice_select_form.definition.help_text|safe }}</div>
-                                {% endif %}
-                                {% if practice_select_form.definition.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in practice_select_form.definition.errors %}{{ error }}{% endfor %}
-                                    </div>
-                                {% endif %}
+                <form method="post" action="{% url 'tracker:logentry-add' %}" id="logEntryFormContainer" class="space-y-6">
+                    {% csrf_token %}
+                    {{ log_entry_form.user_activity.as_hidden }}
+                    
+                    <div role="tablist" class="tabs tabs-bordered tabs-lg justify-center" id="inputTypeTabsContainer">
+                        <a role="tab" class="tab" data-type="malas">{% translate "Malas" %}</a>
+                        <a role="tab" class="tab" data-type="time">{% translate "Time" %}</a>
+                    </div>
+                    
+                    <div class="tab-panels mt-4">
+                        <div id="malasInputSection" class="space-y-3 hidden">
+                            <div class="flex items-center justify-center w-full space-x-2">
+                                <button type="button" id="malasDecrementBtn" class="btn btn-primary btn-lg" style="flex-grow: 1; max-width: 30%;">–</button>
+                                <span id="malasCountDisplay" class="flex-grow text-center">0</span>
+                                <button type="button" id="malasIncrementBtn" class="btn btn-success btn-lg" style="flex-grow: 1; max-width: 30%;">+</button>
                             </div>
-                            <button type="submit" class="btn btn-success">{% translate "Start Tracking Selected Practice" %}</button>
-                        </form>
-                    {% else %}
-                        <p class="text-muted">{% translate "All available practices are already being tracked or no practices have been defined by the site admin." %}</p>
+                            {{ log_entry_form.malas_submitted.as_hidden }}
+                            {% if log_entry_form.malas_submitted.errors %}<div class="text-error text-xs mt-1 text-center">{% for error in log_entry_form.malas_submitted.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                        </div>
+
+                        <div id="timeInputSection" class="space-y-3 hidden">
+                            <div class="text-center text-xl font-medium" id="timeDisplay">0 {% translate "hr" %} 0 {% translate "min" %}</div>
+                            <input type="range" min="0" max="240" value="0" step="10" class="range range-success w-full" id="timeSlider" />
+                            <div class="hidden"> 
+                                 {{ log_entry_form.time_submitted_hours }}
+                                 {{ log_entry_form.time_submitted_minutes }}
+                            </div>
+                            {% if log_entry_form.time_submitted_hours.errors or log_entry_form.time_submitted_minutes.errors %}
+                                <div class="text-error text-xs mt-1 text-center">
+                                    {% for error in log_entry_form.time_submitted_hours.errors %}{{ error }}{% endfor %}
+                                    {% for error in log_entry_form.time_submitted_minutes.errors %}{{ error }}{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-control mt-6 text-center">
+                        <div id="formattedDateDisplay">{% translate "Select Date" %}</div>
+                        {{ log_entry_form.entry_date }}
+                        {% if log_entry_form.entry_date.errors %}<div class="text-error text-xs mt-1 text-center">{% for error in log_entry_form.entry_date.errors %}{{ error }}{% endfor %}</div>{% endif %}
+                    </div>
+                    
+                    {% if log_entry_form.non_field_errors %}
+                        <div class="alert alert-error mt-4 justify-center">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span>{% for error in log_entry_form.non_field_errors %}{{ error }}{% endfor %}</span>
+                        </div>
                     {% endif %}
-                </div>
+
+                    <div class="card-actions justify-center mt-8">
+                        <button type="submit" class="btn btn-primary btn-wide text-lg">{% translate "Save Entry" %}</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card bg-base-100 shadow-md mt-4">
+            <div class="card-body">
+                <h3 class="card-title">{% translate "Manage Tracked Practices" %}</h3>
+                {% if practice_select_form.fields.definition.queryset.exists %}
+                    <form method="post" action="{% url 'tracker:practice-add' %}" class="space-y-3">
+                        {% csrf_token %}
+                        <div class="form-control w-full">
+                            <label for="{{ practice_select_form.definition.id_for_label }}" class="label">
+                                <span class="label-text">{{ practice_select_form.definition.label }}</span>
+                            </label>
+                            {# Assuming this renders a select dropdown that DaisyUI styles #}
+                            {{ practice_select_form.definition }} 
+                            {% if practice_select_form.definition.help_text %}<div class="label"><span class="label-text-alt">{{ practice_select_form.definition.help_text|safe }}</span></div>{% endif %}
+                            {% for error in practice_select_form.definition.errors %}<div class="label"><span class="label-text-alt text-error">{{error}}</span></div>{% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-accent btn-sm w-full">{% translate "Start Tracking Selected" %}</button>
+                    </form>
+                {% else %}
+                    <p class="text-sm opacity-70">{% translate "All available practices are being tracked or none are defined." %}</p>
+                {% endif %}
+                <div class="divider my-3"></div>
+                <p class="text-sm font-semibold">{% translate "Currently tracking:" %}</p>
+                {% if tracked_practices.exists %}
+                <ul class="list-disc list-inside text-sm space-y-1">
+                    {% for tp in tracked_practices %}<li>{{ tp.get_display_name }}</li>{% endfor %}
+                </ul>
+                {% else %}<p class="text-sm opacity-70">{% translate "No practices currently tracked." %}</p>{% endif %}
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card shadow-sm mb-4">
-                <div class="card-header"><h4>{% translate "Practice Summaries" %}</h4></div>
-                <div class="card-body">
-                    {% if activity_summaries %}
-                        <ul class="list-group list-group-flush">
-                            {% for summary in activity_summaries %}
-                                <li class="list-group-item">
-                                    <div>
-                                        <strong>{{ summary.display_name }}</strong>
-                                        <small class="text-muted"> ({{ summary.practice_type }})</small>
-                                    </div>
-                                    {% if summary.has_entries %}
-                                        <small>
-                                            {% if summary.total_malas_submitted > 0 %}
-                                                {% blocktranslate with malas=summary.total_malas_submitted mantras=summary.total_mantras %}
-                                                Total Malas: {{ malas }} ({{ mantras }} mantras)
-                                                {% endblocktranslate %}
-                                                <br>
-                                            {% endif %}
-                                            {% if summary.total_practice_hours > 0 or summary.total_practice_minutes > 0 %}
-                                                {% blocktranslate with hours=summary.total_practice_hours minutes=summary.total_practice_minutes %}
-                                                Total Time: {{ hours }}h {{ minutes }}m
-                                                {% endblocktranslate %}
-                                            {% endif %}
-                                            {% if summary.total_malas_submitted == 0 and summary.total_practice_hours == 0 and summary.total_practice_minutes == 0 %}
-                                                <em class="text-muted">{% translate "No quantities logged yet." %}</em>
-                                            {% endif %}
-                                        </small>
-                                    {% else %}
-                                        <em class="text-muted">{% translate "No entries yet for this practice." %}</em>
-                                    {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>{% translate "You are not currently tracking any practices." %}</p>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>{% translate "Recent Entries" %}</h4>
-                    <a href="{% url 'tracker:logentry-history' %}" class="btn btn-sm btn-outline-secondary">{% translate "View All History" %}</a>
-                </div>
-                <div class="card-body">
-                    {% if recent_entries %}
-                    <div class="table-responsive">
-                        <table class="table table-sm table-striped table-hover">
+        <div class="card bg-base-100 shadow-md mt-4">
+             <div class="card-body">
+                <h3 class="card-title">{% translate "Practice Summaries" %}</h3>
+                {% if activity_summaries %}
+                    <div class="overflow-x-auto">
+                        <table class="table table-sm">
                             <thead>
                                 <tr>
                                     <th>{% translate "Practice" %}</th>
-                                    <th>{% translate "Date" %}</th>
-                                    <th>{% translate "Logged" %}</th>
+                                    <th class="text-right">{% translate "Malas" %}</th>
+                                    <th class="text-right">{% translate "Time" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            {% for entry in recent_entries %}
+                            {% for summary in activity_summaries %}
                                 <tr>
-                                    <td>{{ entry.user_activity.get_display_name }}</td>
-                                    <td>{{ entry.entry_date|date:"Y-m-d" }}</td>
                                     <td>
-                                        {% if entry.malas_submitted is not None and entry.malas_submitted > 0 %}
-                                            {{ entry.malas_submitted }} {% translate "malas" %}
+                                        {{ summary.display_name }}
+                                        <div class="text-xs opacity-70">{{ summary.practice_type }}</div>
+                                    </td>
+                                    <td class="text-right">
+                                        {{ summary.total_malas_submitted }}
+                                        {% if summary.total_malas_submitted > 0 %}
+                                        <div class="text-xs opacity-70">({{ summary.total_mantras }} {% translate "mantras" %})</div>
                                         {% endif %}
-                                        {% if entry.malas_submitted is not None and entry.malas_submitted > 0 and entry.total_practice_time_in_minutes > 0 %}
-                                            <br>
-                                        {% endif %}
-                                        {% if entry.total_practice_time_in_minutes > 0 %}
-                                            {% if entry.time_submitted_hours > 0 %}{{ entry.time_submitted_hours }}h {% endif %}{% if entry.time_submitted_minutes > 0 %}{{ entry.time_submitted_minutes }}m{% endif %}
+                                    </td>
+                                    <td class="text-right">
+                                        {% if summary.total_practice_hours > 0 or summary.total_practice_minutes > 0 %}
+                                            {{ summary.total_practice_hours }}h {{ summary.total_practice_minutes }}m
+                                        {% else %}
+                                            -
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -174,29 +309,264 @@
                             </tbody>
                         </table>
                     </div>
-                    {% else %}
-                        <p>{% translate "No log entries found." %}</p>
-                    {% endif %}
-                </div>
+                {% else %}<p class="text-sm opacity-70">{% translate "No summaries available." %}</p>{% endif %}
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-md mt-4">
+            <div class="card-body">
+                <div class="flex justify-between items-center mb-2"><h3 class="card-title">{% translate "Recent Entries" %}</h3><a href="{% url 'tracker:logentry-history' %}" class="btn btn-ghost btn-xs">{% translate "View All" %}</a></div>
+                {% if recent_entries %}
+                    <ul class="space-y-2">
+                    {% for entry in recent_entries %}
+                        <li class="text-sm border-b border-base-300/50 pb-1 last:border-b-0">
+                            <div class="flex justify-between">
+                                <span class="font-medium">{{ entry.user_activity.get_display_name }}</span>
+                                <span class="text-xs opacity-80">{{ entry.entry_date|date:"d M Y" }}</span>
+                            </div>
+                            <div class="text-xs opacity-80">
+                                {% if entry.malas_submitted is not None and entry.malas_submitted > 0 %} {{ entry.malas_submitted }} {% translate "malas" %}{% endif %}
+                                {% if entry.malas_submitted > 0 and entry.total_practice_time_in_minutes > 0 %} | {% endif %}
+                                {% if entry.total_practice_time_in_minutes > 0 %}{% if entry.time_submitted_hours > 0 %}{{ entry.time_submitted_hours }}h {% endif %}{% if entry.time_submitted_minutes > 0 %}{{ entry.time_submitted_minutes }}m{% endif %}{% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}</ul>
+                {% else %}<p class="text-sm opacity-70">{% translate "No recent log entries." %}</p>{% endif %}
             </div>
         </div>
     </div>
 </div>
+
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{ block.super }}
     <script>
-        $(document).ready(function() {
-            $('#{{ practice_select_form.definition.id_for_label }}').select2({
-                placeholder: "{% translate 'Type to search practices...' %}",
-                allowClear: true
+    document.addEventListener('DOMContentLoaded', function () {
+        const practiceScroller = document.getElementById('practiceScroller');
+        const hiddenUserActivityInput = document.querySelector('[name="{{ log_entry_form.user_activity.name }}"]');
+        const customScrollThumb = document.getElementById('customScrollThumb');
+        
+        const inputTypeTabsContainer = document.getElementById('inputTypeTabsContainer');
+        const malasTabContent = document.getElementById('malasInputSection');
+        const timeTabContent = document.getElementById('timeInputSection');  
+        
+        const actualMalasInput = document.getElementById('{{ log_entry_form.malas_submitted.id_for_label }}');
+        const malasCountDisplay = document.getElementById('malasCountDisplay');
+        const malasDecrementBtn = document.getElementById('malasDecrementBtn'); 
+        const malasIncrementBtn = document.getElementById('malasIncrementBtn'); 
+
+        const timeSlider = document.getElementById('timeSlider');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const actualHoursInput = document.getElementById('{{ log_entry_form.time_submitted_hours.id_for_label }}');
+        const actualMinutesInput = document.getElementById('{{ log_entry_form.time_submitted_minutes.id_for_label }}');
+        
+        const formattedDateDisplay = document.getElementById('formattedDateDisplay');
+        const actualDateInput = document.getElementById('{{ log_entry_form.entry_date.id_for_label }}');
+
+        // --- Practice Scroller & Custom Scrollbar ---
+        function updateCustomScrollbar() {
+            if (!practiceScroller || !customScrollThumb) return;
+            const scrollableWidth = practiceScroller.scrollWidth - practiceScroller.clientWidth;
+            if (scrollableWidth <= 0) { // No scroll needed
+                customScrollThumb.style.width = '100%';
+                customScrollThumb.style.transform = `translateX(0px)`;
+                practiceScroller.parentElement.querySelector('.custom-scrollbar-track').style.display = 'none';
+                return;
+            }
+            practiceScroller.parentElement.querySelector('.custom-scrollbar-track').style.display = 'block';
+            const trackWidth = practiceScroller.parentElement.querySelector('.custom-scrollbar-track').clientWidth;
+            const thumbWidth = Math.max(20, (practiceScroller.clientWidth / practiceScroller.scrollWidth) * trackWidth); // Min thumb width
+            const scrollPercentage = practiceScroller.scrollLeft / scrollableWidth;
+            const thumbPosition = scrollPercentage * (trackWidth - thumbWidth);
+
+            customScrollThumb.style.width = `${thumbWidth}px`;
+            customScrollThumb.style.transform = `translateX(${thumbPosition}px)`;
+        }
+
+        function updateSelectedPracticeVisuals(selectedPracticeId) {
+            if (!practiceScroller) return;
+            let foundAndScrolled = false;
+            document.querySelectorAll('.practice-scroller-item').forEach(item => {
+                if (item.dataset.practiceId === selectedPracticeId) {
+                    item.classList.add('selected');
+                    if (!foundAndScrolled) {
+                        const scrollBehavior = practiceScroller.dataset.initialScrollDone ? 'smooth' : 'auto';
+                        const itemRect = item.getBoundingClientRect();
+                        const scrollerRect = practiceScroller.getBoundingClientRect();
+                        const scrollLeft = practiceScroller.scrollLeft + itemRect.left - scrollerRect.left - (scrollerRect.width / 2) + (itemRect.width / 2);
+                        practiceScroller.scrollTo({ left: scrollLeft, behavior: scrollBehavior });
+                        practiceScroller.dataset.initialScrollDone = 'true';
+                        foundAndScrolled = true;
+                    }
+                } else {
+                    item.classList.remove('selected');
+                }
             });
-            $('#{{ log_entry_form.user_activity.id_for_label }}').select2({
-                placeholder: "{% translate 'Select practice to log for...' %}",
-                allowClear: true
+            updateCustomScrollbar(); // Update scrollbar after potential scroll
+        }
+
+        function selectPractice(practiceId) {
+            if (hiddenUserActivityInput) hiddenUserActivityInput.value = practiceId;
+            updateSelectedPracticeVisuals(practiceId);
+        }
+
+        if (practiceScroller) {
+            const initialPracticeId = hiddenUserActivityInput ? hiddenUserActivityInput.value : null;
+            if (initialPracticeId) selectPractice(initialPracticeId);
+            else if (practiceScroller.firstElementChild) {
+                const firstPracticeId = practiceScroller.firstElementChild.dataset.practiceId;
+                if (firstPracticeId) selectPractice(firstPracticeId);
+            }
+
+            practiceScroller.addEventListener('click', function(event) {
+                const clickedItem = event.target.closest('.practice-scroller-item');
+                if (clickedItem && clickedItem.dataset.practiceId) selectPractice(clickedItem.dataset.practiceId);
             });
+            practiceScroller.addEventListener('scroll', updateCustomScrollbar);
+            window.addEventListener('resize', updateCustomScrollbar); // Update on resize
+            
+            if (practiceScroller.scrollWidth <= practiceScroller.clientWidth) {
+                practiceScroller.classList.add('center-items');
+            } else {
+                practiceScroller.classList.remove('center-items');
+            }
+            updateCustomScrollbar(); // Initial call
+        }
+        
+        // --- Malas/Time Tabs ---
+        const tabs = inputTypeTabsContainer ? inputTypeTabsContainer.querySelectorAll('[role="tab"]') : [];
+        function switchTab(selectedType) {
+            tabs.forEach(tab => {
+                tab.classList.toggle('tab-active', tab.dataset.type === selectedType);
+                // Removed text-primary here, rely on DaisyUI's .tab-active for styling
+            });
+
+            if (selectedType === 'malas') {
+                malasTabContent.classList.remove('hidden');
+                timeTabContent.classList.add('hidden');
+                if (actualMalasInput && (actualMalasInput.value === "" || actualMalasInput.value === null) && malasCountDisplay) {
+                     malasCountDisplay.textContent = '0';
+                } else if (actualMalasInput && malasCountDisplay) {
+                     malasCountDisplay.textContent = actualMalasInput.value || '0';
+                }
+                if (timeSlider) timeSlider.value = 0;
+                if (actualHoursInput) actualHoursInput.value = 0;
+                if (actualMinutesInput) actualMinutesInput.value = 0;
+                updateTimeDisplayFromSlider(0);
+            } else { // time
+                malasTabContent.classList.add('hidden');
+                timeTabContent.classList.remove('hidden');
+                if (actualMalasInput) actualMalasInput.value = ''; 
+                if (malasCountDisplay) malasCountDisplay.textContent = '0';
+                updateTimeDisplayFromSlider(timeSlider ? parseInt(timeSlider.value) : 0);
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() { switchTab(this.dataset.type); });
         });
+
+        const initialHoursVal = actualHoursInput ? (parseInt(actualHoursInput.value) || 0) : 0;
+        const initialMinutesVal = actualMinutesInput ? (parseInt(actualMinutesInput.value) || 0) : 0;
+        const initialMalasVal = actualMalasInput ? (parseInt(actualMalasInput.value) || 0) : 0;
+        if ((initialHoursVal > 0 || initialMinutesVal > 0) && initialMalasVal === 0 && !(actualMalasInput && actualMalasInput.classList.contains('input-error'))) {
+            switchTab('time');
+        } else {
+            switchTab('malas');
+        }
+
+        // --- Malas Controls ---
+        function updateMalasDisplayAndInput() {
+            if (!actualMalasInput || !malasCountDisplay) return;
+            const val = parseInt(actualMalasInput.value);
+            malasCountDisplay.textContent = isNaN(val) || val < 0 ? '0' : val;
+        }
+        if (malasDecrementBtn) {
+            malasDecrementBtn.addEventListener('click', () => {
+                if (!actualMalasInput) return;
+                let val = parseInt(actualMalasInput.value) || 0;
+                actualMalasInput.value = Math.max(0, val - 1);
+                updateMalasDisplayAndInput();
+            });
+        }
+        if (malasIncrementBtn) {
+            malasIncrementBtn.addEventListener('click', () => {
+                if (!actualMalasInput) return;
+                let val = parseInt(actualMalasInput.value) || 0;
+                actualMalasInput.value = val + 1; 
+                updateMalasDisplayAndInput();
+            });
+        }
+        if (actualMalasInput) updateMalasDisplayAndInput();
+
+        // --- Time Slider ---
+        function updateTimeDisplayFromSlider(totalMinutes) {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            if (timeDisplay) timeDisplay.textContent = `${hours} {% translate "hr" %} ${minutes} {% translate "min" %}`;
+            if (actualHoursInput) actualHoursInput.value = hours;
+            if (actualMinutesInput) actualMinutesInput.value = minutes;
+        }
+
+        if (timeSlider && actualHoursInput && actualMinutesInput) {
+            timeSlider.addEventListener('input', function() { updateTimeDisplayFromSlider(parseInt(this.value)); });
+            const currentHours = parseInt(actualHoursInput.value) || 0;
+            const currentMinutes = parseInt(actualMinutesInput.value) || 0;
+            const totalInitialMinutes = (currentHours * 60) + currentMinutes;
+            timeSlider.value = totalInitialMinutes > 240 ? 240 : totalInitialMinutes;
+            updateTimeDisplayFromSlider(parseInt(timeSlider.value));
+        }
+        
+        // --- Date Picker with Formatted Display ---
+        function formatJSDate(dateString) { 
+            if (!dateString) return "{% translate 'Click to select date' %}"; // Default placeholder
+            try {
+                const dateObj = new Date(dateString + 'T00:00:00'); // Ensure local timezone interpretation
+                if (isNaN(dateObj.getTime())) return "{% translate 'Invalid Date' %}";
+
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const monthNames = ["{% translate 'January' %}", "{% translate 'February' %}", "{% translate 'March' %}", "{% translate 'April' %}", "{% translate 'May' %}", "{% translate 'June' %}", "{% translate 'July' %}", "{% translate 'August' %}", "{% translate 'September' %}", "{% translate 'October' %}", "{% translate 'November' %}", "{% translate 'December' %}"];
+                const month = monthNames[dateObj.getMonth()];
+                const year = dateObj.getFullYear();
+                return `${day} ${month} ${year}`;
+            } catch (e) {
+                return "{% translate 'Error formatting date' %}";
+            }
+        }
+
+        if (actualDateInput && formattedDateDisplay) {
+            if (!actualDateInput.value) { // Set to today if no initial value from form
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                actualDateInput.value = `${year}-${month}-${day}`;
+            }
+            formattedDateDisplay.textContent = formatJSDate(actualDateInput.value);
+            
+            formattedDateDisplay.addEventListener('click', () => {
+                try {
+                    if (typeof actualDateInput.showPicker === "function") {
+                        actualDateInput.showPicker();
+                    } else {
+                        // Fallback for browsers that don't support showPicker on hidden/text input
+                        actualDateInput.focus(); // This might bring up keyboard with date options on mobile
+                        console.warn("Could not programmatically open date picker via showPicker(). Focus fallback used.");
+                    }
+                } catch (e) {
+                    actualDateInput.focus();
+                    console.warn("Error trying to open date picker. Focus fallback used.", e);
+                }
+            });
+
+            actualDateInput.addEventListener('change', function() {
+                formattedDateDisplay.textContent = formatJSDate(this.value);
+            });
+             actualDateInput.addEventListener('input', function() { // For real-time update if user types (though less likely for date)
+                formattedDateDisplay.textContent = formatJSDate(this.value);
+            });
+        }
+    });
     </script>
 {% endblock %}

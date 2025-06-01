@@ -1,22 +1,22 @@
 # tracker/views.py
-from django.shortcuts import redirect, render # Added render for form_invalid example
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView, TemplateView, View
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Sum, F, Value, IntegerField, ExpressionWrapper, DurationField
+from django.db.models import Sum, F, Value, IntegerField, ExpressionWrapper, DurationField, OuterRef, Subquery, Max
 from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from django.utils.translation import gettext_lazy as _ # <--- IMPORT ADDED HERE
+from django.utils.translation import gettext_lazy as _
+from django.utils import timezone # For default date
 
 from .models import LogEntry, UserActivity, PracticeDefinition
 from .forms import LogEntryForm, PracticeSelectForm
 
 # --- Mixin for Ownership Check ---
-
 class UserOwnsObjectMixin(UserPassesTestMixin):
     raise_exception = True
     def test_func(self):
@@ -32,36 +32,45 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
+        # Get user's active tracked activities, ordered by most recently logged
+        most_recent_log_entry_subquery = LogEntry.objects.filter(
+            user_activity=OuterRef('pk')
+        ).order_by('-created_at').values('created_at')[:1]
+
         user_activities = UserActivity.objects.filter(
             user=user, is_active=True
-        ).select_related('definition')
+        ).select_related('definition').annotate(
+            last_log_created_at=Subquery(most_recent_log_entry_subquery)
+        ).order_by(F('last_log_created_at').desc(nulls_last=True), 'definition__name')
+
+
+        # Determine the practice for the log form:
+        # 1. Last explicitly selected (if any, passed via session or GET for e.g. form re-render)
+        # 2. Last practice user submitted an entry for
+        # 3. First practice in the (now sorted) user_activities list
+        selected_practice_for_log = None # Will be set below
+
+        last_log_entry_for_user = LogEntry.objects.filter(user=user).order_by('-created_at').first()
+        if last_log_entry_for_user:
+            selected_practice_for_log = last_log_entry_for_user.user_activity
+        elif user_activities.exists():
+            selected_practice_for_log = user_activities.first()
 
         activity_summary_data = []
-        for ua in user_activities:
+        for ua in UserActivity.objects.filter(user=user, is_active=True).select_related('definition').order_by('definition__name'): # Keep original order for summary
             logs = LogEntry.objects.filter(user_activity=ua)
-            
-            total_malas_submitted = logs.aggregate(
-                total_malas=Coalesce(Sum('malas_submitted'), 0, output_field=IntegerField())
-            )['total_malas']
-            
+            total_malas_submitted = logs.aggregate(total_malas=Coalesce(Sum('malas_submitted'), 0, output_field=IntegerField()))['total_malas']
             total_mantras = total_malas_submitted * 108
-
-            total_hours = logs.aggregate(
-                total_h=Coalesce(Sum('time_submitted_hours'), 0, output_field=IntegerField())
-            )['total_h']
-            total_minutes_from_min_field = logs.aggregate(
-                total_m=Coalesce(Sum('time_submitted_minutes'), 0, output_field=IntegerField())
-            )['total_m']
-            
+            total_hours = logs.aggregate(total_h=Coalesce(Sum('time_submitted_hours'), 0, output_field=IntegerField()))['total_h']
+            total_minutes_from_min_field = logs.aggregate(total_m=Coalesce(Sum('time_submitted_minutes'), 0, output_field=IntegerField()))['total_m']
             grand_total_minutes = (total_hours * 60) + total_minutes_from_min_field
-            
             display_total_hours = grand_total_minutes // 60
             display_total_minutes = grand_total_minutes % 60
 
             activity_summary_data.append({
                 'user_activity': ua,
                 'display_name': ua.get_display_name(),
-                'practice_type': ua.definition.get_practice_type_display(), # Corrected to access definition
+                'practice_type': ua.definition.get_practice_type_display(),
                 'total_malas_submitted': total_malas_submitted,
                 'total_mantras': total_mantras,
                 'total_practice_hours': display_total_hours,
@@ -69,16 +78,17 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'has_entries': logs.exists()
             })
             
-        recent_entries = LogEntry.objects.filter(
-            user=user
-        ).select_related(
-            'user_activity',
-            'user_activity__definition',
-        ).order_by('-entry_date', '-created_at')[:10]
+        recent_entries = LogEntry.objects.filter(user=user).select_related(
+            'user_activity', 'user_activity__definition'
+        ).order_by('-entry_date', '-created_at')[:5]
 
-        log_entry_form = LogEntryForm(user=user)
+        initial_log_form_data = {'entry_date': timezone.localdate()} # Default date to today
+        if selected_practice_for_log:
+            initial_log_form_data['user_activity'] = selected_practice_for_log
         
-        tracked_definition_ids = user_activities.filter(definition__isnull=False).values_list('definition_id', flat=True)
+        log_entry_form = LogEntryForm(user=user, initial=initial_log_form_data)
+        
+        tracked_definition_ids = user_activities.values_list('definition_id', flat=True)
         practice_select_form = PracticeSelectForm()
         practice_select_form.fields['definition'].queryset = PracticeDefinition.objects.filter(
             is_active=True
@@ -88,7 +98,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context['recent_entries'] = recent_entries
         context['log_entry_form'] = log_entry_form
         context['practice_select_form'] = practice_select_form
-        context['tracked_practices'] = user_activities
+        context['tracked_practices'] = user_activities # Now ordered by recency for the scroller
+        context['selected_practice_for_log'] = selected_practice_for_log
+
         return context
 
 class LogEntryCreateView(LoginRequiredMixin, CreateView):
@@ -100,26 +112,60 @@ class LogEntryCreateView(LoginRequiredMixin, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
+        # Set initial practice if available from a POST param (e.g. if form was submitted from dashboard)
+        if self.request.method == 'POST' and 'user_activity' in self.request.POST:
+             if 'initial' not in kwargs:
+                kwargs['initial'] = {}
+             try:
+                # Ensure user_activity POST value is valid and belongs to user
+                user_activity_instance = UserActivity.objects.get(pk=self.request.POST.get('user_activity'), user=self.request.user)
+                kwargs['initial']['user_activity'] = user_activity_instance
+             except (UserActivity.DoesNotExist, ValueError):
+                pass # Let form validation handle if it's truly invalid
+        elif 'initial' not in kwargs or 'user_activity' not in kwargs['initial']:
+            # Default to last logged or first practice if not in POST
+            last_log = LogEntry.objects.filter(user=self.request.user).order_by('-created_at').first()
+            if 'initial' not in kwargs:
+                kwargs['initial'] = {}
+            if last_log:
+                kwargs['initial']['user_activity'] = last_log.user_activity
+            else:
+                first_tracked = UserActivity.objects.filter(user=self.request.user, is_active=True).order_by('definition__name').first()
+                if first_tracked:
+                    kwargs['initial']['user_activity'] = first_tracked
+        
+        if 'initial' not in kwargs: # Ensure initial exists
+            kwargs['initial'] = {}
+        if 'entry_date' not in kwargs['initial']: # Default entry_date if not set
+            kwargs['initial']['entry_date'] = timezone.localdate()
+
         return kwargs
 
     def form_valid(self, form):
-        # form.instance.user = self.request.user # User is set in model's save method via user_activity
         messages.success(self.request, _("Log entry added successfully!"))
         return super().form_valid(form)
 
     def form_invalid(self, form):
         messages.error(self.request, _("Please correct the errors below."))
-        # Option 1: Render the dedicated form page with errors (current behavior)
-        # return super().form_invalid(form)
-
-        # Option 2: Re-render the dashboard with the invalid form
-        # This provides a more integrated UX if the form is primarily on the dashboard.
         dashboard_view = DashboardView()
-        dashboard_view.request = self.request # Set request for DashboardView's context
+        dashboard_view.request = self.request
         context = dashboard_view.get_context_data()
-        context['log_entry_form'] = form # Substitute the invalid form
-        return render(self.request, dashboard_view.template_name, context)
+        
+        # Preserve submitted form data for re-rendering
+        # Create a new form instance with the submitted POST data and user
+        error_form = LogEntryForm(self.request.POST, user=self.request.user)
+        context['log_entry_form'] = error_form
+        
+        # Try to set selected_practice_for_log based on what was submitted in the errored form
+        submitted_user_activity_id = self.request.POST.get('user_activity')
+        if submitted_user_activity_id:
+            try:
+                context['selected_practice_for_log'] = UserActivity.objects.get(pk=submitted_user_activity_id, user=self.request.user)
+            except (UserActivity.DoesNotExist, ValueError):
+                 # If invalid ID was submitted, default to what dashboard would normally show
+                pass # selected_practice_for_log from get_context_data will be used
 
+        return render(self.request, dashboard_view.template_name, context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -179,6 +225,7 @@ class LogEntryHistoryView(LoginRequiredMixin, ListView):
         context['page_title'] = _("Log Entry History")
         return context
 
+
 class UserActivityAddPracticeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         form = PracticeSelectForm(request.POST)
@@ -201,14 +248,11 @@ class UserActivityAddPracticeView(LoginRequiredMixin, View):
             except Exception as e: # Catch any other unexpected error
                 messages.error(request, _(f"An unexpected error occurred: {e}"))
         else:
-            # Collect form errors to display them
             error_message_list = []
-            for field, errors in form.errors.items():
-                for error in errors:
-                    error_message_list.append(f"{form.fields[field].label if field != '__all__' else ''}: {error}")
-            if not error_message_list and form.non_field_errors():
-                 for error in form.non_field_errors():
-                    error_message_list.append(str(error))
+            for field, errors_list in form.errors.items(): # errors is a list
+                for error in errors_list:
+                    field_label = form.fields[field].label if field != '__all__' else ''
+                    error_message_list.append(f"{field_label}: {error}" if field_label else str(error))
             
             if not error_message_list: # Fallback generic message
                  error_message_list.append(_("Invalid selection. Please choose from the list."))
