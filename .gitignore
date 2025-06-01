@@ -12,6 +12,7 @@ __pycache__/
 /logs
 /data
 postgresql
+postgresql/*
 .~*
 common/CACHE
 node_modules
