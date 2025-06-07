@@ -5,137 +5,6 @@
 
 {% block extra_head %}
     {{ block.super }}
-    <style>
-        .practice-scroller-container {
-            position: relative;
-        }
-        .practice-scroller {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none; /* Firefox */
-            padding-bottom: 5px; /* Make space for potential custom scrollbar if it's outside */
-            padding-left: 30px; 
-            padding-right: 30px;
-            justify-content: flex-start; 
-        }
-        .practice-scroller.center-items {
-            justify-content: center;
-        }
-        .practice-scroller::-webkit-scrollbar {
-            display: none; 
-        }
-        .practice-scroller-item {
-            flex: 0 0 auto;
-            scroll-snap-align: center;
-            padding: 0.75rem 1.5rem;
-            margin: 0 0.25rem; 
-            border-radius: var(--rounded-btn, 0.5rem); 
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out, border-color 0.2s ease-in-out;
-            font-size: 1.25rem; 
-            min-width: 180px; 
-            text-align: center;
-            white-space: nowrap; 
-            border: 1px solid oklch(var(--b3)/.4); 
-        }
-        .practice-scroller-item.selected {
-            background-color:var(--color-primary) !important; 
-            color: var(--color-primary-content) !important; 
-            font-weight: 600;
-            transform: scale(1.05);
-            border-color: oklch(var(--p)/.8) !important;
-        }
-        .practice-scroller-item:not(.selected):hover {
-            background-color: oklch(var(--b3));
-            border-color: oklch(var(--b3));
-        }
-        .practice-scroller-item:not(.selected) {
-            background-color: oklch(var(--b2)); 
-            color: oklch(var(--bc));
-        }
-
-        .practice-scroller-container::before,
-        .practice-scroller-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 5px; /* Align with scroller padding-bottom */
-            width: 80px; 
-            pointer-events: none;
-            z-index: 2;
-        }
-        .practice-scroller-container::before {
-            left: 0;
-            background: linear-gradient(to right, oklch(var(--b1)) 20%, oklch(var(--b1)/0) 100%);
-        }
-        .practice-scroller-container::after {
-            right: 0;
-            background: linear-gradient(to left, oklch(var(--b1)) 20%, oklch(var(--b1)/0) 100%);
-        }
-
-        /* Custom Scrollbar Indicator */
-        .custom-scrollbar-track {
-            height: 4px;
-            background-color: oklch(var(--b3)/.5); /* Light track */
-            border-radius: 2px;
-            margin-top: 8px; /* Space below scroller */
-            width: 100%;
-            overflow: hidden; /* Hide thumb if it overflows due to JS calc */
-        }
-        .custom-scrollbar-thumb {
-            height: 100%;
-            background-color: oklch(var(--p)); /* Primary color for thumb */
-            border-radius: 2px;
-            transition: width 0.1s ease-out, transform 0.1s ease-out; /* Smooth transitions */
-        }
-
-
-        .tabs .tab.tab-active {
-            background-color: oklch(var(--p)) !important;
-            color: oklch(var(--pc)) !important;
-            border-color: oklch(var(--p)) !important; /* For bordered tabs */
-        }
-         /* For tabs-lifted, the active tab might need more specific styling if the above doesn't cover it */
-        .tabs-lifted > .tab.tab-active, .tabs-lifted > .tab-active:focus, .tabs-lifted > .tab-active:hover {
-            background-color: oklch(var(--p)) !important;
-            color: oklch(var(--pc)) !important;
-        }
-
-
-        #malasCountDisplay { font-size: 2rem; font-weight: bold; min-width: 70px; text-align: center; color: oklch(var(--bc)); padding: 0.5rem 0; }
-        #malasDecrementBtn, #malasIncrementBtn { font-size: 1.25rem; }
-        #timeDisplay { color: oklch(var(--bc)); }
-        .range-success { --range-shdw: oklch(var(--su)); }
-        
-        #formattedDateDisplay {
-            display: block; /* Make it block to appear above the input */
-            font-size: 1.1rem; /* text-base or text-lg */
-            text-align: center;
-            padding: 0.25rem;
-            margin-bottom: 0.25rem; /* Space before the actual input */
-            color: oklch(var(--bc));
-        }
-        #{{ log_entry_form.entry_date.id_for_label }} { /* The actual input type="date" */
-            cursor: pointer;
-            background-color: oklch(var(--b2)); /* base-200 like background */
-            border: 1px solid oklch(var(--b3)); 
-            color: oklch(var(--bc)); /* Ensure text color is visible */
-            padding: 0.5rem;
-            border-radius: var(--rounded-btn, 0.5rem);
-            text-align: center; /* Center the browser's date text */
-            width: auto; /* Allow it to size to its content or be controlled by parent */
-            min-width: 200px; /* Decent minimum width */
-            margin: 0 auto; /* Center the input itself if its parent is wider */
-        }
-        /* Style for the date input arrows/calendar icon (browser-dependent) */
-        #{{ log_entry_form.entry_date.id_for_label }}::-webkit-calendar-picker-indicator {
-            cursor: pointer;
-            filter: invert(50%) sepia(50%) saturate(500%) hue-rotate(170deg); /* Example to make it more visible */
-        }
-
-    </style>
 {% endblock %}
 
 {% block content %}
@@ -195,16 +64,16 @@
                     <div class="tab-panels mt-4">
                         <div id="malasInputSection" class="space-y-3 hidden">
                             <div class="flex items-center justify-center w-full space-x-2">
-                                <button type="button" id="malasDecrementBtn" class="btn btn-primary btn-lg" style="flex-grow: 1; max-width: 30%;">–</button>
+                                <button type="button" id="malasDecrementBtn" class="btn btn-primary btn-lg flex-grow max-w-[30%]">–</button>
                                 <span id="malasCountDisplay" class="flex-grow text-center">0</span>
-                                <button type="button" id="malasIncrementBtn" class="btn btn-success btn-lg" style="flex-grow: 1; max-width: 30%;">+</button>
+                                <button type="button" id="malasIncrementBtn" class="btn btn-success btn-lg flex-grow max-w-[30%]">+</button>
                             </div>
                             {{ log_entry_form.malas_submitted.as_hidden }}
                             {% if log_entry_form.malas_submitted.errors %}<div class="text-error text-xs mt-1 text-center">{% for error in log_entry_form.malas_submitted.errors %}{{ error }}{% endfor %}</div>{% endif %}
                         </div>
 
                         <div id="timeInputSection" class="space-y-3 hidden">
-                            <div class="text-center text-xl font-medium" id="timeDisplay">0 {% translate "hr" %} 0 {% translate "min" %}</div>
+                            <div class="text-center text-xl font-medium" id="timeDisplay" data-hr-label="{% translate 'hr' %}" data-min-label="{% translate 'min' %}">0 {% translate "hr" %} 0 {% translate "min" %}</div>
                             <input type="range" min="0" max="300" value="0" step="10" class="range range-success w-full" id="timeSlider" />
                             <div class="hidden"> 
                                  {{ log_entry_form.time_submitted_hours }}
@@ -220,7 +89,7 @@
                     </div>
                     
                     <div class="form-control mt-6 text-center">
-                        <div id="formattedDateDisplay">{% translate "Select Date" %}</div>
+                        <div id="formattedDateDisplay" data-select-label="{% translate 'Select Date' %}">{% translate "Select Date" %}</div>
                         {{ log_entry_form.entry_date }}
                         {% if log_entry_form.entry_date.errors %}<div class="text-error text-xs mt-1 text-center">{% for error in log_entry_form.entry_date.errors %}{{ error }}{% endfor %}</div>{% endif %}
                     </div>
@@ -341,71 +210,5 @@
 
 {% block extra_js %}
     {{ block.super }}
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const practiceItems = document.querySelectorAll('.practice-scroller-item');
-        const practiceInput = document.querySelector('[name="{{ log_entry_form.user_activity.name }}"]');
-        practiceItems.forEach(item => {
-            item.addEventListener('click', () => {
-                practiceInput.value = item.dataset.practiceId;
-                practiceItems.forEach(i => i.classList.toggle('selected', i === item));
-            });
-        });
-
-        const tabs = document.querySelectorAll('#inputTypeTabsContainer [role="tab"]');
-        const sections = {
-            malas: document.getElementById('malasInputSection'),
-            time: document.getElementById('timeInputSection'),
-        };
-        function show(type) {
-            tabs.forEach(t => t.classList.toggle('tab-active', t.dataset.type === type));
-            sections.malas.classList.toggle('hidden', type !== 'malas');
-            sections.time.classList.toggle('hidden', type !== 'time');
-        }
-        tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.type)));
-        show('malas');
-
-        const malasInput = document.getElementById('{{ log_entry_form.malas_submitted.id_for_label }}');
-        const malasDisplay = document.getElementById('malasCountDisplay');
-        document.getElementById('malasIncrementBtn').addEventListener('click', () => {
-            malasInput.value = (parseInt(malasInput.value || 0) + 1);
-            malasDisplay.textContent = malasInput.value;
-        });
-        document.getElementById('malasDecrementBtn').addEventListener('click', () => {
-            malasInput.value = Math.max(0, parseInt(malasInput.value || 0) - 1);
-            malasDisplay.textContent = malasInput.value;
-        });
-        malasDisplay.textContent = malasInput.value || '0';
-
-        const hoursInput = document.getElementById('{{ log_entry_form.time_submitted_hours.id_for_label }}');
-        const minutesInput = document.getElementById('{{ log_entry_form.time_submitted_minutes.id_for_label }}');
-        const timeSlider = document.getElementById('timeSlider');
-        const timeDisplay = document.getElementById('timeDisplay');
-        function updateTime(total) {
-            const h = Math.floor(total / 60);
-            const m = total % 60;
-            hoursInput.value = h;
-            minutesInput.value = m;
-            timeDisplay.textContent = `${h} {% translate "hr" %} ${m} {% translate "min" %}`;
-        }
-        timeSlider.addEventListener('input', e => updateTime(parseInt(e.target.value)));
-        const startTotal = (parseInt(hoursInput.value) || 0) * 60 + (parseInt(minutesInput.value) || 0);
-        timeSlider.value = startTotal;
-        updateTime(startTotal);
-
-        const dateInput = document.getElementById('{{ log_entry_form.entry_date.id_for_label }}');
-        const dateDisplay = document.getElementById('formattedDateDisplay');
-        function updateDate() {
-            if (!dateInput.value) {
-                dateDisplay.textContent = '{% translate "Select Date" %}';
-                return;
-            }
-            const d = new Date(dateInput.value);
-            dateDisplay.textContent = d.toLocaleDateString(undefined, { day:'2-digit', month:'long', year:'numeric' });
-        }
-        dateInput.addEventListener('input', updateDate);
-        dateDisplay.addEventListener('click', () => { if (dateInput.showPicker) dateInput.showPicker(); });
-        updateDate();
-    });
-    </script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

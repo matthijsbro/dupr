@@ -44,7 +44,7 @@ class LogEntryForm(forms.ModelForm):
             'notes'
         ]
         widgets = {
-            'entry_date': forms.DateInput(attrs={'type': 'date'}),
+            'entry_date': forms.DateInput(attrs={'type': 'date', 'class': 'log-date-input'}),
             'notes': forms.Textarea(attrs={'rows': 3}),
         }
 
