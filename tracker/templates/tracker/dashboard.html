@@ -37,18 +37,25 @@
             {% else %}
                 <div class="mb-8">
                     <div class="practice-scroller-container">
-                        <div class="practice-scroller" id="practiceScroller">
+                        {% with tracked_practices|length as tp_len %}
+                        <div class="carousel w-full" id="practiceScroller">
                             {% for practice_ua in tracked_practices %}
-                                <div class="practice-scroller-item"
-                                     data-practice-id="{{ practice_ua.id }}"
-                                     data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
-                                     {{ practice_ua.get_display_name }}
+                                {% with curr=forloop.counter %}
+                                <div id="slide{{ curr }}" class="carousel-item relative w-full flex justify-center">
+                                    <div class="practice-scroller-item{% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected{% endif %}"
+                                         data-practice-id="{{ practice_ua.id }}"
+                                         data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
+                                         {{ practice_ua.get_display_name }}
+                                    </div>
+                                    <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
+                                        <a href="#slide{% if forloop.first %}{{ tp_len }}{% else %}{{ forloop.counter|add:'-1' }}{% endif %}" class="btn btn-circle">❮</a>
+                                        <a href="#slide{% if forloop.last %}1{% else %}{{ forloop.counter|add:'1' }}{% endif %}" class="btn btn-circle">❯</a>
+                                    </div>
                                 </div>
+                                {% endwith %}
                             {% endfor %}
                         </div>
-                        <div class="custom-scrollbar-track mt-2 mx-auto max-w-xs">
-                            <div class="custom-scrollbar-thumb" id="customScrollThumb"></div>
-                        </div>
+                        {% endwith %}
                     </div>
                 </div>
 

@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const practiceItems = document.querySelectorAll('.practice-scroller-item');
   const practiceInput = document.querySelector('input[name="user_activity"]');
+
+  function selectPractice(item) {
+    practiceInput.value = item.dataset.practiceId;
+    practiceItems.forEach(i => i.classList.toggle('selected', i === item));
+    item.scrollIntoView({behavior: 'instant', inline: 'center', block: 'nearest'});
+  }
+
   practiceItems.forEach(item => {
-    item.addEventListener('click', () => {
-      practiceInput.value = item.dataset.practiceId;
-      practiceItems.forEach(i => i.classList.toggle('selected', i === item));
-    });
+    item.addEventListener('click', () => selectPractice(item));
   });
+
+  const initialItem = document.querySelector(`.practice-scroller-item[data-practice-id="${practiceInput.value}"]`);
+  if (initialItem) {
+    selectPractice(initialItem);
+  }
 
   const tabs = document.querySelectorAll('#inputTypeTabsContainer [role="tab"]');
   const sections = {
