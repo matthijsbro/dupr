@@ -99,13 +99,15 @@ WSGI_APPLICATION = "dupr.wsgi.application"
 #     }
 # }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dupr',
-        'USER': 'dupr_user',
-        'PASSWORD': 'Upload-Sufferer-Brewery3-Pursuant',
-        'HOST': 'localhost',
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "dupr"),
+        "USER": os.environ.get("POSTGRES_USER", "dupr_user"),
+        "PASSWORD": os.environ.get(
+            "POSTGRES_PASSWORD", "Upload-Sufferer-Brewery3-Pursuant"
+        ),
+        "HOST": os.environ.get("POSTGRES_HOST", "db"),
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),
     }
 }
 
