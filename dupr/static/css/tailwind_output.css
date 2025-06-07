@@ -8,7 +8,6 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
     --color-red-500: oklch(63.7% 0.237 25.331);
-    --color-gray-300: oklch(87.2% 0.01 258.338);
     --color-gray-500: oklch(55.1% 0.027 264.364);
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-black: #000;
@@ -5862,9 +5861,6 @@
       border-color: color-mix(in oklab, var(--color-black) 50%, transparent);
     }
   }
-  .border-gray-300 {
-    border-color: var(--color-gray-300);
-  }
   .chat-bubble-accent {
     background-color: var(--color-accent);
     color: var(--color-accent-content);
@@ -7812,9 +7808,8 @@
   padding: 0.5rem;
   border-radius: var(--rounded-btn, 0.5rem);
   text-align: center;
-  width: auto;
-  min-width: 200px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
   position: absolute;
   inset: 0;
   opacity: 0;
