@@ -98,8 +98,8 @@
                         </div>
                     </div>
                     
-                    <div class="form-control mt-6 text-center">
-                        <div id="formattedDateDisplay" data-select-label="{% translate 'Select Date' %}">{% translate "Select Date" %}</div>
+                    <div class="form-control mt-6 text-center relative">
+                        <div id="formattedDateDisplay" class="cursor-pointer" data-select-label="{% translate 'Select Date' %}">{% translate "Select Date" %}</div>
                         {{ log_entry_form.entry_date }}
                         {% if log_entry_form.entry_date.errors %}<div class="text-error text-xs mt-1 text-center">{% for error in log_entry_form.entry_date.errors %}{{ error }}{% endfor %}</div>{% endif %}
                     </div>
