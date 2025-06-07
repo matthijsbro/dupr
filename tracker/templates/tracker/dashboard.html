@@ -42,7 +42,7 @@
                             {% for practice_ua in tracked_practices %}
                                 {% with curr=forloop.counter %}
                                 <div id="slide{{ curr }}" class="carousel-item relative flex justify-center rounded-full p-4">
-                                    <div class="practice-scroller-item w-full p-4 m-1 text-align-center cursor-pointer rounded-full border-1 border-(--color-base-300) {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
+                                    <div class="practice-scroller-item w-full p-4 m-1 text-align-center cursor-pointer rounded-full border-1 border-(--color-base-300) {% if practice_ua.definition.practice_type == 'collective_accumulation' %}collective-practice{% endif %} {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
                                          data-practice-id="{{ practice_ua.id }}"
                                          data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
                                          {{ practice_ua.get_display_name }}
@@ -144,9 +144,19 @@
                 <p class="text-sm font-semibold">{% translate "Currently tracking:" %}</p>
                 {% if tracked_practices.exists %}
                 <ul class="list-disc list-inside text-sm space-y-1">
-                    {% for tp in tracked_practices %}<li>{{ tp.get_display_name }}</li>{% endfor %}
+                    {% for tp in tracked_practices %}
+                    <li class="flex items-center justify-between gap-2">
+                        <span>{{ tp.get_display_name }}</span>
+                        <form method="post" action="{% url 'tracker:practice-stop' tp.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-xs btn-error">{% translate "Stop" %}</button>
+                        </form>
+                    </li>
+                    {% endfor %}
                 </ul>
-                {% else %}<p class="text-sm opacity-70">{% translate "No practices currently tracked." %}</p>{% endif %}
+                {% else %}
+                <p class="text-sm opacity-70">{% translate "No practices currently tracked." %}</p>
+                {% endif %}
             </div>
         </div>
 
@@ -165,7 +175,7 @@
                             </thead>
                             <tbody>
                             {% for summary in activity_summaries %}
-                                <tr>
+                                <tr {% if summary.user_activity.definition.practice_type == 'collective_accumulation' %}class="collective-practice"{% endif %}>
                                     <td>
                                         {{ summary.display_name }}
                                         <div class="text-xs opacity-70">{{ summary.practice_type }}</div>
