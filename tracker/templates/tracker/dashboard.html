@@ -205,7 +205,7 @@
 
                         <div id="timeInputSection" class="space-y-3 hidden">
                             <div class="text-center text-xl font-medium" id="timeDisplay">0 {% translate "hr" %} 0 {% translate "min" %}</div>
-                            <input type="range" min="0" max="240" value="0" step="10" class="range range-success w-full" id="timeSlider" />
+                            <input type="range" min="0" max="300" value="0" step="10" class="range range-success w-full" id="timeSlider" />
                             <div class="hidden"> 
                                  {{ log_entry_form.time_submitted_hours }}
                                  {{ log_entry_form.time_submitted_minutes }}
@@ -342,231 +342,70 @@
 {% block extra_js %}
     {{ block.super }}
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const practiceScroller = document.getElementById('practiceScroller');
-        const hiddenUserActivityInput = document.querySelector('[name="{{ log_entry_form.user_activity.name }}"]');
-        const customScrollThumb = document.getElementById('customScrollThumb');
-        
-        const inputTypeTabsContainer = document.getElementById('inputTypeTabsContainer');
-        const malasTabContent = document.getElementById('malasInputSection');
-        const timeTabContent = document.getElementById('timeInputSection');  
-        
-        const actualMalasInput = document.getElementById('{{ log_entry_form.malas_submitted.id_for_label }}');
-        const malasCountDisplay = document.getElementById('malasCountDisplay');
-        const malasDecrementBtn = document.getElementById('malasDecrementBtn'); 
-        const malasIncrementBtn = document.getElementById('malasIncrementBtn'); 
-
-        const timeSlider = document.getElementById('timeSlider');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const actualHoursInput = document.getElementById('{{ log_entry_form.time_submitted_hours.id_for_label }}');
-        const actualMinutesInput = document.getElementById('{{ log_entry_form.time_submitted_minutes.id_for_label }}');
-        
-        const formattedDateDisplay = document.getElementById('formattedDateDisplay');
-        const actualDateInput = document.getElementById('{{ log_entry_form.entry_date.id_for_label }}');
-
-        // --- Practice Scroller & Custom Scrollbar ---
-        function updateCustomScrollbar() {
-            if (!practiceScroller || !customScrollThumb) return;
-            const scrollableWidth = practiceScroller.scrollWidth - practiceScroller.clientWidth;
-            if (scrollableWidth <= 0) { // No scroll needed
-                customScrollThumb.style.width = '100%';
-                customScrollThumb.style.transform = `translateX(0px)`;
-                practiceScroller.parentElement.querySelector('.custom-scrollbar-track').style.display = 'none';
-                return;
-            }
-            practiceScroller.parentElement.querySelector('.custom-scrollbar-track').style.display = 'block';
-            const trackWidth = practiceScroller.parentElement.querySelector('.custom-scrollbar-track').clientWidth;
-            const thumbWidth = Math.max(20, (practiceScroller.clientWidth / practiceScroller.scrollWidth) * trackWidth); // Min thumb width
-            const scrollPercentage = practiceScroller.scrollLeft / scrollableWidth;
-            const thumbPosition = scrollPercentage * (trackWidth - thumbWidth);
-
-            customScrollThumb.style.width = `${thumbWidth}px`;
-            customScrollThumb.style.transform = `translateX(${thumbPosition}px)`;
-        }
-
-        function updateSelectedPracticeVisuals(selectedPracticeId) {
-            if (!practiceScroller) return;
-            let foundAndScrolled = false;
-            document.querySelectorAll('.practice-scroller-item').forEach(item => {
-                if (item.dataset.practiceId === selectedPracticeId) {
-                    item.classList.add('selected');
-                    if (!foundAndScrolled) {
-                        const scrollBehavior = practiceScroller.dataset.initialScrollDone ? 'smooth' : 'auto';
-                        const itemRect = item.getBoundingClientRect();
-                        const scrollerRect = practiceScroller.getBoundingClientRect();
-                        const scrollLeft = practiceScroller.scrollLeft + itemRect.left - scrollerRect.left - (scrollerRect.width / 2) + (itemRect.width / 2);
-                        practiceScroller.scrollTo({ left: scrollLeft, behavior: scrollBehavior });
-                        practiceScroller.dataset.initialScrollDone = 'true';
-                        foundAndScrolled = true;
-                    }
-                } else {
-                    item.classList.remove('selected');
-                }
+    document.addEventListener('DOMContentLoaded', () => {
+        const practiceItems = document.querySelectorAll('.practice-scroller-item');
+        const practiceInput = document.querySelector('[name="{{ log_entry_form.user_activity.name }}"]');
+        practiceItems.forEach(item => {
+            item.addEventListener('click', () => {
+                practiceInput.value = item.dataset.practiceId;
+                practiceItems.forEach(i => i.classList.toggle('selected', i === item));
             });
-            updateCustomScrollbar(); // Update scrollbar after potential scroll
-        }
-
-        function selectPractice(practiceId) {
-            if (hiddenUserActivityInput) hiddenUserActivityInput.value = practiceId;
-            updateSelectedPracticeVisuals(practiceId);
-        }
-
-        if (practiceScroller) {
-            const initialPracticeId = hiddenUserActivityInput ? hiddenUserActivityInput.value : null;
-            if (initialPracticeId) selectPractice(initialPracticeId);
-            else if (practiceScroller.firstElementChild) {
-                const firstPracticeId = practiceScroller.firstElementChild.dataset.practiceId;
-                if (firstPracticeId) selectPractice(firstPracticeId);
-            }
-
-            practiceScroller.addEventListener('click', function(event) {
-                const clickedItem = event.target.closest('.practice-scroller-item');
-                if (clickedItem && clickedItem.dataset.practiceId) selectPractice(clickedItem.dataset.practiceId);
-            });
-            practiceScroller.addEventListener('scroll', updateCustomScrollbar);
-            window.addEventListener('resize', updateCustomScrollbar); // Update on resize
-            
-            if (practiceScroller.scrollWidth <= practiceScroller.clientWidth) {
-                practiceScroller.classList.add('center-items');
-            } else {
-                practiceScroller.classList.remove('center-items');
-            }
-            updateCustomScrollbar(); // Initial call
-        }
-        
-        // --- Malas/Time Tabs ---
-        const tabs = inputTypeTabsContainer ? inputTypeTabsContainer.querySelectorAll('[role="tab"]') : [];
-        function switchTab(selectedType) {
-            tabs.forEach(tab => {
-                tab.classList.toggle('tab-active', tab.dataset.type === selectedType);
-                // Removed text-primary here, rely on DaisyUI's .tab-active for styling
-            });
-
-            if (selectedType === 'malas') {
-                malasTabContent.classList.remove('hidden');
-                timeTabContent.classList.add('hidden');
-                if (actualMalasInput && (actualMalasInput.value === "" || actualMalasInput.value === null) && malasCountDisplay) {
-                     malasCountDisplay.textContent = '0';
-                } else if (actualMalasInput && malasCountDisplay) {
-                     malasCountDisplay.textContent = actualMalasInput.value || '0';
-                }
-                if (timeSlider) timeSlider.value = 0;
-                if (actualHoursInput) actualHoursInput.value = 0;
-                if (actualMinutesInput) actualMinutesInput.value = 0;
-                updateTimeDisplayFromSlider(0);
-            } else { // time
-                malasTabContent.classList.add('hidden');
-                timeTabContent.classList.remove('hidden');
-                if (actualMalasInput) actualMalasInput.value = ''; 
-                if (malasCountDisplay) malasCountDisplay.textContent = '0';
-                updateTimeDisplayFromSlider(timeSlider ? parseInt(timeSlider.value) : 0);
-            }
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() { switchTab(this.dataset.type); });
         });
 
-        const initialHoursVal = actualHoursInput ? (parseInt(actualHoursInput.value) || 0) : 0;
-        const initialMinutesVal = actualMinutesInput ? (parseInt(actualMinutesInput.value) || 0) : 0;
-        const initialMalasVal = actualMalasInput ? (parseInt(actualMalasInput.value) || 0) : 0;
-        if ((initialHoursVal > 0 || initialMinutesVal > 0) && initialMalasVal === 0 && !(actualMalasInput && actualMalasInput.classList.contains('input-error'))) {
-            switchTab('time');
-        } else {
-            switchTab('malas');
+        const tabs = document.querySelectorAll('#inputTypeTabsContainer [role="tab"]');
+        const sections = {
+            malas: document.getElementById('malasInputSection'),
+            time: document.getElementById('timeInputSection'),
+        };
+        function show(type) {
+            tabs.forEach(t => t.classList.toggle('tab-active', t.dataset.type === type));
+            sections.malas.classList.toggle('hidden', type !== 'malas');
+            sections.time.classList.toggle('hidden', type !== 'time');
         }
+        tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.type)));
+        show('malas');
 
-        // --- Malas Controls ---
-        function updateMalasDisplayAndInput() {
-            if (!actualMalasInput || !malasCountDisplay) return;
-            const val = parseInt(actualMalasInput.value);
-            malasCountDisplay.textContent = isNaN(val) || val < 0 ? '0' : val;
-        }
-        if (malasDecrementBtn) {
-            malasDecrementBtn.addEventListener('click', () => {
-                if (!actualMalasInput) return;
-                let val = parseInt(actualMalasInput.value) || 0;
-                actualMalasInput.value = Math.max(0, val - 1);
-                updateMalasDisplayAndInput();
-            });
-        }
-        if (malasIncrementBtn) {
-            malasIncrementBtn.addEventListener('click', () => {
-                if (!actualMalasInput) return;
-                let val = parseInt(actualMalasInput.value) || 0;
-                actualMalasInput.value = val + 1; 
-                updateMalasDisplayAndInput();
-            });
-        }
-        if (actualMalasInput) updateMalasDisplayAndInput();
+        const malasInput = document.getElementById('{{ log_entry_form.malas_submitted.id_for_label }}');
+        const malasDisplay = document.getElementById('malasCountDisplay');
+        document.getElementById('malasIncrementBtn').addEventListener('click', () => {
+            malasInput.value = (parseInt(malasInput.value || 0) + 1);
+            malasDisplay.textContent = malasInput.value;
+        });
+        document.getElementById('malasDecrementBtn').addEventListener('click', () => {
+            malasInput.value = Math.max(0, parseInt(malasInput.value || 0) - 1);
+            malasDisplay.textContent = malasInput.value;
+        });
+        malasDisplay.textContent = malasInput.value || '0';
 
-        // --- Time Slider ---
-        function updateTimeDisplayFromSlider(totalMinutes) {
-            const hours = Math.floor(totalMinutes / 60);
-            const minutes = totalMinutes % 60;
-            if (timeDisplay) timeDisplay.textContent = `${hours} {% translate "hr" %} ${minutes} {% translate "min" %}`;
-            if (actualHoursInput) actualHoursInput.value = hours;
-            if (actualMinutesInput) actualMinutesInput.value = minutes;
+        const hoursInput = document.getElementById('{{ log_entry_form.time_submitted_hours.id_for_label }}');
+        const minutesInput = document.getElementById('{{ log_entry_form.time_submitted_minutes.id_for_label }}');
+        const timeSlider = document.getElementById('timeSlider');
+        const timeDisplay = document.getElementById('timeDisplay');
+        function updateTime(total) {
+            const h = Math.floor(total / 60);
+            const m = total % 60;
+            hoursInput.value = h;
+            minutesInput.value = m;
+            timeDisplay.textContent = `${h} {% translate "hr" %} ${m} {% translate "min" %}`;
         }
+        timeSlider.addEventListener('input', e => updateTime(parseInt(e.target.value)));
+        const startTotal = (parseInt(hoursInput.value) || 0) * 60 + (parseInt(minutesInput.value) || 0);
+        timeSlider.value = startTotal;
+        updateTime(startTotal);
 
-        if (timeSlider && actualHoursInput && actualMinutesInput) {
-            timeSlider.addEventListener('input', function() { updateTimeDisplayFromSlider(parseInt(this.value)); });
-            const currentHours = parseInt(actualHoursInput.value) || 0;
-            const currentMinutes = parseInt(actualMinutesInput.value) || 0;
-            const totalInitialMinutes = (currentHours * 60) + currentMinutes;
-            timeSlider.value = totalInitialMinutes > 240 ? 240 : totalInitialMinutes;
-            updateTimeDisplayFromSlider(parseInt(timeSlider.value));
-        }
-        
-        // --- Date Picker with Formatted Display ---
-        function formatJSDate(dateString) { 
-            if (!dateString) return "{% translate 'Click to select date' %}"; // Default placeholder
-            try {
-                const dateObj = new Date(dateString + 'T00:00:00'); // Ensure local timezone interpretation
-                if (isNaN(dateObj.getTime())) return "{% translate 'Invalid Date' %}";
-
-                const day = String(dateObj.getDate()).padStart(2, '0');
-                const monthNames = ["{% translate 'January' %}", "{% translate 'February' %}", "{% translate 'March' %}", "{% translate 'April' %}", "{% translate 'May' %}", "{% translate 'June' %}", "{% translate 'July' %}", "{% translate 'August' %}", "{% translate 'September' %}", "{% translate 'October' %}", "{% translate 'November' %}", "{% translate 'December' %}"];
-                const month = monthNames[dateObj.getMonth()];
-                const year = dateObj.getFullYear();
-                return `${day} ${month} ${year}`;
-            } catch (e) {
-                return "{% translate 'Error formatting date' %}";
+        const dateInput = document.getElementById('{{ log_entry_form.entry_date.id_for_label }}');
+        const dateDisplay = document.getElementById('formattedDateDisplay');
+        function updateDate() {
+            if (!dateInput.value) {
+                dateDisplay.textContent = '{% translate "Select Date" %}';
+                return;
             }
+            const d = new Date(dateInput.value);
+            dateDisplay.textContent = d.toLocaleDateString(undefined, { day:'2-digit', month:'long', year:'numeric' });
         }
-
-        if (actualDateInput && formattedDateDisplay) {
-            if (!actualDateInput.value) { // Set to today if no initial value from form
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, '0');
-                const day = String(today.getDate()).padStart(2, '0');
-                actualDateInput.value = `${year}-${month}-${day}`;
-            }
-            formattedDateDisplay.textContent = formatJSDate(actualDateInput.value);
-            
-            formattedDateDisplay.addEventListener('click', () => {
-                try {
-                    if (typeof actualDateInput.showPicker === "function") {
-                        actualDateInput.showPicker();
-                    } else {
-                        // Fallback for browsers that don't support showPicker on hidden/text input
-                        actualDateInput.focus(); // This might bring up keyboard with date options on mobile
-                        console.warn("Could not programmatically open date picker via showPicker(). Focus fallback used.");
-                    }
-                } catch (e) {
-                    actualDateInput.focus();
-                    console.warn("Error trying to open date picker. Focus fallback used.", e);
-                }
-            });
-
-            actualDateInput.addEventListener('change', function() {
-                formattedDateDisplay.textContent = formatJSDate(this.value);
-            });
-             actualDateInput.addEventListener('input', function() { // For real-time update if user types (though less likely for date)
-                formattedDateDisplay.textContent = formatJSDate(this.value);
-            });
-        }
+        dateInput.addEventListener('input', updateDate);
+        dateDisplay.addEventListener('click', () => { if (dateInput.showPicker) dateInput.showPicker(); });
+        updateDate();
     });
     </script>
 {% endblock %}
