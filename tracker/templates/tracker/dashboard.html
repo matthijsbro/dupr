@@ -27,7 +27,7 @@
 
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body p-6 md:p-8">
-            <h2 class="card-title text-3xl mb-6 text-center">{% translate "Log Your Practice" %}</h2>
+            <h2 class="card-title text-3xl mb-6 text-center">{% translate "Practice" %}</h2>
 
             {% if not tracked_practices.exists %}
                 <div class="alert alert-info justify-center">
@@ -41,19 +41,22 @@
                         <div class="carousel w-full" id="practiceScroller">
                             {% for practice_ua in tracked_practices %}
                                 {% with curr=forloop.counter %}
-                                <div id="slide{{ curr }}" class="carousel-item relative w-full flex justify-center">
-                                    <div class="practice-scroller-item{% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected{% endif %}"
+                                <div id="slide{{ curr }}" class="carousel-item relative flex justify-center rounded-full p-4">
+                                    <div class="practice-scroller-item w-full p-4 m-1 text-align-center cursor-pointer rounded-full border-1 border-(--color-base-300) {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
                                          data-practice-id="{{ practice_ua.id }}"
                                          data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
                                          {{ practice_ua.get_display_name }}
                                     </div>
-                                    <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-                                        <a href="#slide{% if forloop.first %}{{ tp_len }}{% else %}{{ forloop.counter|add:'-1' }}{% endif %}" class="btn btn-circle">❮</a>
-                                        <a href="#slide{% if forloop.last %}1{% else %}{{ forloop.counter|add:'1' }}{% endif %}" class="btn btn-circle">❯</a>
-                                    </div>
                                 </div>
                                 {% endwith %}
                             {% endfor %}
+                        </div>
+                        <div class="flex w-full justify-center gap-2 py-2">
+                            {% for practice_ua in tracked_practices %}
+                                {% with curr=forloop.counter %}
+                                <a href="#slide{{ curr }}" class="btn btn-xs">{{ curr }}</a>
+                                {% endwith %}   
+                            {% endfor %}    
                         </div>
                         {% endwith %}
                     </div>
@@ -64,8 +67,8 @@
                     {{ log_entry_form.user_activity.as_hidden }}
                     
                     <div role="tablist" class="tabs tabs-bordered tabs-lg justify-center" id="inputTypeTabsContainer">
-                        <a role="tab" class="tab" data-type="malas">{% translate "Malas" %}</a>
-                        <a role="tab" class="tab" data-type="time">{% translate "Time" %}</a>
+                        <a role="tab" class="tab rounded-full border-1 border-(--color-base-300) m-2" data-type="malas">{% translate "Malas" %}</a>
+                        <a role="tab" class="tab rounded-full border-1 border-(--color-base-300) m-2" data-type="time">{% translate "Time" %}</a>
                     </div>
                     
                     <div class="tab-panels mt-4">

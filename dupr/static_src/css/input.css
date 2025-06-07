@@ -61,31 +61,38 @@
 .practice-scroller-item {
     flex: 0 0 auto;
     scroll-snap-align: center;
-    padding: 0.75rem 1.5rem;
-    margin: 0 0.25rem;
-    border-radius: var(--rounded-btn, 0.5rem);
-    cursor: pointer;
+    /* padding: 0.75rem 1.5rem; */
+    /* margin: 0 0.25rem; */
+    /* border-radius: var(--rounded-btn, 0.5rem); */
+    /* cursor: pointer; */
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.1s ease-in-out, border-color 0.2s ease-in-out;
-    font-size: 1.25rem;
-    min-width: 180px;
-    text-align: center;
+    /* font-size: 1.25rem; */
+    /* min-width: 180px; */
+    /* text-align: center; */
     white-space: nowrap;
-    border: 1px solid oklch(var(--b3)/.4);
+    /* border: 1px solid oklch(var(--b3)/.4); */
 }
 .practice-scroller-item.selected {
     background-color: var(--color-primary) !important;
     color: var(--color-primary-content) !important;
-    font-weight: 600;
+    /* font-weight: 600; */
+    /* transform: scale(1.05); */
+    /* border-color: oklch(var(--p)/.8) !important; */
+}
+.practice-scroller-item.selected:hover {
     transform: scale(1.05);
-    border-color: oklch(var(--p)/.8) !important;
 }
 .practice-scroller-item:not(.selected):hover {
-    background-color: oklch(var(--b3));
-    border-color: oklch(var(--b3));
+    /* background-color: oklch(var(--b3)); */
+    /* border-color: oklch(var(--b3)); */
+    transform: scale(1.05);
+    background-color: var(--color-primary); 
+    color:var(--color-primary-content);
 }
 .practice-scroller-item:not(.selected) {
-    background-color: oklch(var(--b2));
-    color: oklch(var(--bc));
+    /* background-color: oklch(var(--b2)); */
+    /* color: oklch(var(--bc)); */
+    color: var(--color-gray-500);
 }
 .practice-scroller-container::before,
 .practice-scroller-container::after {
@@ -120,9 +127,13 @@
     transition: width 0.1s ease-out, transform 0.1s ease-out;
 }
 .tabs .tab.tab-active {
-    background-color: oklch(var(--p)) !important;
-    color: oklch(var(--pc)) !important;
-    border-color: oklch(var(--p)) !important;
+    /* background-color: var(--color-primary) !important; */
+    color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.tab:hover {
+  transform: scale(1.05);
 }
 .tabs-lifted > .tab.tab-active,
 .tabs-lifted > .tab-active:focus,
