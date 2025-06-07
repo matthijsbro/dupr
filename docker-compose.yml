@@ -8,3 +8,26 @@ services:
       - ./postgresdata/data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  wagtail:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: gunicorn dupr.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app # Mount your Wagtail project directory into the container
+      - static_volume:/app/static
+      - media_volume:/app/media
+    env_file:
+      - .env # For sensitive environment variables
+    environment:
+      DATABASE_URL: localhost:5432
+      DJANGO_SETTINGS_MODULE: dupr.settings.production # Or whatever your production settings file is
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      # Add other production-specific environment variables here
+    depends_on:
+      db:
+        condition: service_healthy # Ensure database is ready before starting Wagtail
+    ports:
+      - "8000:8000" # Expose Wagtail on port 8000
+    restart: always
