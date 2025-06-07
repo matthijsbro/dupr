@@ -5862,9 +5862,6 @@
       border-color: color-mix(in oklab, var(--color-black) 50%, transparent);
     }
   }
-  .border-gray-300 {
-    border-color: var(--color-gray-300);
-  }
   .chat-bubble-accent {
     background-color: var(--color-accent);
     color: var(--color-accent-content);
@@ -7816,7 +7813,9 @@
   min-width: 200px;
   margin: 0 auto;
   position: absolute;
-  inset: 0;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   opacity: 0;
   pointer-events: none;
 }
