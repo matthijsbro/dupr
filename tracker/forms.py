@@ -53,9 +53,11 @@ class LogEntryForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if user:
-            self.fields['user_activity'].queryset = UserActivity.objects.filter(
-                user=user, is_active=True
-            ).select_related('definition') # Optimize query
+            self.fields['user_activity'].queryset = (
+                UserActivity.objects.filter(
+                    user=user, is_active=True, definition__is_active=True
+                ).select_related("definition")
+            )  # Optimize query
 
         # Set initial values to None if instance is not provided (CreateView)
         # to make placeholders visible and avoid "0" appearing initially.

@@ -37,11 +37,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             user_activity=OuterRef('pk')
         ).order_by('-created_at').values('created_at')[:1]
 
-        user_activities = UserActivity.objects.filter(
-            user=user, is_active=True
-        ).select_related('definition').annotate(
-            last_log_created_at=Subquery(most_recent_log_entry_subquery)
-        ).order_by(F('last_log_created_at').desc(nulls_last=True), 'definition__name')
+        user_activities = (
+            UserActivity.objects.filter(
+                user=user, is_active=True, definition__is_active=True
+            )
+            .select_related("definition")
+            .annotate(
+                last_log_created_at=Subquery(most_recent_log_entry_subquery)
+            )
+            .order_by(F("last_log_created_at").desc(nulls_last=True), "definition__name")
+        )
 
 
         # Determine the practice for the log form:
@@ -50,15 +55,35 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         # 3. First practice in the (now sorted) user_activities list
         selected_practice_for_log = None # Will be set below
 
-        last_log_entry_for_user = LogEntry.objects.filter(user=user).order_by('-created_at').first()
-        if last_log_entry_for_user:
+        last_log_entry_for_user = (
+            LogEntry.objects.filter(user=user)
+            .select_related("user_activity", "user_activity__definition")
+            .order_by("-created_at")
+            .first()
+        )
+        if (
+            last_log_entry_for_user
+            and last_log_entry_for_user.user_activity.is_active
+            and last_log_entry_for_user.user_activity.definition.is_active
+        ):
             selected_practice_for_log = last_log_entry_for_user.user_activity
         elif user_activities.exists():
             selected_practice_for_log = user_activities.first()
 
         activity_summary_data = []
-        for ua in UserActivity.objects.filter(user=user, is_active=True).select_related('definition').order_by('definition__name'): # Keep original order for summary
-            logs = LogEntry.objects.filter(user_activity=ua)
+        for ua in (
+            UserActivity.objects.filter(
+                user=user, is_active=True, definition__is_active=True
+            )
+            .select_related("definition")
+            .order_by("definition__name")
+        ):  # Keep original order for summary
+            if ua.definition.practice_type == "collective_accumulation":
+                logs = LogEntry.objects.filter(
+                    user_activity__definition=ua.definition
+                )
+            else:
+                logs = LogEntry.objects.filter(user_activity=ua)
             total_malas_submitted = logs.aggregate(total_malas=Coalesce(Sum('malas_submitted'), 0, output_field=IntegerField()))['total_malas']
             total_mantras = total_malas_submitted * 108
             total_hours = logs.aggregate(total_h=Coalesce(Sum('time_submitted_hours'), 0, output_field=IntegerField()))['total_h']
@@ -124,13 +149,30 @@ class LogEntryCreateView(LoginRequiredMixin, CreateView):
                 pass # Let form validation handle if it's truly invalid
         elif 'initial' not in kwargs or 'user_activity' not in kwargs['initial']:
             # Default to last logged or first practice if not in POST
-            last_log = LogEntry.objects.filter(user=self.request.user).order_by('-created_at').first()
+            last_log = (
+                LogEntry.objects.filter(
+                    user=self.request.user,
+                    user_activity__is_active=True,
+                    user_activity__definition__is_active=True,
+                )
+                .select_related("user_activity")
+                .order_by("-created_at")
+                .first()
+            )
             if 'initial' not in kwargs:
                 kwargs['initial'] = {}
             if last_log:
                 kwargs['initial']['user_activity'] = last_log.user_activity
             else:
-                first_tracked = UserActivity.objects.filter(user=self.request.user, is_active=True).order_by('definition__name').first()
+                first_tracked = (
+                    UserActivity.objects.filter(
+                        user=self.request.user,
+                        is_active=True,
+                        definition__is_active=True,
+                    )
+                    .order_by("definition__name")
+                    .first()
+                )
                 if first_tracked:
                     kwargs['initial']['user_activity'] = first_tracked
         
@@ -231,32 +273,73 @@ class UserActivityAddPracticeView(LoginRequiredMixin, View):
         form = PracticeSelectForm(request.POST)
         user = request.user
 
-        tracked_definition_ids = UserActivity.objects.filter(user=user, definition__isnull=False).values_list('definition_id', flat=True)
-        form.fields['definition'].queryset = PracticeDefinition.objects.filter(is_active=True).exclude(pk__in=tracked_definition_ids)
+        tracked_definition_ids = UserActivity.objects.filter(
+            user=user, definition__isnull=False
+        ).values_list("definition_id", flat=True)
+        form.fields["definition"].queryset = PracticeDefinition.objects.filter(
+            is_active=True
+        ).exclude(pk__in=tracked_definition_ids)
 
         if form.is_valid():
-            definition = form.cleaned_data['definition']
+            definition = form.cleaned_data["definition"]
             try:
-                UserActivity.objects.create(
+                ua, created = UserActivity.objects.get_or_create(
                     user=user,
                     definition=definition,
-                    is_active=True
+                    defaults={"is_active": True},
                 )
-                messages.success(request, _(f"Started tracking '{definition.name}'. You can now add log entries for it."))
-            except IntegrityError: # Handles the unique_together constraint
-                messages.warning(request, _(f"You are already tracking '{definition.name}'."))
-            except Exception as e: # Catch any other unexpected error
+                if created:
+                    messages.success(
+                        request,
+                        _(f"Started tracking '{definition.name}'. You can now add log entries for it."),
+                    )
+                else:
+                    if ua.is_active:
+                        messages.warning(
+                            request,
+                            _(f"You are already tracking '{definition.name}'."),
+                        )
+                    else:
+                        ua.is_active = True
+                        ua.save()
+                        messages.success(
+                            request,
+                            _(f"Resumed tracking '{definition.name}'."),
+                        )
+            except Exception as e:  # Catch any other unexpected error
                 messages.error(request, _(f"An unexpected error occurred: {e}"))
         else:
             error_message_list = []
-            for field, errors_list in form.errors.items(): # errors is a list
+            for field, errors_list in form.errors.items():  # errors is a list
                 for error in errors_list:
-                    field_label = form.fields[field].label if field != '__all__' else ''
-                    error_message_list.append(f"{field_label}: {error}" if field_label else str(error))
-            
-            if not error_message_list: # Fallback generic message
-                 error_message_list.append(_("Invalid selection. Please choose from the list."))
+                    field_label = (
+                        form.fields[field].label if field != "__all__" else ""
+                    )
+                    error_message_list.append(
+                        f"{field_label}: {error}" if field_label else str(error)
+                    )
+
+            if not error_message_list:  # Fallback generic message
+                error_message_list.append(
+                    _("Invalid selection. Please choose from the list.")
+                )
 
             messages.error(request, " ".join(error_message_list))
-        
-        return HttpResponseRedirect(reverse_lazy('tracker:dashboard'))
+
+        return HttpResponseRedirect(reverse_lazy("tracker:dashboard"))
+
+
+class UserActivityStopTrackingView(LoginRequiredMixin, UserOwnsObjectMixin, View):
+    model = UserActivity
+
+    def get_object(self):
+        return UserActivity.objects.get(pk=self.kwargs["pk"])
+
+    def post(self, request, *args, **kwargs):
+        ua = self.get_object()
+        ua.is_active = False
+        ua.save()
+        messages.success(
+            request, _(f"Stopped tracking '{ua.get_display_name()}'.")
+        )
+        return HttpResponseRedirect(reverse_lazy("tracker:dashboard"))
