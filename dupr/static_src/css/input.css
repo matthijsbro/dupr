@@ -38,6 +38,10 @@
   }
   
   /* Dashboard styles */
+.carousel-item {
+  width:40%
+}
+
 .practice-scroller-container {
     position: relative;
 }

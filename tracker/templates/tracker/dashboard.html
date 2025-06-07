@@ -41,8 +41,8 @@
                         <div class="carousel w-full" id="practiceScroller">
                             {% for practice_ua in tracked_practices %}
                                 {% with curr=forloop.counter %}
-                                <div id="slide{{ curr }}" class="carousel-item relative flex justify-center rounded-full p-4">
-                                    <div class="practice-scroller-item w-full p-4 m-1 text-align-center cursor-pointer rounded-full border-1 border-(--color-base-300) {% if practice_ua.definition.practice_type == 'collective_accumulation' %}collective-practice{% endif %} {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
+                                <div id="slide{{ curr }}" class="carousel-item relative flex text-center rounded-full p-4">
+                                    <div class="practice-scroller-item w-full p-4 m-1 cursor-pointer rounded-full border-1 border-(--color-base-300) {% if practice_ua.definition.practice_type == 'collective_accumulation' %}collective-practice{% endif %} {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
                                          data-practice-id="{{ practice_ua.id }}"
                                          data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
                                          {{ practice_ua.get_display_name }}
