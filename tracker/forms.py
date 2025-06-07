@@ -110,7 +110,7 @@ class PracticeSelectForm(forms.Form):
     """Form for selecting a predefined practice to start tracking."""
     definition = forms.ModelChoiceField(
         queryset=PracticeDefinition.objects.filter(is_active=True),
-        label=_("Select Practice to Track"),
-        widget=forms.Select(attrs={'class': 'form-select'}),
-        help_text=_("Choose a practice set up by the site admin.")
+        label=_("Select practice"),
+        widget=forms.Select(attrs={'class': 'bg-base-100 form-select w-full rounded-full p-2 border-1 border-(--color-base-300)'}),
+        help_text=_("Choose a practice")
     )

@@ -42,7 +42,7 @@
                             {% for practice_ua in tracked_practices %}
                                 {% with curr=forloop.counter %}
                                 <div id="slide{{ curr }}" class="carousel-item relative flex text-center rounded-full p-4">
-                                    <div class="practice-scroller-item w-full p-4 m-1 cursor-pointer rounded-full border-1 border-(--color-base-300) {% if practice_ua.definition.practice_type == 'collective_accumulation' %}collective-practice{% endif %} {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
+                                    <div class="bg-base-100 practice-scroller-item w-full p-4 m-1 cursor-pointer rounded-full border-1 border-(--color-base-300) {% if practice_ua.definition.practice_type == 'collective_accumulation' %}collective-practice{% endif %} {% if selected_practice_for_log and practice_ua.id == selected_practice_for_log.id %} selected {% endif %} hover:bg-(--color-primary) hover:text-(--color-primary-content)"
                                          data-practice-id="{{ practice_ua.id }}"
                                          data-practice-name="{{ practice_ua.get_display_name|escapejs }}">
                                          {{ practice_ua.get_display_name }}
@@ -122,23 +122,23 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="card bg-base-200 shadow-md mt-4">
             <div class="card-body">
-                <h3 class="card-title">{% translate "Manage Tracked Practices" %}</h3>
+                <h3 class="card-title">{% translate "Manage tracked practices" %}</h3>
                 {% if practice_select_form.fields.definition.queryset.exists %}
                     <form method="post" action="{% url 'tracker:practice-add' %}" class="space-y-3">
                         {% csrf_token %}
                         <div class="form-control w-full">
-                            <label for="{{ practice_select_form.definition.id_for_label }}" class="label">
+        <!--                     <label for="{{ practice_select_form.definition.id_for_label }}" class="label">
                                 <span class="label-text">{{ practice_select_form.definition.label }}</span>
-                            </label>
+                            </label> -->
                             {# Assuming this renders a select dropdown that DaisyUI styles #}
                             {{ practice_select_form.definition }} 
-                            {% if practice_select_form.definition.help_text %}<div class="label"><span class="label-text-alt">{{ practice_select_form.definition.help_text|safe }}</span></div>{% endif %}
+                            <!-- {% if practice_select_form.definition.help_text %}<div class="label"><span class="label-text-alt">{{ practice_select_form.definition.help_text|safe }}</span></div>{% endif %} -->
                             {% for error in practice_select_form.definition.errors %}<div class="label"><span class="label-text-alt text-error">{{error}}</span></div>{% endfor %}
                         </div>
-                        <button type="submit" class="btn btn-accent btn-sm w-full">{% translate "Start Tracking Selected" %}</button>
+                        <button type="submit" class="btn btn-accent btn-sm w-full">{% translate "Add practice" %}</button>
                     </form>
                 {% else %}
-                    <p class="text-sm opacity-70">{% translate "All available practices are being tracked or none are defined." %}</p>
+                    <p class="text-sm opacity-70">{% translate "All available practices are being tracked." %}</p>
                 {% endif %}
                 <div class="divider my-3"></div>
                 <p class="text-sm font-semibold">{% translate "Currently tracking:" %}</p>
