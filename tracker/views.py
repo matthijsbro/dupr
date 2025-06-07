@@ -73,7 +73,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         activity_summary_data = []
         for ua in (
             UserActivity.objects.filter(
-                user=user, definition__is_active=True
+                user=user
             )
             .select_related("definition")
             .order_by("definition__name")
