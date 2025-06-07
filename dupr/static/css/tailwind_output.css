@@ -7686,8 +7686,11 @@
     }
   }
 }
-.carousel-item {
-  width: 40%;
+.btn-accent, .btn-error {
+  --btn-color: var(--color-primary);
+}
+.card-body :where(p) {
+  flex-grow: 0;
 }
 .practice-scroller-container {
   position: relative;

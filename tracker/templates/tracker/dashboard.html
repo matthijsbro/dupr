@@ -25,7 +25,7 @@
         {% endfor %}
     {% endif %}
 
-    <div class="card bg-base-100 shadow-xl">
+    <div class="card bg-base-200 shadow-md">
         <div class="card-body p-6 md:p-8">
             <h2 class="card-title text-3xl mb-6 text-center">{% translate "Practice" %}</h2>
 
@@ -120,7 +120,7 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="card bg-base-100 shadow-md mt-4">
+        <div class="card bg-base-200 shadow-md mt-4">
             <div class="card-body">
                 <h3 class="card-title">{% translate "Manage Tracked Practices" %}</h3>
                 {% if practice_select_form.fields.definition.queryset.exists %}
@@ -160,7 +160,7 @@
             </div>
         </div>
 
-        <div class="card bg-base-100 shadow-md mt-4">
+        <div class="card bg-base-200 shadow-md mt-4">
              <div class="card-body">
                 <h3 class="card-title">{% translate "Practice Summaries" %}</h3>
                 {% if activity_summaries %}
@@ -202,9 +202,9 @@
             </div>
         </div>
 
-        <div class="card bg-base-100 shadow-md mt-4">
+        <div class="card bg-base-200 shadow-md mt-4">
             <div class="card-body">
-                <div class="flex justify-between items-center mb-2"><h3 class="card-title">{% translate "Recent Entries" %}</h3><a href="{% url 'tracker:logentry-history' %}" class="btn btn-ghost btn-xs">{% translate "View All" %}</a></div>
+                <div class="flex justify-between items-center mb-2"><h3 class="card-title">{% translate "Recent Entries" %}</h3><a href="{% url 'tracker:logentry-history' %}" class="btn btn-ghost btn-s text-primary">{% translate "View All" %}</a></div>
                 {% if recent_entries %}
                     <ul class="space-y-2">
                     {% for entry in recent_entries %}
