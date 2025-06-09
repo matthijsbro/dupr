@@ -30,6 +30,16 @@ DATABASES = {
     }
 }
 
+
+# --- EMAIL CONFIGURATION ---
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True  # Use TLS encryption
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+
 # --- STATIC AND MEDIA FILE CONFIGURATION ---
 # These paths are relative to your BASE_DIR. Assuming BASE_DIR is in
 # 'dupr/settings', '../' goes up to the 'dupr/' directory, and a
