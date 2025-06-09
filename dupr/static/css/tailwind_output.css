@@ -7686,6 +7686,9 @@
     }
   }
 }
+input {
+  border: 1px solid;
+}
 .btn-accent, .btn-error {
   --btn-color: var(--color-primary);
 }
