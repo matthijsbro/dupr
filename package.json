@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "tailwindcss -i ./dupr/static_src/css/input.css -o ./dupr/static/css/tailwind_output.css",
-    "watch:css": "tailwindcss -i ./dupr/static_src/css/input.css -o ./dupr/static/css/tailwind_output.css --watch",
+    "build:css": "tailwindcss -i ./dupr/static_src/css/input.css -o ./dupr/static/css/tailwind_output.css --content './**/*.html'",
+    "watch:css": "tailwindcss -i ./dupr/static_src/css/input.css -o ./dupr/static/css/tailwind_output.css --content './**/*.html' --watch",
     "dev": "concurrently \"npm run watch:css\" \"python manage.py runserver\""
   },
   "repository": {

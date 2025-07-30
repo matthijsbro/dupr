@@ -3468,11 +3468,8 @@
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
-  .right-\[25\%\] {
-    right: 25%;
-  }
-  .right-\[50\%\] {
-    right: 50%;
+  .right-\[10\%\] {
+    right: 10%;
   }
   .dock-sm {
     height: calc(0.25rem * 14);
@@ -3522,12 +3519,6 @@
     .dock-label {
       font-size: 0.625rem;
     }
-  }
-  .left-1\/2 {
-    left: calc(1/2 * 100%);
-  }
-  .left-\[25\%\] {
-    left: 25%;
   }
   .file-input {
     cursor: pointer;
@@ -5568,10 +5559,6 @@
   }
   .flex-grow {
     flex-grow: 1;
-  }
-  .-translate-x-1\/2 {
-    --tw-translate-x: calc(calc(1/2 * 100%) * -1);
-    translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1/2 * 100%) * -1);
