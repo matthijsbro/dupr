@@ -17,7 +17,7 @@
     {% endif %}
     {% if page.hero_quote %}
       {# Positioning with Tailwind: absolute, top-1/2, left-1/2, translate-x/y #}
-      <div class="absolute top-1/2 right-[10%] -translate-y-1/2 p-4 md:p-6 text-white bg-black bg-opacity-60 max-w-md rounded-lg shadow-lg" >
+      <div class="absolute top-1/2 right-[10%] -translate-y-1/2 p-4 md:p-6 text-white bg-sky-600/30 backdrop-blur-md max-w-md rounded-lg shadow-lg" >
         <blockquote class="text-lg md:text-xl italic">
           {{ page.hero_quote }}
         </blockquote>
@@ -39,25 +39,30 @@
     {% endfor %}
   </div>
 
-  {# Replace Bootstrap row/col with Tailwind Grid #}
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"> {# Responsive grid with gaps #}
     {% for activity_ref in page.get_featured_activities %}
       {% if activity_ref %}
         {# Use DaisyUI Card component #}
         <div class="card bg-base-200 shadow-xl h-full"> {# Use DaisyUI card classes, adjusted background, added shadow, ensure full height #}
           {% if activity_ref.main_image %}
-            <figure> {# DaisyUI card figure element #}
-              {% image activity_ref.main_image fill-600x400 as activity_img %} {# Increased size slightly #}
-              {# No extra classes usually needed on img within <figure> for DaisyUI cards #}
+            <figure class="w-full h-60 md:h-72 lg:h-80 overflow-hidden"> {# Fixed height; adjust as needed #}
+              {% image activity_ref.main_image fill-600x400 as activity_img %}
               <img
                 src="{{ activity_img.url }}"
                 alt="{{ activity_img.alt }}"
+                class="w-full h-full object-cover object-center block"
+                loading="lazy"
               />
             </figure>
+          {% else %}
+            <div class="h-60 md:h-72 lg:h-80 bg-gray-200 flex items-center justify-center"> {# Placeholder if no image #}
+              <span class="text-gray-500">No Image Available</span>
+            </div>
           {% endif %}
           {# Use flex-col to allow mt-auto on button parent #}
           <div class="card-body flex flex-col">
-            <h2 class="card-title">{{ activity_ref.title }}</h2>
+            <h2 class="card-title font-light">{{ activity_ref.title }}</h2>
             <p class="text-base-content text-opacity-80 mb-4">{{ activity_ref.intro }}</p> {# Use theme text color with opacity #}
             {# card-actions pushes content (button) to the end #}
             <div class="card-actions justify-end mt-auto"> {# mt-auto pushes button block down #}

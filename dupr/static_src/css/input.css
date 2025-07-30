@@ -38,6 +38,13 @@
   }
   
   /* Dashboard styles */
+
+ a {
+    color:var(--color-primary);
+ } 
+ a.btn {
+    color:white;
+ }
 .carousel-item {}
 
 
