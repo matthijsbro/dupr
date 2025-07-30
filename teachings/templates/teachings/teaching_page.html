@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags %}
 
+{% block title %}{{ page.title }}{% endblock %}
+
 {% block content %}
-<article class="teaching-page">
-  <header class="teaching-header">
-    <h1>{{ page.title }}</h1>
+  <div class="max-w-screen-xl mx-auto bg-white">
     {% if page.header_image %}
-      {% image page.header_image fill-1200x400 as header_img %}
-      <img src="{{ header_img.url }}" alt="{{ page.title }}" class="img-fluid mb-4">
-    {% endif %}
-    {% if page.categories.all %}
-      <div class="categories mb-3">
-        <strong>Categories:</strong>
-        {% for category in page.categories.all %}
-          <span class="badge bg-secondary">{{ category.name }}</span>
-        {% endfor %}
+      <div class="w-full">
+        {% image page.header_image fill-1600x600 as header_img %}
+        <img
+          src="{{ header_img.url }}"
+          alt="{{ page.title }}"
+          class="w-full h-auto object-contain bg-white block"
+          loading="lazy"
+        />
       </div>
     {% endif %}
-  </header>
-  <div class="teaching-body">
-    {% for block in page.body %}
-      {% include_block block %}
-    {% endfor %}
+    <div class="px-0 md:px-12 py-8 bg-white">
+      <h1 class="text-4xl font-light text-left mb-4">{{ page.title }}</h1>
+      {% if page.categories.all %}
+        <div class="mb-4">
+          {% for category in page.categories.all %}
+            <span class="badge badge-outline mr-2">{{ category.name }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+      <div class="prose max-w-none">
+        {% for block in page.body %}
+          {% include_block block %}
+        {% endfor %}
+      </div>
+    </div>
   </div>
-</article>
 {% endblock %}
-
-{% block title %}{{ page.title }}{% endblock %}
