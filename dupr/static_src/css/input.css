@@ -38,6 +38,13 @@
   }
   
   /* Dashboard styles */
+
+ a {
+    color:var(--color-primary);
+ } 
+ a.btn {
+    color:white;
+ }
 .carousel-item {}
 
 
@@ -47,7 +54,7 @@ input {
 
 .btn-accent, .btn-error {
   --btn-color:var(--color-primary);
-}
+}   
 .card-body :where(p) {
   flex-grow: 0;
 }

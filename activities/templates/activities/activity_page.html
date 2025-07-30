@@ -4,39 +4,28 @@
 {% block title %}{{ page.title }}{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="mb-5">
-      <h1 class="display-4">{{ page.title }}</h1>
-      {% if page.main_image %}
-        {% image page.main_image fill-1200x400 as header_img %}
-        <img src="{{ header_img.url }}" alt="{{ page.title }}" class="img-fluid mb-4 rounded shadow-sm">
+  <div class="max-w-screen-xl mx-auto bg-white">
+    {% if page.main_image %}
+      <div class="w-full">
+        {% image page.main_image fill-1600x600 as header_img %}
+        <img
+          src="{{ header_img.url }}"
+          alt="{{ page.title }}"
+          class="w-full h-auto object-contain bg-white block"
+          loading="lazy"
+        />
+      </div>
+    {% endif %}
+    <div class="px-0 md:px-12 py-8 bg-white">
+      <h1 class="text-4xl font-light text-left mb-4">{{ page.title }}</h1>
+      {% if page.intro %}
+        <p class="text-lg text-gray-700 mb-6">{{ page.intro }}</p>
       {% endif %}
-    </div>
-
-    <div class="streamfield">
-      {% for block in page.body %}
-        <div class="mb-4">
-          {% if block.block_type == 'heading' %}
-            <h2>{{ block.value }}</h2>
-          {% elif block.block_type == 'paragraph' %}
-            {{ block.value }}
-          {% elif block.block_type == 'embed_video' %}
-            <div class="ratio ratio-16x9">{{ block.value }}</div>
-          {% elif block.block_type == 'image' %}
-            {% image block.value fill-800x500 as img %}
-            <img src="{{ img.url }}" alt="" class="img-fluid rounded shadow-sm">
-          {% elif block.block_type == 'gallery' %}
-            <div class="row g-3">
-              {% for image in block.value %}
-                <div class="col-6 col-md-4">
-                  {% image image fill-400x300 as gallery_img %}
-                  <img src="{{ gallery_img.url }}" alt="" class="img-fluid rounded">
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
-      {% endfor %}
+      <div class="prose max-w-none">
+        {% for block in page.body %}
+          {% include_block block %}
+        {% endfor %}
+      </div>
     </div>
   </div>
 {% endblock %}
