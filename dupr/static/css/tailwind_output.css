@@ -3468,6 +3468,12 @@
   .top-1\/2 {
     top: calc(1/2 * 100%);
   }
+  .right-\[25\%\] {
+    right: 25%;
+  }
+  .right-\[50\%\] {
+    right: 50%;
+  }
   .dock-sm {
     height: calc(0.25rem * 14);
     height: 3.5rem;
@@ -3519,6 +3525,9 @@
   }
   .left-1\/2 {
     left: calc(1/2 * 100%);
+  }
+  .left-\[25\%\] {
+    left: 25%;
   }
   .file-input {
     cursor: pointer;
@@ -7755,12 +7764,6 @@
   .md\:px-6 {
     @media (width >= 48rem) {
       padding-inline: calc(var(--spacing) * 6);
-    }
-  }
-  .md\:text-3xl {
-    @media (width >= 48rem) {
-      font-size: var(--text-3xl);
-      line-height: var(--tw-leading, var(--text-3xl--line-height));
     }
   }
   .md\:text-xl {
